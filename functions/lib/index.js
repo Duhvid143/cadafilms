@@ -6,7 +6,10 @@ const app_1 = require("firebase-admin/app");
 const rss_1 = require("./rss");
 const drive_1 = require("./drive");
 const ai_1 = require("./ai");
-(0, app_1.initializeApp)();
+(0, app_1.initializeApp)({
+    projectId: "cada-f5b39", // Explicitly set Project ID to resolve Firestore discovery issues
+    storageBucket: "cada-f5b39.firebasestorage.app" // Explicitly set Storage Bucket
+});
 // 2GB+ file processing requires increased memory/timeout
 exports.processEpisode = (0, storage_1.onObjectFinalized)({
     cpu: 2,

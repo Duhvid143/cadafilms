@@ -1,39 +1,39 @@
 import { VertexAI } from "@google-cloud/vertexai";
-import { getFirestore } from "firebase-admin/firestore";
+import * as admin from "firebase-admin";
 
 const vertexAI = new VertexAI({ project: process.env.GCLOUD_PROJECT || "cada-productions", location: "us-east1" });
 const model = vertexAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
 export async function analyzeVideo(bucketName: string, filePath: string, epId: string) {
-    // "Direct-to-Cloud" - No download needed!
-    const fileUri = `gs://${bucketName}/${filePath}`;
+    console.log(`Starting AI analysis for ${epId}...`);
+    const gcsUri = `gs://${bucketName}/${filePath}`;
 
     const prompt = `
-        You are a podcast editor. Analyze this video.
-        Output a valid JSON object with:
-        1. "summary": A 2-sentence hook.
-        2. "chapters": An array of objects { "time": "00:00", "title": "Topic" }.
-        3. "showNotes": A formatted string with bullet points.
-        4. "hashtags": 5 relevant tags for YouTube.
+    Analyze this video episode for a podcast website.
+    Return ONLY a valid JSON object with these fields:
+    - summary: A 2-sentence hook.
+    - description: A detailed paragraph.
+    - showNotes: A list of bullet points with timestamps (e.g., "01:30 - Topic").
+    - chapters: An array of objects { time: "MM:SS", title: "Chapter Title" }.
+    - keywords: An array of 5-10 tags.
     `;
 
     try {
         const result = await model.generateContent({
-            contents: [{
-                role: 'user',
-                parts: [
-                    { file_data: { mime_type: "video/mp4", file_uri: fileUri } },
-                    { text: prompt }
-                ]
-            }]
+            contents: [{ role: "user", parts: [{ file_data: { file_uri: gcsUri, mime_type: "video/mp4" } }, { text: prompt }] }],
         });
 
-        const responseText = result.response.candidates?.[0].content.parts[0].text;
-        if (!responseText) throw new Error("No response from Vertex AI");
+        const response = result.response;
+        const text = response.candidates?.[0].content.parts[0].text;
 
-        const aiData = JSON.parse(responseText.replace(/```json|```/g, ""));
+        if (!text) throw new Error("No response from Gemini");
 
-        await getFirestore().collection("episodes").doc(epId).set(aiData, { merge: true });
+        // Clean up JSON markdown if present
+        const jsonStr = text.replace(/```json\n|\n```/g, "").trim();
+        const aiData = JSON.parse(jsonStr);
+
+        console.log(`AI Analysis success. Writing to Firestore for ${epId}...`);
+        await admin.firestore().collection("episodes").doc(epId).set(aiData, { merge: true });
         console.log(`AI analysis complete for ${epId}`);
     } catch (error) {
         console.error(`Error analyzing video ${epId}:`, error);

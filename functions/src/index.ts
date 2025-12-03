@@ -1,13 +1,15 @@
+import * as admin from "firebase-admin";
 import { onObjectFinalized } from "firebase-functions/v2/storage";
-import { initializeApp } from "firebase-admin/app";
 import { generateRSS } from "./rss";
 import { backupToDrive } from "./drive";
 import { analyzeVideo } from "./ai";
 
-initializeApp({
-    projectId: "cada-f5b39", // Explicitly set Project ID to resolve Firestore discovery issues
-    storageBucket: "cada-f5b39.firebasestorage.app" // Explicitly set Storage Bucket
+admin.initializeApp({
+    projectId: "cada-f5b39",
+    storageBucket: "cada-f5b39.firebasestorage.app"
 });
+
+console.log("Firebase Admin Initialized. Project ID:", admin.app().options.projectId);
 
 // 2GB+ file processing requires increased memory/timeout
 export const processEpisode = onObjectFinalized({

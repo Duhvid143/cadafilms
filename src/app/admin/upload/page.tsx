@@ -116,6 +116,10 @@ export default function UploadPage() {
 
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
+                    import MFAEnrollment from "@/components/MFAEnrollment";
+
+                    // ... inside component ...
+
                     {uploading && (
                         <div className="mt-8 space-y-3">
                             <div className="flex justify-between text-sm text-gray-400">
@@ -134,6 +138,8 @@ export default function UploadPage() {
                         </div>
                     )}
                 </div>
+
+                <MFAEnrollment />
             </div>
         </div>
     );

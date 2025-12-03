@@ -2,7 +2,7 @@ import { VertexAI } from "@google-cloud/vertexai";
 import { getFirestore } from "firebase-admin/firestore";
 
 const vertexAI = new VertexAI({ project: process.env.GCLOUD_PROJECT || "cada-productions", location: "us-east1" });
-const model = vertexAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = vertexAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
 export async function analyzeVideo(bucketName: string, filePath: string, epId: string) {
     // "Direct-to-Cloud" - No download needed!

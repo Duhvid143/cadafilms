@@ -143,17 +143,20 @@ export default function UploadPage() {
                             </div>
 
                             {/* Progress Bar Container */}
-                            <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden backdrop-blur-md border border-white/5 shadow-inner">
+                            <div className="w-full bg-white/5 rounded-full h-6 overflow-hidden backdrop-blur-md border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
                                 {/* Animated Fill */}
                                 <div
-                                    className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden"
-                                    style={{ width: `${progress}%` }}
+                                    className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden flex items-center justify-end pr-2"
+                                    style={{ width: `${Math.max(progress, 2)}%` }} // Min width to show bar start
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white to-white/80 animate-pulse"></div>
-                                    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] bg-[length:20px_20px] animate-[shimmer_1s_infinite_linear]"></div>
+                                    {/* Gradient Background */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-400 to-white"></div>
+
+                                    {/* Shimmer Overlay */}
+                                    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
 
                                     {/* Glowing Leading Edge */}
-                                    <div className="absolute right-0 top-0 bottom-0 w-4 bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)] blur-[2px]"></div>
+                                    <div className="absolute right-0 top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(255,255,255,1)]"></div>
                                 </div>
                             </div>
 

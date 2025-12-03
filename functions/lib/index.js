@@ -8,7 +8,8 @@ const drive_1 = require("./drive");
 const ai_1 = require("./ai");
 admin.initializeApp({
     projectId: "cada-f5b39",
-    storageBucket: "cada-f5b39.firebasestorage.app"
+    storageBucket: "cada-f5b39.firebasestorage.app",
+    databaseId: "(default)" // Explicitly set default database
 });
 console.log("Firebase Admin Initialized. Project ID:", admin.app().options.projectId);
 // 2GB+ file processing requires increased memory/timeout

@@ -6,8 +6,9 @@ import { analyzeVideo } from "./ai";
 
 admin.initializeApp({
     projectId: "cada-f5b39",
-    storageBucket: "cada-f5b39.firebasestorage.app"
-});
+    storageBucket: "cada-f5b39.firebasestorage.app",
+    databaseId: "(default)" // Explicitly set default database
+} as any);
 
 console.log("Firebase Admin Initialized. Project ID:", admin.app().options.projectId);
 

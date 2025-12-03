@@ -14,10 +14,6 @@ export async function generateRSS(bucketName: string) {
             itunesOwner: { name: "CADA", email: "you@cadafilms.com" }
         });
 
-        console.log("Debug: Listing collections...");
-        const collections = await admin.firestore().listCollections();
-        console.log("Collections found:", collections.map(c => c.id).join(", "));
-
         console.log("Querying Firestore for episodes...");
         const snapshot = await admin.firestore().collection("episodes").get();
         console.log(`Found ${snapshot.size} episodes.`);

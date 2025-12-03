@@ -15,8 +15,7 @@ async function generateRSS(bucketName) {
             imageUrl: "https://cadafilms.com/artwork.jpg",
             itunesOwner: { name: "CADA", email: "you@cadafilms.com" }
         });
-        console.log("Querying Firestore for episodes (simplified query)...");
-        // Simplify query to avoid index issues for now
+        console.log("Querying Firestore for episodes...");
         const snapshot = await admin.firestore().collection("episodes").get();
         console.log(`Found ${snapshot.size} episodes.`);
         const episodes = [];
@@ -30,14 +29,14 @@ async function generateRSS(bucketName) {
             return dateB - dateA;
         });
         for (const data of episodes) {
-            if (data.status === "ready") { // Only include ready episodes
+            if (data.status === "ready") {
                 feed.addItem({
                     title: data.title,
-                    description: data.description || data.summary, // Fallback to summary
+                    description: data.description || data.summary,
                     url: `https://cadafilms.com/muit/${data.id}`,
                     date: data.date || data.uploadedAt,
                     enclosure: {
-                        url: data.videoUrl, // Direct Firebase Download URL
+                        url: data.videoUrl,
                         type: "video/mp4",
                         size: data.sizeBytes
                     },
@@ -55,6 +54,8 @@ async function generateRSS(bucketName) {
     }
     catch (error) {
         console.error("Error generating RSS feed:", error);
+        // Try to log the project ID we are connected to
+        console.error("Current Project ID:", admin.app().options.projectId);
     }
 }
 //# sourceMappingURL=rss.js.map

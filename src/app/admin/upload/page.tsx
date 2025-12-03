@@ -1,16 +1,34 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import { storage, db } from "@/lib/firebase";
+import { storage, db, auth } from "@/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
+import Button from "@/components/Button";
+import { Upload } from "lucide-react";
 
 export default function UploadPage() {
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [episodeNumber, setEpisodeNumber] = useState("");
     const [title, setTitle] = useState("");
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                router.push("/admin/login");
+            } else {
+                setLoading(false);
+            }
+        });
+
+        return () => unsubscribe();
+    }, [router]);
 
     const handleUpload = async (file: File) => {
         if (!episodeNumber || !title) {
@@ -30,7 +48,7 @@ export default function UploadPage() {
             },
             (error) => {
                 console.error(error);
-                toast.error("Upload failed");
+                toast.error("Upload failed: " + error.message);
                 setUploading(false);
             },
             async () => {
@@ -55,57 +73,67 @@ export default function UploadPage() {
         );
     };
 
+    if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
+
     return (
-        <div className="min-h-screen bg-gray-50 p-10">
-            <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8">
-                <h1 className="text-3xl font-bold mb-8 text-gray-900">Sunday Upload</h1>
-
-                <div className="space-y-6 mb-8">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Episode Number (ID)
-                        </label>
-                        <input
-                            type="text"
-                            value={episodeNumber}
-                            onChange={(e) => setEpisodeNumber(e.target.value)}
-                            placeholder="e.g. 104"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            disabled={uploading}
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Episode Title
-                        </label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="e.g. The Future of AI"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            disabled={uploading}
-                        />
-                    </div>
+        <div className="min-h-screen bg-black pt-32 pb-20 px-4">
+            <div className="max-w-3xl mx-auto">
+                <div className="mb-10">
+                    <h1 className="text-4xl font-bold text-white mb-2">Upload Episode</h1>
+                    <p className="text-gray-400">Drag and drop your video file to begin processing.</p>
                 </div>
 
-                <Dropzone onFileSelect={handleUpload} disabled={uploading} />
-
-                {uploading && (
-                    <div className="mt-8 space-y-2">
-                        <div className="flex justify-between text-sm text-gray-600">
-                            <span>Uploading...</span>
-                            <span>{Math.round(progress)}%</span>
+                <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 backdrop-blur-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                Episode Number (ID)
+                            </label>
+                            <input
+                                type="text"
+                                value={episodeNumber}
+                                onChange={(e) => setEpisodeNumber(e.target.value)}
+                                placeholder="e.g. 104"
+                                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                disabled={uploading}
+                            />
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                style={{ width: `${progress}%` }}
-                            ></div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                Episode Title
+                            </label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="e.g. The Future of AI"
+                                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                disabled={uploading}
+                            />
                         </div>
                     </div>
-                )}
+
+                    <Dropzone onFileSelect={handleUpload} disabled={uploading} />
+
+                    {uploading && (
+                        <div className="mt-8 space-y-3">
+                            <div className="flex justify-between text-sm text-gray-400">
+                                <span>Uploading to Cloud Storage...</span>
+                                <span>{Math.round(progress)}%</span>
+                            </div>
+                            <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                                <div
+                                    className="bg-white h-full rounded-full transition-all duration-300 ease-out"
+                                    style={{ width: `${progress}%` }}
+                                ></div>
+                            </div>
+                            <p className="text-xs text-gray-500 text-center mt-2">
+                                Please do not close this window until upload is complete.
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

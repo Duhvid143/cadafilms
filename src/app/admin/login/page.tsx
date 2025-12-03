@@ -29,50 +29,56 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-4">
-            <div className="w-full max-w-md space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold text-white mb-2">Admin Access</h1>
-                    <p className="text-gray-400">Enter your credentials to continue</p>
+        <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+            {/* Background Gradients */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
+
+            <div className="w-full max-w-md relative z-10">
+                <div className="bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-bold text-white mb-2">Admin Access</h1>
+                        <p className="text-gray-400 text-sm">Authorized personnel only</p>
+                    </div>
+
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                placeholder="admin@cadafilms.com"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                placeholder="••••••••"
+                                required
+                            />
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="w-full justify-center py-4 text-lg"
+                            disabled={loading}
+                        >
+                            {loading ? "Verifying..." : "Enter Dashboard"}
+                        </Button>
+                    </form>
                 </div>
-
-                <form onSubmit={handleLogin} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all"
-                            placeholder="admin@cadafilms.com"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all"
-                            placeholder="••••••••"
-                            required
-                        />
-                    </div>
-
-                    <Button
-                        type="submit"
-                        className="w-full justify-center"
-                        disabled={loading}
-                    >
-                        {loading ? "Signing in..." : "Sign In"}
-                    </Button>
-                </form>
             </div>
         </div>
     );

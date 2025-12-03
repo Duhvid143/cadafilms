@@ -4,7 +4,10 @@ import { generateRSS } from "./rss";
 import { backupToDrive } from "./drive";
 import { analyzeVideo } from "./ai";
 
-initializeApp();
+initializeApp({
+    projectId: "cada-f5b39", // Explicitly set Project ID to resolve Firestore discovery issues
+    storageBucket: "cada-f5b39.firebasestorage.app" // Explicitly set Storage Bucket
+});
 
 // 2GB+ file processing requires increased memory/timeout
 export const processEpisode = onObjectFinalized({

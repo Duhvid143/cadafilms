@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.analyzeVideo = analyzeVideo;
 const vertexai_1 = require("@google-cloud/vertexai");
 const firestore_1 = require("firebase-admin/firestore");
-const vertexAI = new vertexai_1.VertexAI({ project: process.env.GCLOUD_PROJECT || "cada-productions", location: "us-central1" });
-const model = vertexAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const vertexAI = new vertexai_1.VertexAI({ project: process.env.GCLOUD_PROJECT || "cada-productions", location: "us-east1" });
+const model = vertexAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 async function analyzeVideo(bucketName, filePath, epId) {
     var _a;
     // "Direct-to-Cloud" - No download needed!

@@ -81,7 +81,7 @@ export default function UploadPage() {
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
     return (
-        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '150px' }}>
+        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '200px' }}>
             <div className="w-full max-w-3xl">
                 <div className="mb-10 flex items-end justify-between">
                     <div>
@@ -131,20 +131,30 @@ export default function UploadPage() {
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
                     {uploading && (
-                        <div className="mt-8 space-y-3">
-                            <div className="flex justify-between text-sm text-gray-400">
-                                <span>Uploading to Cloud Storage...</span>
-                                <span>{Math.round(progress)}%</span>
+                        <div className="mt-8 p-6 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="flex justify-between items-end mb-4">
+                                <div>
+                                    <h3 className="text-white font-medium mb-1">Uploading Episode</h3>
+                                    <p className="text-xs text-gray-400">Sending to secure cloud storage...</p>
+                                </div>
+                                <span className="text-2xl font-bold text-white tabular-nums">
+                                    {Math.round(progress)}%
+                                </span>
                             </div>
-                            <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+
+                            <div className="w-full bg-gray-800/50 rounded-full h-1.5 overflow-hidden backdrop-blur-sm border border-white/5">
                                 <div
-                                    className="bg-white h-full rounded-full transition-all duration-300 ease-out"
+                                    className="bg-white h-full rounded-full transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.5)] relative"
                                     style={{ width: `${progress}%` }}
-                                ></div>
+                                >
+                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] blur-[1px]"></div>
+                                </div>
                             </div>
-                            <p className="text-xs text-gray-500 text-center mt-2">
-                                Please do not close this window until upload is complete.
-                            </p>
+
+                            <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
+                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                                Please keep this window open
+                            </div>
                         </div>
                     )}
                 </div>

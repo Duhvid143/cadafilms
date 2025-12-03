@@ -1,0 +1,123 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-primary {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--text-color);
+    z-index: -1;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.btn-primary:hover {
+    color: var(--text-color);
+}
+
+.btn-primary:hover::before {
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
+}
+
+.btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--text-color);
+    z-index: -1;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.btn-secondary:hover {
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}
+
+.btn-secondary:hover::before {
+    transform: scaleX(1);
+}
+
+.btn-icon {
+    margin-left: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover .btn-icon {
+    transform: translateX(5px);
+}
+
+/* Organic Blur Button Variant */
+.btn-organic {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    filter: blur(4px);
+    animation: organic-float 6s ease-in-out infinite;
+    transition: all 0.5s ease;
+}
+
+.btn-organic:hover {
+    filter: blur(0);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    border-color: var(--text-color);
+    transform: scale(1.1);
+    animation: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes organic-float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+        border-radius: 50px;
+    }
+
+    33% {
+        transform: translate(3px, -3px) scale(1.02);
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+
+    66% {
+        transform: translate(-3px, 3px) scale(0.98);
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+}

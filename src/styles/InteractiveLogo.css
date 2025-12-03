@@ -1,0 +1,86 @@
+.interactive-logo-container {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.interactive-logo-container.open {
+    width: 800px;
+    height: 800px;
+}
+
+.logo-shape {
+    position: absolute;
+    width: 40px;
+    height: 80px;
+    background-color: white;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    transform-origin: center center;
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    mix-blend-mode: difference;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.interactive-logo-container.open .logo-shape {
+    width: 120px;
+    height: 200px;
+    mix-blend-mode: normal;
+    /* Remove difference mode to show images */
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo-shape-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transform: scale(1.5);
+    /* Zoom in initially */
+}
+
+.interactive-logo-container.open .logo-shape-img {
+    opacity: 0.6;
+}
+
+.interactive-logo-container.open .logo-shape:hover .logo-shape-img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Rotation Animation */
+.carousel-rotator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: none;
+}
+
+.interactive-logo-container.open .carousel-rotator {
+    animation: rotate-carousel 60s linear infinite;
+}
+
+@keyframes rotate-carousel {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Counter-rotate items to keep them upright if desired, 
+   but for abstract shapes, rotating with the container is fine. 
+   If we want images to stay upright, we'd need to counter-rotate.
+   Let's let them rotate with the ring for a kaleidoscope effect first. */

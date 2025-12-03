@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
 import Button from "@/components/Button";
 import { Upload } from "lucide-react";
+import MFAEnrollment from "@/components/MFAEnrollment";
 
 export default function UploadPage() {
     const [uploading, setUploading] = useState(false);
@@ -116,6 +117,8 @@ export default function UploadPage() {
 
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
+
+
                     {uploading && (
                         <div className="mt-8 space-y-3">
                             <div className="flex justify-between text-sm text-gray-400">
@@ -134,6 +137,8 @@ export default function UploadPage() {
                         </div>
                     )}
                 </div>
+
+                <MFAEnrollment />
             </div>
         </div>
     );

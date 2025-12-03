@@ -81,7 +81,7 @@ export default function UploadPage() {
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
     return (
-        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '200px' }}>
+        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '250px' }}>
             <div className="w-full max-w-3xl">
                 <div className="mb-10 flex items-end justify-between">
                     <div>
@@ -131,29 +131,35 @@ export default function UploadPage() {
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
                     {uploading && (
-                        <div className="mt-8 p-6 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="flex justify-between items-end mb-4">
+                        <div className="mt-12 p-8 bg-zinc-900/80 border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700">
+                            <div className="flex justify-between items-end mb-6">
                                 <div>
-                                    <h3 className="text-white font-medium mb-1">Uploading Episode</h3>
-                                    <p className="text-xs text-gray-400">Sending to secure cloud storage...</p>
+                                    <h3 className="text-xl text-white font-semibold mb-2 tracking-wide">Uploading Episode</h3>
+                                    <p className="text-sm text-gray-400">Securely transferring to CADA Cloud...</p>
                                 </div>
-                                <span className="text-2xl font-bold text-white tabular-nums">
+                                <span className="text-4xl font-bold text-white tabular-nums tracking-tight">
                                     {Math.round(progress)}%
                                 </span>
                             </div>
 
-                            <div className="w-full bg-gray-800/50 rounded-full h-1.5 overflow-hidden backdrop-blur-sm border border-white/5">
+                            {/* Progress Bar Container */}
+                            <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden backdrop-blur-md border border-white/5 shadow-inner">
+                                {/* Animated Fill */}
                                 <div
-                                    className="bg-white h-full rounded-full transition-all duration-300 ease-out shadow-[0_0_15px_rgba(255,255,255,0.5)] relative"
+                                    className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden"
                                     style={{ width: `${progress}%` }}
                                 >
-                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] blur-[1px]"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white to-white/80 animate-pulse"></div>
+                                    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%)] bg-[length:20px_20px] animate-[shimmer_1s_infinite_linear]"></div>
+
+                                    {/* Glowing Leading Edge */}
+                                    <div className="absolute right-0 top-0 bottom-0 w-4 bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)] blur-[2px]"></div>
                                 </div>
                             </div>
 
-                            <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
-                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                                Please keep this window open
+                            <div className="mt-6 flex items-center justify-center gap-3 text-sm text-gray-400 font-medium">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                                Do not close this window
                             </div>
                         </div>
                     )}

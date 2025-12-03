@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to episodes (for the website)
+    match /episodes/{episodeId} {
+      allow read: if true;
+      // Only allow authenticated users (admins) to write
+      allow write: if request.auth != null;
+    }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

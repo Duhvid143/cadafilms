@@ -29,26 +29,24 @@ export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
         <div
             {...getRootProps()}
             className={`
-        border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors
-        ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-gray-400"}
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+        border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all duration-300
+        ${isDragActive ? 'border-white bg-white/5 scale-[1.02]' : 'border-gray-700 hover:border-gray-500 hover:bg-white/5'}
+        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
       `}
         >
             <input {...getInputProps()} />
-            <div className="flex flex-col items-center justify-center gap-4">
-                <UploadCloud className="w-12 h-12 text-gray-400" />
-                {isDragActive ? (
-                    <p className="text-lg text-blue-500">Drop the video here...</p>
-                ) : (
-                    <div className="space-y-1">
-                        <p className="text-lg font-medium text-gray-700">
-                            Drag & drop your episode here
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            or click to select (MP4, MOV)
-                        </p>
-                    </div>
-                )}
+            <div className="flex flex-col items-center justify-center space-y-4">
+                <div className={`p-4 rounded-full ${isDragActive ? 'bg-white/10' : 'bg-gray-800'}`}>
+                    <UploadCloud className={`w-8 h-8 ${isDragActive ? 'text-white' : 'text-gray-400'}`} />
+                </div>
+                <div>
+                    <p className="text-lg font-medium text-white">
+                        {isDragActive ? "Drop it like it's hot" : "Drag & drop your episode here"}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                        or click to select (MP4, MOV)
+                    </p>
+                </div>
             </div>
         </div>
     );

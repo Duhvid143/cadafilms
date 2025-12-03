@@ -27,18 +27,45 @@ async function backupToDrive(bucketName, filePath, fileName) {
         await bucket.file(filePath).download({ destination: tempFilePath });
         // Upload to Drive
         console.log(`Uploading ${fileName} to Google Drive...`);
-        console.log(`Target Folder ID: ${process.env.DRIVE_FOLDER_ID || 'root'}`);
-        const response = await drive.files.create({
-            requestBody: {
-                name: fileName,
-                parents: [process.env.DRIVE_FOLDER_ID || 'root'],
-            },
-            media: {
-                mimeType: 'video/mp4',
-                body: fs.createReadStream(tempFilePath),
-            },
-            supportsAllDrives: true, // Required for shared drives/folders owned by others
-        });
+        const folderId = process.env.DRIVE_FOLDER_ID;
+        console.log(`Target Folder ID: ${folderId || 'root'}`);
+        let response;
+        try {
+            if (folderId) {
+                console.log("Attempting upload to specified folder...");
+                response = await drive.files.create({
+                    requestBody: {
+                        name: fileName,
+                        parents: [folderId],
+                    },
+                    media: {
+                        mimeType: 'video/mp4',
+                        body: fs.createReadStream(tempFilePath),
+                    },
+                    supportsAllDrives: true,
+                    fields: 'id',
+                });
+            }
+            else {
+                throw new Error("No folder ID configured");
+            }
+        }
+        catch (folderError) {
+            console.warn("Upload to folder failed, attempting upload to root...", folderError);
+            // Reset stream for retry
+            const retryStream = fs.createReadStream(tempFilePath);
+            response = await drive.files.create({
+                requestBody: {
+                    name: fileName,
+                },
+                media: {
+                    mimeType: 'video/mp4',
+                    body: retryStream,
+                },
+                supportsAllDrives: true,
+                fields: 'id',
+            });
+        }
         console.log(`Backup complete. File ID: ${response.data.id}`);
         // Cleanup
         fs.unlinkSync(tempFilePath);

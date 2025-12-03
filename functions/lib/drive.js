@@ -27,15 +27,17 @@ async function backupToDrive(bucketName, filePath, fileName) {
         await bucket.file(filePath).download({ destination: tempFilePath });
         // Upload to Drive
         console.log(`Uploading ${fileName} to Google Drive...`);
+        console.log(`Target Folder ID: ${process.env.DRIVE_FOLDER_ID || 'root'}`);
         const response = await drive.files.create({
             requestBody: {
                 name: fileName,
-                parents: [process.env.DRIVE_FOLDER_ID || 'root'], // Set DRIVE_FOLDER_ID in env
+                parents: [process.env.DRIVE_FOLDER_ID || 'root'],
             },
             media: {
                 mimeType: 'video/mp4',
                 body: fs.createReadStream(tempFilePath),
             },
+            supportsAllDrives: true, // Required for shared drives/folders owned by others
         });
         console.log(`Backup complete. File ID: ${response.data.id}`);
         // Cleanup

@@ -1,15 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processEpisode = void 0;
+const admin = require("firebase-admin");
 const storage_1 = require("firebase-functions/v2/storage");
-const app_1 = require("firebase-admin/app");
 const rss_1 = require("./rss");
 const drive_1 = require("./drive");
 const ai_1 = require("./ai");
-(0, app_1.initializeApp)({
-    projectId: "cada-f5b39", // Explicitly set Project ID to resolve Firestore discovery issues
-    storageBucket: "cada-f5b39.firebasestorage.app" // Explicitly set Storage Bucket
+admin.initializeApp({
+    projectId: "cada-f5b39",
+    storageBucket: "cada-f5b39.firebasestorage.app"
 });
+console.log("Firebase Admin Initialized. Project ID:", admin.app().options.projectId);
 // 2GB+ file processing requires increased memory/timeout
 exports.processEpisode = (0, storage_1.onObjectFinalized)({
     cpu: 2,

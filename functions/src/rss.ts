@@ -14,17 +14,29 @@ export async function generateRSS(bucketName: string) {
             itunesOwner: { name: "CADA", email: "you@cadafilms.com" }
         });
 
-        console.log("Querying Firestore for episodes...");
-        const snapshot = await admin.firestore().collection("episodes").orderBy("date", "desc").get();
+        console.log("Querying Firestore for episodes (simplified query)...");
+        // Simplify query to avoid index issues for now
+        const snapshot = await admin.firestore().collection("episodes").get();
         console.log(`Found ${snapshot.size} episodes.`);
 
+        const episodes: any[] = [];
         snapshot.forEach(doc => {
-            const data = doc.data();
+            episodes.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort in memory
+        episodes.sort((a, b) => {
+            const dateA = new Date(a.date || a.uploadedAt).getTime();
+            const dateB = new Date(b.date || b.uploadedAt).getTime();
+            return dateB - dateA;
+        });
+
+        for (const data of episodes) {
             if (data.status === "ready") { // Only include ready episodes
                 feed.addItem({
                     title: data.title,
                     description: data.description || data.summary, // Fallback to summary
-                    url: `https://cadafilms.com/muit/${doc.id}`,
+                    url: `https://cadafilms.com/muit/${data.id}`,
                     date: data.date || data.uploadedAt,
                     enclosure: {
                         url: data.videoUrl, // Direct Firebase Download URL
@@ -34,7 +46,7 @@ export async function generateRSS(bucketName: string) {
                     itunesDuration: data.durationSeconds
                 });
             }
-        });
+        }
 
         const xml = feed.buildXml();
         const bucket = admin.storage().bucket(bucketName);

@@ -9,7 +9,7 @@ initializeApp();
 // 2GB+ file processing requires increased memory/timeout
 export const processEpisode = onObjectFinalized({
     cpu: 2,
-    memory: "2GiB",
+    memory: "8GiB",
     timeoutSeconds: 540, // 9 mins
     region: "us-east1"
 }, async (event) => {

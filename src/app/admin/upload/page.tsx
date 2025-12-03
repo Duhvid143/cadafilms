@@ -81,8 +81,8 @@ export default function UploadPage() {
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
     return (
-        <div className="min-h-screen bg-black pt-60 pb-20 px-4">
-            <div className="max-w-3xl mx-auto">
+        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '150px' }}>
+            <div className="w-full max-w-3xl">
                 <div className="mb-10 flex items-end justify-between">
                     <div>
                         <h1 className="text-4xl font-bold text-white mb-2">Upload Episode</h1>

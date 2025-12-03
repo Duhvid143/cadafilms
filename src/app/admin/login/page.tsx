@@ -96,7 +96,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
             {/* Background Gradients */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
@@ -115,7 +115,7 @@ export default function LoginPage() {
                     {!mfaRequired ? (
                         <form onSubmit={handleLogin} className="space-y-6">
                             <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
                                     Email Address
                                 </label>
                                 <input
@@ -129,7 +129,7 @@ export default function LoginPage() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
                                     Password
                                 </label>
                                 <input
@@ -155,7 +155,7 @@ export default function LoginPage() {
                     ) : (
                         <form onSubmit={handleMfaVerify} className="space-y-6">
                             <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
                                     Verification Code
                                 </label>
                                 <input

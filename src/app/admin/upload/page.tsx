@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
 import Button from "@/components/Button";
-import { Upload } from "lucide-react";
+import { Upload, Settings } from "lucide-react";
 import MFAEnrollment from "@/components/MFAEnrollment";
+import AdminSettings from "@/components/AdminSettings";
 
 export default function UploadPage() {
     const [uploading, setUploading] = useState(false);
@@ -17,13 +18,16 @@ export default function UploadPage() {
     const [episodeNumber, setEpisodeNumber] = useState("");
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<any>(null);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (!user) {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (!currentUser) {
                 router.push("/admin/login");
             } else {
+                setUser(currentUser);
                 setLoading(false);
             }
         });
@@ -79,9 +83,18 @@ export default function UploadPage() {
     return (
         <div className="min-h-screen bg-black pt-32 pb-20 px-4">
             <div className="max-w-3xl mx-auto">
-                <div className="mb-10">
-                    <h1 className="text-4xl font-bold text-white mb-2">Upload Episode</h1>
-                    <p className="text-gray-400">Drag and drop your video file to begin processing.</p>
+                <div className="mb-10 flex items-end justify-between">
+                    <div>
+                        <h1 className="text-4xl font-bold text-white mb-2">Upload Episode</h1>
+                        <p className="text-gray-400">Drag and drop your video file to begin processing.</p>
+                    </div>
+                    <button
+                        onClick={() => setIsSettingsOpen(true)}
+                        className="p-3 bg-gray-900 rounded-full text-gray-400 hover:text-white hover:bg-gray-800 transition-all border border-gray-800"
+                        title="Account Settings"
+                    >
+                        <Settings size={24} />
+                    </button>
                 </div>
 
                 <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 backdrop-blur-sm">
@@ -117,8 +130,6 @@ export default function UploadPage() {
 
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
-
-
                     {uploading && (
                         <div className="mt-8 space-y-3">
                             <div className="flex justify-between text-sm text-gray-400">
@@ -139,6 +150,12 @@ export default function UploadPage() {
                 </div>
 
                 <MFAEnrollment />
+
+                <AdminSettings
+                    isOpen={isSettingsOpen}
+                    onClose={() => setIsSettingsOpen(false)}
+                    user={user}
+                />
             </div>
         </div>
     );

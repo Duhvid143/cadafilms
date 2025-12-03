@@ -81,7 +81,7 @@ export default function UploadPage() {
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
     return (
-        <div className="min-h-screen bg-black pt-32 pb-20 px-4">
+        <div className="min-h-screen bg-black pt-60 pb-20 px-4">
             <div className="max-w-3xl mx-auto">
                 <div className="mb-10 flex items-end justify-between">
                     <div>

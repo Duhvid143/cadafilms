@@ -122,7 +122,7 @@ export default function LoginPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
                                     placeholder="admin@cadafilms.com"
                                     required
                                 />
@@ -136,7 +136,7 @@ export default function LoginPage() {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600"
+                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
                                     placeholder="••••••••"
                                     required
                                 />

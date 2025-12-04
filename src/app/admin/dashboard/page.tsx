@@ -308,7 +308,7 @@ export default function DashboardPage() {
                                                         <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-2">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
-                                                        <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">
+                                                        <div className="flex items-center gap-3 text-sm text-zinc-400 font-medium">
                                                             <span className="font-mono">#{episode.id}</span>
                                                             <span className="w-1 h-1 rounded-full bg-zinc-700" />
                                                             <span>{new Date(episode.uploadedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -330,17 +330,17 @@ export default function DashboardPage() {
                                                     {/* Left Column */}
                                                     <div className="space-y-10">
                                                         <div>
-                                                            <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
+                                                            <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-4 uppercase tracking-widest">
                                                                 <FileText className="w-3 h-3" /> AI Summary
                                                             </h4>
-                                                            <p className="text-zinc-300 leading-[1.8] text-lg font-light">
+                                                            <p className="text-zinc-200 leading-[1.8] text-lg font-light">
                                                                 {episode.summary || "Generating summary..."}
                                                             </p>
                                                         </div>
 
                                                         {episode.description && (
                                                             <div>
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-4 uppercase tracking-widest">
                                                                     Full Description
                                                                 </h4>
                                                                 <p className="text-zinc-400 text-sm leading-[1.7]">
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                                                         {/* Chapters */}
                                                         {episode.chapters && episode.chapters.length > 0 && (
                                                             <div>
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-6 uppercase tracking-widest">
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-6 uppercase tracking-widest">
                                                                     <List className="w-3 h-3" /> Chapters
                                                                 </h4>
                                                                 <div className="space-y-0 relative border-l border-zinc-800 ml-2 pl-6">
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                                                         {/* Keywords */}
                                                         {keywords.length > 0 && (
                                                             <div>
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-4 uppercase tracking-widest">
                                                                     <Tag className="w-3 h-3" /> Keywords
                                                                 </h4>
                                                                 <div className="flex flex-wrap gap-2">

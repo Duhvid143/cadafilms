@@ -6,7 +6,24 @@ import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, FileText, List, Tag, Clock, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronUp, PlayCircle } from "lucide-react";
+import {
+    ArrowLeft,
+    ExternalLink,
+    FileText,
+    List,
+    Tag,
+    CheckCircle,
+    AlertCircle,
+    Loader2,
+    ChevronDown,
+    ChevronUp,
+    PlayCircle,
+    Plus,
+    Copy,
+    Youtube,
+    Twitter
+} from "lucide-react";
+import { toast } from "sonner";
 
 interface Chapter {
     time: string;
@@ -80,19 +97,38 @@ export default function DashboardPage() {
         return [];
     };
 
+    const copyToClipboard = (text: string, label: string) => {
+        navigator.clipboard.writeText(text);
+        toast.success(`Copied ${label} to clipboard`);
+    };
+
+    const copyYouTubeData = (ep: Episode) => {
+        let content = `${ep.title}\n\n${ep.description || ep.summary}\n\n`;
+        if (ep.chapters && ep.chapters.length > 0) {
+            content += `Chapters:\n${ep.chapters.map(c => `${c.time} ${c.title}`).join('\n')}`;
+        }
+        copyToClipboard(content, "YouTube Data");
+    };
+
+    const copyXPost = (ep: Episode) => {
+        const content = `New Episode: ${ep.title}\n\n${ep.summary}\n\n#${getKeywords(ep).slice(0, 3).join(' #')}`;
+        copyToClipboard(content, "X Post");
+    };
+
     const styles = {
         page: {
-            backgroundColor: '#050505',
+            backgroundColor: '#09090b', // zinc-950
             minHeight: '100vh',
-            paddingTop: '240px', // Increased to ensure no overlap
+            paddingTop: '160px',
             paddingBottom: '8rem',
             display: 'flex',
             flexDirection: 'column' as const,
             alignItems: 'center',
-            width: '100%'
+            width: '100%',
+            fontFamily: 'var(--font-sans)', // Assuming standard font var
         },
         container: {
-            maxWidth: '1000px', // Slightly wider for dashboard view
+            maxWidth: '1200px',
             width: '100%',
             padding: '0 2rem',
             display: 'flex',
@@ -101,45 +137,63 @@ export default function DashboardPage() {
         },
         header: {
             width: '100%',
-            marginBottom: '3rem',
+            marginBottom: '4rem',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-end',
-            borderBottom: '1px solid rgba(255,255,255,0.1)',
-            paddingBottom: '2rem'
         },
         title: {
-            fontSize: '3rem',
-            fontWeight: 300,
+            fontSize: '3.5rem',
+            fontWeight: 200,
             textTransform: 'uppercase' as const,
-            letterSpacing: '0.3rem',
+            letterSpacing: '0.2rem',
             marginBottom: '0.5rem',
             color: '#ffffff'
         },
         subtitle: {
-            color: '#888888',
-            fontSize: '1rem',
+            color: '#a1a1aa', // zinc-400
+            fontSize: '1.1rem',
             fontWeight: 300,
-            letterSpacing: '0.05rem'
         },
         contentContainer: {
             width: '100%',
             display: 'flex',
             flexDirection: 'column' as const,
-            gap: '1.5rem'
+            gap: '2rem'
         },
-        // Inline styles for card to ensure visibility if Tailwind fails
+        // Premium Glass Card
         card: {
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '20px',
+            backgroundColor: 'rgba(24, 24, 27, 0.6)', // zinc-950 @ 60%
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid #27272a', // zinc-800
+            borderRadius: '24px',
             overflow: 'hidden',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative' as const,
         },
-        cardExpanded: {
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+        cardHover: {
+            borderColor: '#52525b', // zinc-600
+            transform: 'translateY(-4px)',
+            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)'
+        },
+        // FAB
+        fab: {
+            position: 'fixed' as const,
+            bottom: '40px',
+            right: '40px',
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 10px 30px rgba(255,255,255,0.2)',
+            cursor: 'pointer',
+            transition: 'transform 0.2s ease',
+            zIndex: 50
         }
     };
 
@@ -151,7 +205,7 @@ export default function DashboardPage() {
                     <div>
                         <Link
                             href="/admin/upload"
-                            className="inline-flex items-center text-xs font-medium text-white/40 hover:text-white transition-colors mb-4 group uppercase tracking-widest"
+                            className="inline-flex items-center text-xs font-medium text-zinc-500 hover:text-white transition-colors mb-6 group uppercase tracking-widest"
                         >
                             <ArrowLeft className="w-3 h-3 mr-2 group-hover:-translate-x-1 transition-transform" />
                             Back to Upload
@@ -169,10 +223,10 @@ export default function DashboardPage() {
                             href="https://firebasestorage.googleapis.com/v0/b/cada-f5b39.firebasestorage.app/o/public%2Ffeed.xml?alt=media"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all group hover:border-white/20"
+                            className="flex items-center gap-2 px-6 py-3 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-full backdrop-blur-md transition-all group"
                         >
-                            <span className="text-xs font-medium tracking-widest uppercase">RSS Feed</span>
-                            <ExternalLink className="w-3 h-3 text-white/60 group-hover:text-white transition-colors" />
+                            <span className="text-xs font-medium tracking-widest uppercase text-zinc-300 group-hover:text-white">RSS Feed</span>
+                            <ExternalLink className="w-3 h-3 text-zinc-500 group-hover:text-white transition-colors" />
                         </a>
                     </div>
                 </div>
@@ -180,139 +234,154 @@ export default function DashboardPage() {
                 {/* Content */}
                 <div style={styles.contentContainer}>
                     {loading ? (
-                        <div className="flex items-center justify-center h-64">
-                            <Loader2 className="w-8 h-8 text-white/20 animate-spin" />
+                        <div className="flex flex-col items-center justify-center h-96 gap-4">
+                            <Loader2 className="w-8 h-8 text-zinc-600 animate-spin" />
+                            <p className="text-zinc-500 font-light tracking-wide">Loading episodes...</p>
                         </div>
                     ) : (
                         <>
                             {episodes.map((episode) => {
                                 const isExpanded = expandedEpisode === episode.id;
                                 const keywords = getKeywords(episode);
+                                const isProcessing = episode.status === "processing";
 
                                 return (
                                     <div
                                         key={episode.id}
-                                        className="group relative backdrop-blur-sm"
-                                        style={{
-                                            ...styles.card,
-                                            ...(isExpanded ? styles.cardExpanded : {})
+                                        className="group/card"
+                                        style={styles.card}
+                                        onMouseEnter={(e) => {
+                                            Object.assign(e.currentTarget.style, styles.cardHover);
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.borderColor = '#27272a';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = 'none';
                                         }}
                                     >
-                                        {/* Card Header / Summary Row */}
+                                        {/* Hover Action Bar */}
+                                        <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
+                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full text-xs font-medium backdrop-blur-md transition-colors border border-zinc-700"
+                                            >
+                                                <Youtube className="w-3 h-3" /> Copy YouTube
+                                            </button>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); copyXPost(episode); }}
+                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full text-xs font-medium backdrop-blur-md transition-colors border border-zinc-700"
+                                            >
+                                                <Twitter className="w-3 h-3" /> Copy X
+                                            </button>
+                                        </div>
+
+                                        {/* Card Header */}
                                         <div
-                                            className="p-6 cursor-pointer"
+                                            className="p-8 cursor-pointer relative z-10"
                                             onClick={() => toggleExpand(episode.id)}
                                         >
-                                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                                <div className="flex items-center gap-5">
-                                                    {/* Status Icon */}
-                                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${episode.status === "ready"
-                                                        ? "bg-green-500/10 border-green-500/20 text-green-400"
-                                                        : episode.status === "processing"
-                                                            ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
-                                                            : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                                                <div className="flex items-start gap-6">
+                                                    {/* Status Badge */}
+                                                    <div className={`mt-1 px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
+                                                            ? "bg-emerald-400/10 border-emerald-400/20 text-emerald-400"
+                                                            : isProcessing
+                                                                ? "bg-amber-400/10 border-amber-400/20 text-amber-400"
+                                                                : "bg-red-400/10 border-red-400/20 text-red-400"
                                                         }`}>
-                                                        {episode.status === "ready" ? (
-                                                            <CheckCircle className="w-5 h-5" />
-                                                        ) : episode.status === "processing" ? (
-                                                            <Loader2 className="w-5 h-5 animate-spin" />
-                                                        ) : (
-                                                            <AlertCircle className="w-5 h-5" />
+                                                        {isProcessing && (
+                                                            <span className="relative flex h-2 w-2">
+                                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+                                                            </span>
                                                         )}
+                                                        {!isProcessing && (
+                                                            <div className={`w-2 h-2 rounded-full ${episode.status === "ready" ? "bg-emerald-400" : "bg-red-400"}`} />
+                                                        )}
+                                                        <span className="text-xs font-bold uppercase tracking-widest">
+                                                            {episode.status || "UNKNOWN"}
+                                                        </span>
                                                     </div>
 
                                                     {/* Title & Meta */}
                                                     <div>
-                                                        <h3 className="text-lg font-medium text-white group-hover:text-blue-200 transition-colors tracking-wide">
+                                                        <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-2">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
-                                                        <div className="flex items-center gap-3 text-xs text-white/40 mt-1.5 uppercase tracking-wider font-medium">
-                                                            <span className="font-mono opacity-70">#{episode.id}</span>
-                                                            <span className="w-1 h-1 rounded-full bg-white/20" />
-                                                            <span>{new Date(episode.uploadedAt).toLocaleDateString()}</span>
+                                                        <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">
+                                                            <span className="font-mono">#{episode.id}</span>
+                                                            <span className="w-1 h-1 rounded-full bg-zinc-700" />
+                                                            <span>{new Date(episode.uploadedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                {/* Right Side Actions */}
-                                                <div className="flex items-center gap-6">
-                                                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${episode.status === "ready"
-                                                        ? "bg-green-500/5 border-green-500/20 text-green-400"
-                                                        : "bg-blue-500/5 border-blue-500/20 text-blue-400"
-                                                        }`}>
-                                                        {episode.status || "UNKNOWN"}
-                                                    </div>
-
-                                                    {isExpanded ? (
-                                                        <ChevronUp className="w-5 h-5 text-white/40" />
-                                                    ) : (
-                                                        <ChevronDown className="w-5 h-5 text-white/40" />
-                                                    )}
+                                                {/* Expand Icon */}
+                                                <div className="mt-2 text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
+                                                    {isExpanded ? <ChevronUp /> : <ChevronDown />}
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Expanded Details */}
+                                        {/* Expanded Content */}
                                         {isExpanded && (
-                                            <div className="border-t border-white/10 bg-black/20 p-8 animate-in slide-in-from-top-2 duration-300">
-                                                {/* Using inline grid style to force layout */}
-                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '2rem' }} className="md:grid-cols-12">
-
-                                                    {/* Left Column: Core Info (7 cols) */}
-                                                    <div style={{ gridColumn: 'span 7' }} className="col-span-12 md:col-span-7 space-y-8">
-                                                        {/* Summary Section */}
-                                                        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                                                            <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-4 uppercase tracking-widest">
+                                            <div className="border-t border-zinc-800/50 bg-black/20 p-8 animate-in slide-in-from-top-4 duration-500">
+                                                <div className="grid md:grid-cols-2 gap-12">
+                                                    {/* Left Column */}
+                                                    <div className="space-y-10">
+                                                        <div>
+                                                            <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
                                                                 <FileText className="w-3 h-3" /> AI Summary
                                                             </h4>
-                                                            <p className="text-white/90 leading-relaxed font-light text-lg">
+                                                            <p className="text-zinc-300 leading-[1.8] text-lg font-light">
                                                                 {episode.summary || "Generating summary..."}
                                                             </p>
                                                         </div>
 
-                                                        {/* Description Section */}
                                                         {episode.description && (
                                                             <div>
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-3 uppercase tracking-widest">
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
                                                                     Full Description
                                                                 </h4>
-                                                                <p className="text-white/60 text-sm leading-relaxed font-light">
+                                                                <p className="text-zinc-400 text-sm leading-[1.7]">
                                                                     {episode.description}
                                                                 </p>
                                                             </div>
                                                         )}
 
-                                                        {/* Video Preview Link */}
                                                         {episode.videoUrl && (
                                                             <a
                                                                 href={episode.videoUrl}
                                                                 target="_blank"
                                                                 rel="noreferrer"
-                                                                className="inline-flex items-center gap-2 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors uppercase tracking-wider"
+                                                                className="inline-flex items-center gap-2 text-xs font-bold text-zinc-400 hover:text-white transition-colors uppercase tracking-widest border-b border-zinc-800 pb-1 hover:border-white"
                                                             >
                                                                 <PlayCircle className="w-4 h-4" />
-                                                                Watch Video File
+                                                                Watch Source Video
                                                             </a>
                                                         )}
                                                     </div>
 
-                                                    {/* Right Column: Metadata (5 cols) */}
-                                                    <div style={{ gridColumn: 'span 5' }} className="col-span-12 md:col-span-5 space-y-8">
+                                                    {/* Right Column */}
+                                                    <div className="space-y-10">
                                                         {/* Chapters */}
                                                         {episode.chapters && episode.chapters.length > 0 && (
-                                                            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-4 uppercase tracking-widest">
+                                                            <div>
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-6 uppercase tracking-widest">
                                                                     <List className="w-3 h-3" /> Chapters
                                                                 </h4>
-                                                                <div className="space-y-4 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[1px] before:bg-white/10">
+                                                                <div className="space-y-0 relative border-l border-zinc-800 ml-2 pl-6">
                                                                     {episode.chapters.map((chapter, idx) => (
-                                                                        <div key={idx} className="flex items-start gap-4 text-sm group/chapter relative z-10">
-                                                                            <span className="font-mono text-[10px] text-blue-400 bg-blue-900/20 border border-blue-500/20 px-1.5 py-0.5 rounded min-w-[45px] text-center">
-                                                                                {chapter.time}
-                                                                            </span>
-                                                                            <span className="text-white/70 group-hover/chapter:text-white transition-colors font-light text-sm pt-0.5">
-                                                                                {chapter.title}
-                                                                            </span>
+                                                                        <div key={idx} className="relative py-3 group/chapter">
+                                                                            <div className="absolute -left-[29px] top-5 w-1.5 h-1.5 rounded-full bg-zinc-800 group-hover/chapter:bg-zinc-500 transition-colors" />
+                                                                            <div className="flex items-baseline gap-4">
+                                                                                <span className="font-mono text-xs text-zinc-500 w-12 shrink-0">
+                                                                                    {chapter.time}
+                                                                                </span>
+                                                                                <span className="text-zinc-300 text-sm font-light group-hover/chapter:text-white transition-colors">
+                                                                                    {chapter.title}
+                                                                                </span>
+                                                                            </div>
                                                                         </div>
                                                                     ))}
                                                                 </div>
@@ -322,16 +391,16 @@ export default function DashboardPage() {
                                                         {/* Keywords */}
                                                         {keywords.length > 0 && (
                                                             <div>
-                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-3 uppercase tracking-widest">
+                                                                <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-500 mb-4 uppercase tracking-widest">
                                                                     <Tag className="w-3 h-3" /> Keywords
                                                                 </h4>
                                                                 <div className="flex flex-wrap gap-2">
                                                                     {keywords.map((keyword, idx) => (
                                                                         <span
                                                                             key={idx}
-                                                                            className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-white/60 hover:bg-white/10 hover:text-white transition-colors tracking-wide"
+                                                                            className="px-3 py-1.5 rounded-md bg-zinc-900/50 border border-zinc-800 text-xs text-zinc-400 hover:text-zinc-200 hover:border-zinc-600 transition-all"
                                                                         >
-                                                                            {keyword}
+                                                                            #{keyword}
                                                                         </span>
                                                                     ))}
                                                                 </div>
@@ -346,20 +415,28 @@ export default function DashboardPage() {
                             })}
 
                             {episodes.length === 0 && (
-                                <div className="text-center py-24 bg-white/[0.02] rounded-[30px] border border-white/[0.08] border-dashed backdrop-blur-sm">
-                                    <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <FileText className="w-6 h-6 text-white/20" />
+                                <div className="flex flex-col items-center justify-center py-32 text-center">
+                                    <div className="w-24 h-24 bg-zinc-900/50 rounded-full flex items-center justify-center mb-8 border border-zinc-800">
+                                        <FileText className="w-8 h-8 text-zinc-600" />
                                     </div>
-                                    <p className="text-white/40 font-light text-lg">No episodes found</p>
-                                    <Link href="/admin/upload" className="text-blue-400 hover:text-blue-300 mt-2 inline-block transition-colors text-sm uppercase tracking-widest">
-                                        Upload your first episode
-                                    </Link>
+                                    <h3 className="text-2xl font-light text-zinc-200 mb-2">No episodes yet</h3>
+                                    <p className="text-zinc-500 font-light">Drop your first episode to get started</p>
                                 </div>
                             )}
                         </>
                     )}
                 </div>
             </div>
+
+            {/* FAB */}
+            <Link
+                href="/admin/upload"
+                style={styles.fab}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            >
+                <Plus className="w-8 h-8" />
+            </Link>
         </div>
     );
 }

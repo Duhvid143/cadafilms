@@ -20,8 +20,8 @@ export async function getEpisodes(): Promise<Episode[]> {
     try {
         const episodesRef = collection(db, "episodes");
         const q = query(
-            episodesRef,
-            where("status", "==", "ready")
+            episodesRef
+            // where("status", "==", "ready")
             // orderBy("processedAt", "desc")
         );
 

@@ -308,7 +308,7 @@ export default function DashboardPage() {
                                                         <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-2">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
-                                                        <div className="flex items-center gap-3 text-sm text-zinc-400 font-medium">
+                                                        <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">
                                                             <span className="font-mono">#{episode.id}</span>
                                                             <span className="w-1 h-1 rounded-full bg-zinc-700" />
                                                             <span>{new Date(episode.uploadedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>

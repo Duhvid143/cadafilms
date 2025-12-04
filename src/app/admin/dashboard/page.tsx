@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, auth } from "@/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, FileText, List, Tag, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
@@ -28,6 +30,16 @@ export default function DashboardPage() {
     const [episodes, setEpisodes] = useState<Episode[]>([]);
     const [loading, setLoading] = useState(true);
     const [expandedEpisode, setExpandedEpisode] = useState<string | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                router.push("/admin/login");
+            }
+        });
+        return () => unsubscribe();
+    }, [router]);
 
     useEffect(() => {
         const q = query(collection(db, "episodes"));

@@ -164,7 +164,14 @@ export default function UploadPage() {
             padding: '4rem',
             borderRadius: '30px',
             border: '1px solid rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(10px)'
+            backdropFilter: 'blur(10px)',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)', // Added transition
+            position: 'relative' as const
+        },
+        cardHover: {
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            transform: 'translateY(-4px)',
+            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)'
         },
         label: {
             display: 'block',
@@ -225,7 +232,15 @@ export default function UploadPage() {
                     </Link>
                 </div>
 
-                <div style={styles.formContainer}>
+                <div
+                    style={styles.formContainer}
+                    onMouseEnter={(e) => Object.assign(e.currentTarget.style, styles.cardHover)}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = 'none';
+                    }}
+                >
 
                     {/* Step 1: File Selection */}
                     {!selectedFile && !uploading && (

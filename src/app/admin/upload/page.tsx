@@ -131,7 +131,7 @@ export default function UploadPage() {
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
                     {uploading && (
-                        <div className="mt-12 p-8 bg-zinc-900/80 border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700">
+                        <div className="mt-12 p-8 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl">
                             <div className="flex justify-between items-end mb-6">
                                 <div>
                                     <h3 className="text-xl text-white font-semibold mb-2 tracking-wide">Uploading Episode</h3>
@@ -143,11 +143,11 @@ export default function UploadPage() {
                             </div>
 
                             {/* Progress Bar Container */}
-                            <div className="w-full bg-white/5 rounded-full h-6 overflow-hidden backdrop-blur-md border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
+                            <div className="w-full bg-gray-800 rounded-full h-6 overflow-hidden border border-gray-700 relative">
                                 {/* Animated Fill */}
                                 <div
                                     className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden flex items-center justify-end pr-2"
-                                    style={{ width: `${Math.max(progress, 2)}%` }} // Min width to show bar start
+                                    style={{ width: `${Math.max(progress, 5)}%` }} // Min width 5%
                                 >
                                     {/* Gradient Background */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-400 to-white"></div>

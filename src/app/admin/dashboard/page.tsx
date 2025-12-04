@@ -284,10 +284,10 @@ export default function DashboardPage() {
                                                 <div className="flex items-start gap-6">
                                                     {/* Status Badge */}
                                                     <div className={`mt-1 px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
-                                                        ? "bg-emerald-400/15 border-emerald-400/20 text-emerald-400"
+                                                        ? "bg-emerald-400/[0.15] border-emerald-400/20 text-emerald-400"
                                                         : isProcessing
-                                                            ? "bg-amber-400/15 border-amber-400/20 text-amber-400"
-                                                            : "bg-red-400/15 border-red-400/20 text-red-400"
+                                                            ? "bg-amber-400/[0.15] border-amber-400/20 text-amber-400"
+                                                            : "bg-red-400/[0.15] border-red-400/20 text-red-400"
                                                         }`}>
                                                         {isProcessing && (
                                                             <span className="relative flex h-2 w-2">
@@ -308,7 +308,7 @@ export default function DashboardPage() {
                                                         <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-2">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
-                                                        <div className="flex items-center gap-3 text-sm text-zinc-400 font-medium">
+                                                        <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">
                                                             <span className="font-mono">#{episode.id}</span>
                                                             <span className="w-1 h-1 rounded-full bg-zinc-700" />
                                                             <span>{new Date(episode.uploadedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>

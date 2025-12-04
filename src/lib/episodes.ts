@@ -21,12 +21,12 @@ export async function getEpisodes(): Promise<Episode[]> {
         const episodesRef = collection(db, "episodes");
         const q = query(
             episodesRef,
-            where("status", "==", "ready"),
-            orderBy("processedAt", "desc")
+            where("status", "==", "ready")
+            // orderBy("processedAt", "desc")
         );
 
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map((doc) => {
+        const results = querySnapshot.docs.map((doc) => {
             const data = doc.data();
             // Construct public video URL
             // Assuming file path is episodes/{id}.mp4 based on upload logic
@@ -47,6 +47,8 @@ export async function getEpisodes(): Promise<Episode[]> {
                 videoUrl
             } as Episode;
         });
+
+        return results.sort((a, b) => new Date(b.processedAt).getTime() - new Date(a.processedAt).getTime());
     } catch (error) {
         console.error("Error fetching episodes:", error);
         return [];

@@ -39,7 +39,14 @@ export const processEpisode = onObjectFinalized({
         analyzeVideo(bucket, filePath, episodeId)
     ]);
 
-    // 2. RSS Regeneration (Must happen after metadata is in DB)
+    // 2. Mark as Ready
+    console.log(`Marking episode ${episodeId} as ready...`);
+    await admin.firestore().collection("episodes").doc(episodeId).update({
+        status: "ready",
+        processedAt: new Date().toISOString()
+    });
+
+    // 3. RSS Regeneration (Must happen after metadata is in DB)
     // Note: In a real app, you might trigger this separately or wait for AI
     // For now, we run it here, but ideally AI analysis updates DB which triggers another function
     // or we wait for AI to finish (which we do above with Promise.all)

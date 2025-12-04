@@ -119,7 +119,7 @@ export default function DashboardPage() {
         page: {
             backgroundColor: '#09090b', // zinc-950
             minHeight: '100vh',
-            paddingTop: '160px',
+            paddingTop: '220px',
             paddingBottom: '8rem',
             display: 'flex',
             flexDirection: 'column' as const,

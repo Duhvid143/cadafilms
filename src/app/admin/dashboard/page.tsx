@@ -284,10 +284,10 @@ export default function DashboardPage() {
                                                 <div className="flex items-start gap-6">
                                                     {/* Status Badge */}
                                                     <div className={`mt-1 px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
-                                                            ? "bg-emerald-400/10 border-emerald-400/20 text-emerald-400"
-                                                            : isProcessing
-                                                                ? "bg-amber-400/10 border-amber-400/20 text-amber-400"
-                                                                : "bg-red-400/10 border-red-400/20 text-red-400"
+                                                        ? "bg-emerald-400/15 border-emerald-400/20 text-emerald-400"
+                                                        : isProcessing
+                                                            ? "bg-amber-400/15 border-amber-400/20 text-amber-400"
+                                                            : "bg-red-400/15 border-red-400/20 text-red-400"
                                                         }`}>
                                                         {isProcessing && (
                                                             <span className="relative flex h-2 w-2">
@@ -326,7 +326,7 @@ export default function DashboardPage() {
                                         {/* Expanded Content */}
                                         {isExpanded && (
                                             <div className="border-t border-zinc-800/50 bg-black/20 p-8 animate-in slide-in-from-top-4 duration-500">
-                                                <div className="grid md:grid-cols-2 gap-12">
+                                                <div className="grid md:grid-cols-2 gap-8">
                                                     {/* Left Column */}
                                                     <div className="space-y-10">
                                                         <div>

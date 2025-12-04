@@ -123,55 +123,53 @@ const Navbar = () => {
         <>
             <nav
                 ref={navRef}
-                className={`fixed top-0 left-0 w-full z-50 transition-transform duration-500 ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl transition-transform duration-500 ${isHidden ? '-translate-y-[150%]' : 'translate-y-0'}`}
                 role="navigation"
             >
-                <div className="mx-auto max-w-7xl px-6 py-4">
-                    <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/70 backdrop-blur-xl px-6 py-3 shadow-lg">
-                        {/* 5. Responsive Logo */}
-                        <Link href="/" onClick={handleHomeClick} className="pl-2 sm:pl-4">
-                            <img
-                                ref={logoRef}
-                                src="/assets/logo-text-white.png"
-                                alt="CADA"
-                                className="h-6 sm:h-8 w-auto object-contain"
-                            />
-                        </Link>
+                <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/70 backdrop-blur-xl px-6 py-3 shadow-2xl">
+                    {/* 5. Responsive Logo */}
+                    <Link href="/" onClick={handleHomeClick} className="flex items-center">
+                        <img
+                            ref={logoRef}
+                            src="/assets/logo-text-white.png"
+                            alt="CADA"
+                            className="h-6 sm:h-8 w-auto object-contain"
+                        />
+                    </Link>
 
-                        {/* Desktop Links */}
-                        <div className="hidden md:flex items-center gap-8 relative">
-                            {navLinks.map((link, i) => (
-                                <Link
-                                    key={link.name}
-                                    href={link.path}
-                                    ref={el => { linksRef.current[i] = el }}
-                                    className={`text-sm font-medium tracking-widest text-zinc-400 transition-colors duration-400 hover:text-white relative group`}
-                                    onMouseEnter={() => handleLinkHover(i, true)}
-                                    onMouseLeave={() => handleLinkHover(i, false)}
-                                    aria-current={pathname === link.path ? 'page' : undefined}
-                                    onClick={link.name === 'HOME' ? handleHomeClick : undefined}
-                                >
-                                    {link.name}
-                                    {/* 2. Glow Effect */}
-                                    <span className="absolute inset-0 -z-10 scale-0 rounded-full bg-white/20 blur-md transition-transform duration-300 group-hover:scale-150" />
-                                </Link>
-                            ))}
-                            {/* 1. Active Line */}
-                            <div
-                                ref={activeLineRef}
-                                className="absolute bottom-[-4px] h-[1px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"
-                            />
-                        </div>
-
-                        {/* 3. Mobile Hamburger */}
-                        <button
-                            className="md:hidden text-white p-2"
-                            onClick={() => setIsMobileMenuOpen(true)}
-                            aria-label="Open menu"
-                        >
-                            <Menu size={24} />
-                        </button>
+                    {/* Desktop Links */}
+                    <div className="hidden md:flex items-center gap-8 relative">
+                        {navLinks.map((link, i) => (
+                            <Link
+                                key={link.name}
+                                href={link.path}
+                                ref={el => { linksRef.current[i] = el }}
+                                className={`text-xs sm:text-sm font-medium tracking-widest text-zinc-400 transition-colors duration-400 hover:text-white relative group py-2`}
+                                onMouseEnter={() => handleLinkHover(i, true)}
+                                onMouseLeave={() => handleLinkHover(i, false)}
+                                aria-current={pathname === link.path ? 'page' : undefined}
+                                onClick={link.name === 'HOME' ? handleHomeClick : undefined}
+                            >
+                                {link.name}
+                                {/* 2. Glow Effect */}
+                                <span className="absolute inset-0 -z-10 scale-0 rounded-full bg-white/20 blur-md transition-transform duration-300 group-hover:scale-150" />
+                            </Link>
+                        ))}
+                        {/* 1. Active Line */}
+                        <div
+                            ref={activeLineRef}
+                            className="absolute bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"
+                        />
                     </div>
+
+                    {/* 3. Mobile Hamburger */}
+                    <button
+                        className="md:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        aria-label="Open menu"
+                    >
+                        <Menu size={20} />
+                    </button>
                 </div>
             </nav>
 

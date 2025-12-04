@@ -92,7 +92,7 @@ export default function UploadPage() {
         page: {
             backgroundColor: '#050505',
             minHeight: '100vh',
-            paddingTop: '150px',
+            paddingTop: '200px', // Increased from 150px to clear navbar
             paddingBottom: '8rem',
             display: 'flex',
             flexDirection: 'column' as const,
@@ -174,14 +174,16 @@ export default function UploadPage() {
                         <h1 style={styles.title}>Upload</h1>
                         <p style={styles.subtitle}>Drag and drop your video file to begin processing.</p>
                     </div>
+                    {/* Settings Button - Commented out for now
                     <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="p-3 rounded-full text-gray-400 hover:text-white transition-all"
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                        className="p-3 rounded-full text-white transition-all hover:bg-white/10"
+                        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}
                         title="Account Settings"
                     >
                         <Settings size={24} />
                     </button>
+                    */}
                 </div>
 
                 <div style={styles.formContainer}>
@@ -297,6 +299,7 @@ export default function UploadPage() {
                     )}
                 </div>
 
+                {/* MFA and Settings - Commented out for now
                 <MFAEnrollment />
 
                 <AdminSettings
@@ -304,6 +307,7 @@ export default function UploadPage() {
                     onClose={() => setIsSettingsOpen(false)}
                     user={user}
                 />
+                */}
             </div>
         </div>
     );

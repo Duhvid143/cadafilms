@@ -194,6 +194,28 @@ export default function DashboardPage() {
             cursor: 'pointer',
             transition: 'transform 0.2s ease',
             zIndex: 50
+        },
+        copyButton: {
+            backgroundColor: '#3f3f46', // zinc-700
+            color: '#ffffff',
+            border: '1px solid #71717a', // zinc-500
+            borderRadius: '9999px',
+            padding: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '0.75rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+        },
+        headerStack: {
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'flex-start',
+            gap: '16px'
         }
     };
 
@@ -263,13 +285,17 @@ export default function DashboardPage() {
                                         <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full text-xs font-bold backdrop-blur-md transition-colors border border-zinc-500 shadow-lg"
+                                                style={styles.copyButton}
+                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#52525b'} // zinc-600
+                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3f3f46'} // zinc-700
                                             >
                                                 <Youtube className="w-3 h-3" /> Copy YouTube
                                             </button>
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); copyXPost(episode); }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full text-xs font-bold backdrop-blur-md transition-colors border border-zinc-500 shadow-lg"
+                                                style={styles.copyButton}
+                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#52525b'}
+                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3f3f46'}
                                             >
                                                 <Twitter className="w-3 h-3" /> Copy X
                                             </button>
@@ -281,7 +307,7 @@ export default function DashboardPage() {
                                             onClick={() => toggleExpand(episode.id)}
                                         >
                                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                                                <div className="flex flex-col items-start gap-4">
+                                                <div style={styles.headerStack}>
                                                     {/* Status Badge */}
                                                     <div className={`px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
                                                         ? "bg-emerald-400/[0.15] border-emerald-400/20 text-emerald-400"

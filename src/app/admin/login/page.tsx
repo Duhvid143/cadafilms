@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, getMultiFactorResolver, PhoneAuthProvider, 
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import Button from "@/components/Button";
+// import Button from "@/components/Button"; // Using inline styled button instead
 
 // Add types for window
 declare global {
@@ -95,99 +95,225 @@ export default function LoginPage() {
         }
     };
 
+    // Styles matching Upload Page
+    const styles = {
+        page: {
+            backgroundColor: '#050505',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            padding: '2rem'
+        },
+        container: {
+            width: '100%',
+            maxWidth: '480px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            padding: '3rem',
+            borderRadius: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(10px)',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center'
+        },
+        title: {
+            fontSize: '2rem',
+            fontWeight: 300,
+            textTransform: 'uppercase' as const,
+            letterSpacing: '0.2rem',
+            marginBottom: '0.5rem',
+            color: '#ffffff',
+            textAlign: 'center' as const
+        },
+        subtitle: {
+            color: '#888888',
+            fontSize: '0.9rem',
+            fontWeight: 300,
+            marginBottom: '2.5rem',
+            textAlign: 'center' as const
+        },
+        label: {
+            display: 'block',
+            marginBottom: '0.8rem',
+            fontSize: '0.8rem',
+            color: '#888888',
+            textTransform: 'uppercase' as const,
+            letterSpacing: '2px'
+        },
+        input: {
+            width: '100%',
+            padding: '1rem 1.5rem',
+            background: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '20px',
+            color: '#ffffff',
+            fontSize: '1rem',
+            outline: 'none',
+            transition: 'all 0.3s ease',
+            marginBottom: '1.5rem'
+        },
+        button: {
+            width: '100%',
+            padding: '1.25rem',
+            borderRadius: '50px',
+            background: '#ffffff',
+            color: '#000000',
+            fontSize: '1rem',
+            fontWeight: 600,
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            textTransform: 'uppercase' as const,
+            letterSpacing: '1px',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 0 20px rgba(255,255,255,0.1)',
+            marginTop: '1rem'
+        },
+        secondaryButton: {
+            background: 'transparent',
+            border: 'none',
+            color: '#888888',
+            fontSize: '0.9rem',
+            cursor: 'pointer',
+            marginTop: '1.5rem',
+            textDecoration: 'underline',
+            transition: 'color 0.2s ease'
+        }
+    };
+
     return (
-        <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
-            {/* Background Gradients */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl -translate-y-1/2 pointer-events-none"></div>
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl translate-y-1/2 pointer-events-none"></div>
+        <div style={styles.page}>
+            <div style={styles.container}>
+                <h1 style={styles.title}>
+                    {mfaRequired ? "Two-Factor Auth" : "Admin Access"}
+                </h1>
+                <p style={styles.subtitle}>
+                    {mfaRequired ? "Enter the code sent to your phone" : "Authorized personnel only"}
+                </p>
 
-            <div className="w-full max-w-md relative z-10">
-                <div className="bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-white mb-2">
-                            {mfaRequired ? "Two-Factor Auth" : "Admin Access"}
-                        </h1>
-                        <p className="text-gray-400 text-sm">
-                            {mfaRequired ? "Enter the code sent to your phone" : "Authorized personnel only"}
-                        </p>
-                    </div>
+                {!mfaRequired ? (
+                    <form onSubmit={handleLogin} style={{ width: '100%' }}>
+                        <div>
+                            <label style={styles.label}>
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                style={styles.input}
+                                placeholder="admin@cadafilms.com"
+                                required
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#ffffff';
+                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                }}
+                            />
+                        </div>
 
-                    {!mfaRequired ? (
-                        <form onSubmit={handleLogin} className="space-y-6">
-                            <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
-                                    placeholder="admin@cadafilms.com"
-                                    required
-                                />
-                            </div>
+                        <div>
+                            <label style={styles.label}>
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                style={styles.input}
+                                placeholder="••••••••"
+                                required
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#ffffff';
+                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                }}
+                            />
+                        </div>
 
-                            <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
-                                    placeholder="••••••••"
-                                    required
-                                />
-                            </div>
+                        <div ref={recaptchaContainerRef}></div>
 
-                            <div ref={recaptchaContainerRef}></div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={styles.button}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.02)';
+                                e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.2)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.1)';
+                            }}
+                        >
+                            {loading ? "Verifying..." : "Enter Dashboard"}
+                        </button>
+                    </form>
+                ) : (
+                    <form onSubmit={handleMfaVerify} style={{ width: '100%' }}>
+                        <div>
+                            <label style={styles.label}>
+                                Verification Code
+                            </label>
+                            <input
+                                type="text"
+                                value={verificationCode}
+                                onChange={(e) => setVerificationCode(e.target.value)}
+                                style={{ ...styles.input, textAlign: 'center', fontSize: '1.5rem', letterSpacing: '0.5rem' }}
+                                placeholder="123456"
+                                maxLength={6}
+                                required
+                                autoFocus
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#ffffff';
+                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                }}
+                            />
+                        </div>
 
-                            <Button
-                                type="submit"
-                                className="w-full justify-center py-4 text-lg"
-                                disabled={loading}
-                            >
-                                {loading ? "Verifying..." : "Enter Dashboard"}
-                            </Button>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleMfaVerify} className="space-y-6">
-                            <div>
-                                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 text-left">
-                                    Verification Code
-                                </label>
-                                <input
-                                    type="text"
-                                    value={verificationCode}
-                                    onChange={(e) => setVerificationCode(e.target.value)}
-                                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white outline-none transition-all placeholder-gray-600 text-center text-2xl tracking-widest"
-                                    placeholder="123456"
-                                    maxLength={6}
-                                    required
-                                    autoFocus
-                                />
-                            </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={styles.button}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.02)';
+                                e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.2)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.1)';
+                            }}
+                        >
+                            {loading ? "Verifying..." : "Verify Login"}
+                        </button>
 
-                            <Button
-                                type="submit"
-                                className="w-full justify-center py-4 text-lg"
-                                disabled={loading}
-                            >
-                                {loading ? "Verifying..." : "Verify Login"}
-                            </Button>
-
-                            <button
-                                type="button"
-                                onClick={() => setMfaRequired(false)}
-                                className="w-full text-sm text-gray-500 hover:text-white transition-colors"
-                            >
-                                Back to Login
-                            </button>
-                        </form>
-                    )}
-                </div>
+                        <button
+                            type="button"
+                            onClick={() => setMfaRequired(false)}
+                            style={styles.secondaryButton}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#888888'}
+                        >
+                            Back to Login
+                        </button>
+                    </form>
+                )}
             </div>
         </div>
     );

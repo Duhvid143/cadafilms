@@ -12,6 +12,17 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "CADA Productions",
     description: "Headless Podcast CMS",
+    icons: {
+        icon: [
+            { url: '/favicon.ico' }, // Fallback
+            { url: '/favicon-light-mode.png', media: '(prefers-color-scheme: light)' },
+            { url: '/favicon-dark-mode.png', media: '(prefers-color-scheme: dark)' },
+        ],
+        apple: [
+            { url: '/favicon-light-mode.png', media: '(prefers-color-scheme: light)' },
+            { url: '/favicon-dark-mode.png', media: '(prefers-color-scheme: dark)' },
+        ]
+    }
 };
 
 export default function RootLayout({

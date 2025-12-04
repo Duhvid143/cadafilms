@@ -7,9 +7,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
-import { Settings } from "lucide-react";
-import MFAEnrollment from "@/components/MFAEnrollment";
-import AdminSettings from "@/components/AdminSettings";
+import { Settings, Upload, FileVideo, X } from "lucide-react";
+import Button from "@/components/Button"; // Assuming we have this, or use standard button
+// import MFAEnrollment from "@/components/MFAEnrollment";
+// import AdminSettings from "@/components/AdminSettings";
 
 export default function UploadPage() {
     const [uploading, setUploading] = useState(false);
@@ -20,6 +21,8 @@ export default function UploadPage() {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -35,16 +38,33 @@ export default function UploadPage() {
         return () => unsubscribe();
     }, [router]);
 
-    const handleUpload = async (file: File) => {
+    const handleFileSelect = (file: File) => {
+        setSelectedFile(file);
+        // Auto-populate title from filename if empty
+        if (!title) {
+            const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+            setTitle(nameWithoutExt);
+        }
+        toast.success("File selected! Please enter details.");
+    };
+
+    const clearFile = () => {
+        setSelectedFile(null);
+        setProgress(0);
+        setUploadSuccess(false);
+    };
+
+    const startUpload = async () => {
+        if (!selectedFile) return;
         if (!episodeNumber || !title) {
-            toast.error("Please enter Episode Number and Title first");
+            toast.error("Please enter Episode Number and Title");
             return;
         }
 
         setUploading(true);
         const storageRef = ref(storage, `episodes/${episodeNumber}.mp4`);
 
-        const uploadTask = uploadBytesResumable(storageRef, file);
+        const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
         uploadTask.on('state_changed',
             (snapshot) => {
@@ -64,7 +84,7 @@ export default function UploadPage() {
                 await setDoc(doc(db, "episodes", episodeNumber), {
                     title: title,
                     videoUrl: downloadURL,
-                    sizeBytes: file.size,
+                    sizeBytes: selectedFile.size,
                     uploadedAt: new Date().toISOString(),
                     status: "processing" // Function will update this to "ready"
                 });
@@ -80,6 +100,7 @@ export default function UploadPage() {
                     setProgress(0);
                     setEpisodeNumber("");
                     setTitle("");
+                    setSelectedFile(null);
                 }, 3000);
             }
         );
@@ -92,7 +113,7 @@ export default function UploadPage() {
         page: {
             backgroundColor: '#050505',
             minHeight: '100vh',
-            paddingTop: '200px', // Increased from 150px to clear navbar
+            paddingTop: '200px',
             paddingBottom: '8rem',
             display: 'flex',
             flexDirection: 'column' as const,
@@ -140,11 +161,12 @@ export default function UploadPage() {
         },
         label: {
             display: 'block',
-            marginBottom: '0.8rem',
+            marginBottom: '1rem', // Increased to fix cutoff
             fontSize: '0.9rem',
             color: '#888888',
             textTransform: 'uppercase' as const,
-            letterSpacing: '2px'
+            letterSpacing: '2px',
+            lineHeight: '1.5' // Added line height for safety
         },
         input: {
             width: '100%',
@@ -163,6 +185,16 @@ export default function UploadPage() {
             borderRadius: '20px',
             background: 'rgba(0, 0, 0, 0.3)',
             border: '1px solid rgba(255, 255, 255, 0.08)'
+        },
+        fileCard: {
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '20px',
+            padding: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            marginBottom: '2rem'
         }
     };
 
@@ -172,142 +204,170 @@ export default function UploadPage() {
                 <div style={styles.header}>
                     <div>
                         <h1 style={styles.title}>Upload</h1>
-                        <p style={styles.subtitle}>Drag and drop your video file to begin processing.</p>
+                        <p style={styles.subtitle}>
+                            {!selectedFile
+                                ? "Drag and drop your video file to begin."
+                                : "Enter details below to publish your episode."}
+                        </p>
                     </div>
-                    {/* Settings Button - Commented out for now
-                    <button
-                        onClick={() => setIsSettingsOpen(true)}
-                        className="p-3 rounded-full text-white transition-all hover:bg-white/10"
-                        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}
-                        title="Account Settings"
-                    >
-                        <Settings size={24} />
-                    </button>
-                    */}
                 </div>
 
                 <div style={styles.formContainer}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                        <div>
-                            <label style={styles.label}>
-                                Episode ID
-                            </label>
-                            <input
-                                type="text"
-                                value={episodeNumber}
-                                onChange={(e) => setEpisodeNumber(e.target.value)}
-                                placeholder="e.g. 104"
-                                style={styles.input}
-                                disabled={uploading}
-                                onFocus={(e) => {
-                                    e.target.style.borderColor = '#ffffff';
-                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                                }}
-                                onBlur={(e) => {
-                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
-                                }}
-                            />
-                        </div>
 
-                        <div>
-                            <label style={styles.label}>
-                                Episode Title
-                            </label>
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="e.g. The Future of AI"
-                                style={styles.input}
-                                disabled={uploading}
-                                onFocus={(e) => {
-                                    e.target.style.borderColor = '#ffffff';
-                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-                                }}
-                                onBlur={(e) => {
-                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
-                                }}
-                            />
-                        </div>
-                    </div>
+                    {/* Step 1: File Selection */}
+                    {!selectedFile && !uploading && (
+                        <Dropzone onFileSelect={handleFileSelect} disabled={uploading} />
+                    )}
 
-                    <Dropzone onFileSelect={handleUpload} disabled={uploading} />
+                    {/* Step 2: Metadata & Upload */}
+                    {(selectedFile || uploading) && (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
 
-                    {uploading && (
-                        <div style={styles.uploadCard}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
+                            {/* Selected File Display */}
+                            {!uploading && (
+                                <div style={styles.fileCard}>
+                                    <div className="p-3 bg-blue-500/20 rounded-full text-blue-400">
+                                        <FileVideo size={24} />
+                                    </div>
+                                    <div className="flex-1 overflow-hidden">
+                                        <p className="text-white font-medium truncate">{selectedFile?.name}</p>
+                                        <p className="text-sm text-gray-500">{(selectedFile!.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                    </div>
+                                    <button
+                                        onClick={clearFile}
+                                        className="p-2 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors"
+                                    >
+                                        <X size={20} />
+                                    </button>
+                                </div>
+                            )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                                 <div>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'white', marginBottom: '0.5rem' }}>
-                                        {uploadSuccess ? "Upload Complete!" : "Uploading Episode"}
-                                    </h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#888888' }}>
-                                        {uploadSuccess ? "AI processing started..." : "Securely transferring to CADA Cloud..."}
-                                    </p>
+                                    <label style={styles.label}>
+                                        Episode ID
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={episodeNumber}
+                                        onChange={(e) => setEpisodeNumber(e.target.value)}
+                                        placeholder="e.g. 104"
+                                        style={styles.input}
+                                        disabled={uploading}
+                                        onFocus={(e) => {
+                                            e.target.style.borderColor = '#ffffff';
+                                            e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                        }}
+                                        onBlur={(e) => {
+                                            e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                            e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                        }}
+                                    />
                                 </div>
-                                <span style={{ fontSize: '2.25rem', fontWeight: 700, color: 'white' }}>
-                                    {Math.round(progress)}%
-                                </span>
-                            </div>
 
-                            {/* Progress Bar Container */}
-                            <div style={{
-                                width: '100%',
-                                height: '24px',
-                                backgroundColor: 'rgba(255,255,255,0.05)',
-                                borderRadius: '9999px',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                border: '1px solid rgba(255,255,255,0.1)'
-                            }}>
-                                {/* Animated Fill */}
-                                <div style={{
-                                    height: '100%',
-                                    borderRadius: '9999px',
-                                    transition: 'width 300ms ease-out',
-                                    width: `${Math.max(progress, 5)}%`,
-                                    background: uploadSuccess
-                                        ? 'linear-gradient(to right, #22c55e, #4ade80)'
-                                        : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)',
-                                    position: 'relative',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-end'
-                                }}>
-                                    {/* Shimmer Overlay */}
-                                    <div className="animate-shimmer" style={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        background: 'linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%)',
-                                        backgroundSize: '250% 250%'
-                                    }}></div>
+                                <div>
+                                    <label style={styles.label}>
+                                        Episode Title
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        placeholder="e.g. The Future of AI"
+                                        style={styles.input}
+                                        disabled={uploading}
+                                        onFocus={(e) => {
+                                            e.target.style.borderColor = '#ffffff';
+                                            e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                        }}
+                                        onBlur={(e) => {
+                                            e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                            e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                        }}
+                                    />
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '0.875rem', color: '#888888', fontWeight: 500 }}>
-                                <div style={{
-                                    width: '8px',
-                                    height: '8px',
-                                    borderRadius: '50%',
-                                    backgroundColor: uploadSuccess ? '#22c55e' : '#3b82f6',
-                                    boxShadow: uploadSuccess ? '0 0 10px rgba(34,197,94,0.5)' : 'none'
-                                }}></div>
-                                {uploadSuccess ? "Success! You can close this window." : "Do not close this window"}
-                            </div>
+                            {!uploading && (
+                                <button
+                                    onClick={startUpload}
+                                    className="w-full py-4 rounded-xl font-medium text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3"
+                                    style={{
+                                        background: 'white',
+                                        color: 'black',
+                                        boxShadow: '0 0 20px rgba(255,255,255,0.1)'
+                                    }}
+                                >
+                                    <Upload size={20} />
+                                    Start Upload
+                                </button>
+                            )}
+
+                            {uploading && (
+                                <div style={styles.uploadCard}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
+                                        <div>
+                                            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'white', marginBottom: '0.5rem' }}>
+                                                {uploadSuccess ? "Upload Complete!" : "Uploading Episode"}
+                                            </h3>
+                                            <p style={{ fontSize: '0.875rem', color: '#888888' }}>
+                                                {uploadSuccess ? "AI processing started..." : "Securely transferring to CADA Cloud..."}
+                                            </p>
+                                        </div>
+                                        <span style={{ fontSize: '2.25rem', fontWeight: 700, color: 'white' }}>
+                                            {Math.round(progress)}%
+                                        </span>
+                                    </div>
+
+                                    {/* Progress Bar Container */}
+                                    <div style={{
+                                        width: '100%',
+                                        height: '24px',
+                                        backgroundColor: 'rgba(255,255,255,0.05)',
+                                        borderRadius: '9999px',
+                                        overflow: 'hidden',
+                                        position: 'relative',
+                                        border: '1px solid rgba(255,255,255,0.1)'
+                                    }}>
+                                        {/* Animated Fill */}
+                                        <div style={{
+                                            height: '100%',
+                                            borderRadius: '9999px',
+                                            transition: 'width 300ms ease-out',
+                                            width: `${Math.max(progress, 5)}%`,
+                                            background: uploadSuccess
+                                                ? 'linear-gradient(to right, #22c55e, #4ade80)'
+                                                : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)',
+                                            position: 'relative',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'flex-end'
+                                        }}>
+                                            {/* Shimmer Overlay */}
+                                            <div className="animate-shimmer" style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                background: 'linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%)',
+                                                backgroundSize: '250% 250%'
+                                            }}></div>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '0.875rem', color: '#888888', fontWeight: 500 }}>
+                                        <div style={{
+                                            width: '8px',
+                                            height: '8px',
+                                            borderRadius: '50%',
+                                            backgroundColor: uploadSuccess ? '#22c55e' : '#3b82f6',
+                                            boxShadow: uploadSuccess ? '0 0 10px rgba(34,197,94,0.5)' : 'none'
+                                        }}></div>
+                                        {uploadSuccess ? "Success! You can close this window." : "Do not close this window"}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
-
-                {/* MFA and Settings - Commented out for now
-                <MFAEnrollment />
-
-                <AdminSettings
-                    isOpen={isSettingsOpen}
-                    onClose={() => setIsSettingsOpen(false)}
-                    user={user}
-                />
-                */}
             </div>
         </div>
     );

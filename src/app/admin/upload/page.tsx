@@ -5,9 +5,10 @@ import { doc, setDoc } from "firebase/firestore";
 import { storage, db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // Added Link import
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
-import { Settings, Upload, FileVideo, X } from "lucide-react";
+import { Settings, Upload, FileVideo, X, ArrowRight } from "lucide-react"; // Added ArrowRight
 import Button from "@/components/Button"; // Assuming we have this, or use standard button
 // import MFAEnrollment from "@/components/MFAEnrollment";
 // import AdminSettings from "@/components/AdminSettings";
@@ -204,12 +205,18 @@ export default function UploadPage() {
                 <div style={styles.header}>
                     <div>
                         <h1 style={styles.title}>Upload</h1>
-                        <p style={styles.subtitle}>
-                            {!selectedFile
-                                ? "Drag and drop your video file to begin."
-                                : "Enter details below to publish your episode."}
+                        <p className="text-white/40 font-light text-lg">
+                            Upload and manage your video content
                         </p>
                     </div>
+
+                    <Link
+                        href="/admin/dashboard"
+                        className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all group"
+                    >
+                        <span className="text-sm font-medium tracking-wide">View Dashboard</span>
+                        <ArrowRight className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" />
+                    </Link>
                 </div>
 
                 <div style={styles.formContainer}>

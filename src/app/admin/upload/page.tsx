@@ -14,6 +14,7 @@ import AdminSettings from "@/components/AdminSettings";
 
 export default function UploadPage() {
     const [uploading, setUploading] = useState(false);
+    const [uploadSuccess, setUploadSuccess] = useState(false);
     const [progress, setProgress] = useState(0);
     const [episodeNumber, setEpisodeNumber] = useState("");
     const [title, setTitle] = useState("");
@@ -70,10 +71,17 @@ export default function UploadPage() {
                 });
 
                 toast.success("Upload Complete! AI is processing...");
-                setUploading(false);
-                setProgress(0);
-                setEpisodeNumber("");
-                setTitle("");
+                setUploadSuccess(true);
+                setProgress(100);
+
+                // Reset after delay
+                setTimeout(() => {
+                    setUploading(false);
+                    setUploadSuccess(false);
+                    setProgress(0);
+                    setEpisodeNumber("");
+                    setTitle("");
+                }, 3000);
             }
         );
     };
@@ -131,11 +139,18 @@ export default function UploadPage() {
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
                     {uploading && (
-                        <div className="mt-12 p-8 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl">
+                        <div
+                            className="mt-12 p-8 rounded-2xl shadow-2xl border border-gray-800"
+                            style={{ backgroundColor: '#111827' }} // Force bg-gray-900
+                        >
                             <div className="flex justify-between items-end mb-6">
                                 <div>
-                                    <h3 className="text-xl text-white font-semibold mb-2 tracking-wide">Uploading Episode</h3>
-                                    <p className="text-sm text-gray-400">Securely transferring to CADA Cloud...</p>
+                                    <h3 className="text-xl text-white font-semibold mb-2 tracking-wide">
+                                        {uploadSuccess ? "Upload Complete!" : "Uploading Episode"}
+                                    </h3>
+                                    <p className="text-sm text-gray-400">
+                                        {uploadSuccess ? "AI processing started..." : "Securely transferring to CADA Cloud..."}
+                                    </p>
                                 </div>
                                 <span className="text-4xl font-bold text-white tabular-nums tracking-tight">
                                     {Math.round(progress)}%
@@ -143,15 +158,20 @@ export default function UploadPage() {
                             </div>
 
                             {/* Progress Bar Container */}
-                            <div className="w-full bg-gray-800 rounded-full h-6 overflow-hidden border border-gray-700 relative">
+                            <div
+                                className="w-full rounded-full h-6 overflow-hidden border border-gray-700 relative"
+                                style={{ backgroundColor: '#1f2937' }} // Force bg-gray-800
+                            >
                                 {/* Animated Fill */}
                                 <div
                                     className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden flex items-center justify-end pr-2"
-                                    style={{ width: `${Math.max(progress, 5)}%` }} // Min width 5%
+                                    style={{
+                                        width: `${Math.max(progress, 5)}%`,
+                                        background: uploadSuccess
+                                            ? 'linear-gradient(to right, #22c55e, #4ade80)' // Green for success
+                                            : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)' // Blue for upload
+                                    }}
                                 >
-                                    {/* Gradient Background */}
-                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-400 to-white"></div>
-
                                     {/* Shimmer Overlay */}
                                     <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
 
@@ -161,8 +181,8 @@ export default function UploadPage() {
                             </div>
 
                             <div className="mt-6 flex items-center justify-center gap-3 text-sm text-gray-400 font-medium">
-                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
-                                Do not close this window
+                                <div className={`w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)] ${uploadSuccess ? 'bg-green-500' : 'bg-blue-500'}`}></div>
+                                {uploadSuccess ? "Success! You can close this window." : "Do not close this window"}
                             </div>
                         </div>
                     )}

@@ -291,11 +291,33 @@ export default function UploadPage() {
                             {!uploading && (
                                 <button
                                     onClick={startUpload}
-                                    className="w-full py-4 rounded-xl font-medium text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3"
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.02)';
+                                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.2)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1)';
+                                        e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.1)';
+                                    }}
                                     style={{
-                                        background: 'white',
-                                        color: 'black',
-                                        boxShadow: '0 0 20px rgba(255,255,255,0.1)'
+                                        width: '100%',
+                                        padding: '1.25rem',
+                                        borderRadius: '50px',
+                                        background: '#ffffff',
+                                        color: '#000000',
+                                        fontSize: '1rem',
+                                        fontWeight: 600,
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.75rem',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        transition: 'all 0.3s ease',
+                                        boxShadow: '0 0 20px rgba(255,255,255,0.1)',
+                                        marginTop: '1rem'
                                     }}
                                 >
                                     <Upload size={20} />

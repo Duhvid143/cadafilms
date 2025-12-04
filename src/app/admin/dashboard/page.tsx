@@ -234,13 +234,13 @@ export default function DashboardPage() {
                 {/* Header */}
                 <div style={styles.header}>
                     <div>
-                        <Link
+                        {/* <Link
                             href="/admin/upload"
                             className="inline-flex items-center text-xs font-medium text-zinc-500 hover:text-white transition-colors mb-6 group uppercase tracking-widest"
                         >
                             <ArrowLeft className="w-3 h-3 mr-2 group-hover:-translate-x-1 transition-transform" />
                             Back to Upload
-                        </Link>
+                        </Link> */}
                         <h1 style={styles.title}>
                             Dashboard
                         </h1>

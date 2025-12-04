@@ -141,47 +141,81 @@ export default function UploadPage() {
                     {uploading && (
                         <div
                             className="mt-12 p-8 rounded-2xl shadow-2xl border border-gray-800"
-                            style={{ backgroundColor: '#111827' }} // Force bg-gray-900
+                            style={{
+                                backgroundColor: '#111827', // bg-gray-900
+                                marginTop: '3rem',
+                                padding: '2rem',
+                                borderRadius: '1rem',
+                                border: '1px solid #1f2937'
+                            }}
                         >
-                            <div className="flex justify-between items-end mb-6">
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'flex-end',
+                                    marginBottom: '1.5rem'
+                                }}
+                            >
                                 <div>
-                                    <h3 className="text-xl text-white font-semibold mb-2 tracking-wide">
+                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'white', marginBottom: '0.5rem' }}>
                                         {uploadSuccess ? "Upload Complete!" : "Uploading Episode"}
                                     </h3>
-                                    <p className="text-sm text-gray-400">
+                                    <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
                                         {uploadSuccess ? "AI processing started..." : "Securely transferring to CADA Cloud..."}
                                     </p>
                                 </div>
-                                <span className="text-4xl font-bold text-white tabular-nums tracking-tight">
+                                <span style={{ fontSize: '2.25rem', fontWeight: 700, color: 'white' }}>
                                     {Math.round(progress)}%
                                 </span>
                             </div>
 
                             {/* Progress Bar Container */}
                             <div
-                                className="w-full rounded-full h-6 overflow-hidden border border-gray-700 relative"
-                                style={{ backgroundColor: '#1f2937' }} // Force bg-gray-800
+                                style={{
+                                    width: '100%',
+                                    height: '24px',
+                                    backgroundColor: '#374151', // bg-gray-700
+                                    borderRadius: '9999px',
+                                    overflow: 'hidden',
+                                    position: 'relative',
+                                    border: '1px solid #4b5563'
+                                }}
                             >
                                 {/* Animated Fill */}
                                 <div
-                                    className="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden flex items-center justify-end pr-2"
                                     style={{
+                                        height: '100%',
+                                        borderRadius: '9999px',
+                                        transition: 'width 300ms ease-out',
                                         width: `${Math.max(progress, 5)}%`,
                                         background: uploadSuccess
-                                            ? 'linear-gradient(to right, #22c55e, #4ade80)' // Green for success
-                                            : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)' // Blue for upload
+                                            ? 'linear-gradient(to right, #22c55e, #4ade80)'
+                                            : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)',
+                                        position: 'relative',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-end'
                                     }}
                                 >
                                     {/* Shimmer Overlay */}
-                                    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-
-                                    {/* Glowing Leading Edge */}
-                                    <div className="absolute right-0 top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(255,255,255,1)]"></div>
+                                    <div className="animate-shimmer" style={{
+                                        position: 'absolute',
+                                        inset: 0,
+                                        background: 'linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%)',
+                                        backgroundSize: '250% 250%'
+                                    }}></div>
                                 </div>
                             </div>
 
-                            <div className="mt-6 flex items-center justify-center gap-3 text-sm text-gray-400 font-medium">
-                                <div className={`w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)] ${uploadSuccess ? 'bg-green-500' : 'bg-blue-500'}`}></div>
+                            <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '0.875rem', color: '#9ca3af', fontWeight: 500 }}>
+                                <div style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '50%',
+                                    backgroundColor: uploadSuccess ? '#22c55e' : '#3b82f6',
+                                    boxShadow: uploadSuccess ? '0 0 10px rgba(34,197,94,0.5)' : 'none'
+                                }}></div>
                                 {uploadSuccess ? "Success! You can close this window." : "Do not close this window"}
                             </div>
                         </div>

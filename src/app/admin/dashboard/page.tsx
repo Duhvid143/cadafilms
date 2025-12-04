@@ -352,9 +352,9 @@ export default function DashboardPage() {
                                                         <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-3">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
-                                                        <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">
-                                                            <span className="font-mono">#{episode.id}</span>
-                                                            <span className="w-1 h-1 rounded-full bg-zinc-700" />
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.875rem', color: '#71717a', fontWeight: 500 }}>
+                                                            <span className="font-mono text-zinc-400">#{episode.id}</span>
+                                                            <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} />
                                                             <span>{new Date(episode.uploadedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                                                         </div>
                                                     </div>

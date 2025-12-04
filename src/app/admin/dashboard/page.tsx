@@ -216,6 +216,15 @@ export default function DashboardPage() {
             flexDirection: 'column' as const,
             alignItems: 'flex-start',
             gap: '16px'
+        },
+        actionButtonsContainer: {
+            position: 'absolute' as const,
+            top: '24px',
+            right: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            zIndex: 20
         }
     };
 
@@ -282,7 +291,10 @@ export default function DashboardPage() {
                                         }}
                                     >
                                         {/* Hover Action Bar */}
-                                        <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
+                                        <div
+                                            style={styles.actionButtonsContainer}
+                                            className="opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"
+                                        >
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
                                                 style={styles.copyButton}

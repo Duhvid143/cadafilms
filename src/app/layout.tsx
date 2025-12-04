@@ -14,12 +14,12 @@ export const metadata: Metadata = {
     description: "Headless Podcast CMS",
     icons: {
         icon: [
-            { url: '/favicon-light-mode.png', media: '(prefers-color-scheme: light)', type: 'image/png' },
-            { url: '/favicon-dark-mode.png', media: '(prefers-color-scheme: dark)', type: 'image/png' },
+            { url: '/assets/logo-oval-black.png', media: '(prefers-color-scheme: light)', type: 'image/png' },
+            { url: '/assets/logo-oval-white.png', media: '(prefers-color-scheme: dark)', type: 'image/png' },
         ],
         apple: [
-            { url: '/favicon-light-mode.png', media: '(prefers-color-scheme: light)', type: 'image/png' },
-            { url: '/favicon-dark-mode.png', media: '(prefers-color-scheme: dark)', type: 'image/png' },
+            { url: '/assets/logo-oval-black.png', media: '(prefers-color-scheme: light)', type: 'image/png' },
+            { url: '/assets/logo-oval-white.png', media: '(prefers-color-scheme: dark)', type: 'image/png' },
         ]
     }
 };

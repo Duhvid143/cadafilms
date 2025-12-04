@@ -7,8 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
-import Button from "@/components/Button";
-import { Upload, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import MFAEnrollment from "@/components/MFAEnrollment";
 import AdminSettings from "@/components/AdminSettings";
 
@@ -88,41 +87,129 @@ export default function UploadPage() {
 
     if (loading) return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
+    // Styles matching Contact.css
+    const styles = {
+        page: {
+            backgroundColor: '#050505',
+            minHeight: '100vh',
+            paddingTop: '150px',
+            paddingBottom: '8rem',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center',
+            width: '100%'
+        },
+        container: {
+            maxWidth: '1200px',
+            width: '100%',
+            padding: '0 2rem',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center'
+        },
+        header: {
+            width: '100%',
+            maxWidth: '800px',
+            marginBottom: '4rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end'
+        },
+        title: {
+            fontSize: '4rem',
+            fontWeight: 300,
+            textTransform: 'uppercase' as const,
+            letterSpacing: '0.5rem',
+            marginBottom: '1rem',
+            color: '#ffffff'
+        },
+        subtitle: {
+            color: '#888888',
+            fontSize: '1.1rem',
+            fontWeight: 300,
+            lineHeight: 1.8
+        },
+        formContainer: {
+            width: '100%',
+            maxWidth: '800px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            padding: '4rem',
+            borderRadius: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(10px)'
+        },
+        label: {
+            display: 'block',
+            marginBottom: '0.8rem',
+            fontSize: '0.9rem',
+            color: '#888888',
+            textTransform: 'uppercase' as const,
+            letterSpacing: '2px'
+        },
+        input: {
+            width: '100%',
+            padding: '1rem 1.5rem',
+            background: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '20px',
+            color: '#ffffff',
+            fontSize: '1rem',
+            outline: 'none',
+            transition: 'all 0.3s ease'
+        },
+        uploadCard: {
+            marginTop: '3rem',
+            padding: '2rem',
+            borderRadius: '20px',
+            background: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(255, 255, 255, 0.08)'
+        }
+    };
+
     return (
-        <div className="min-h-screen w-full bg-black flex flex-col items-center px-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', width: '100%', paddingTop: '250px' }}>
-            <div className="w-full max-w-3xl">
-                <div className="mb-10 flex items-end justify-between">
+        <div style={styles.page}>
+            <div style={styles.container}>
+                <div style={styles.header}>
                     <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">Upload Episode</h1>
-                        <p className="text-gray-400">Drag and drop your video file to begin processing.</p>
+                        <h1 style={styles.title}>Upload</h1>
+                        <p style={styles.subtitle}>Drag and drop your video file to begin processing.</p>
                     </div>
                     <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="p-3 bg-gray-900 rounded-full text-gray-400 hover:text-white hover:bg-gray-800 transition-all border border-gray-800"
+                        className="p-3 rounded-full text-gray-400 hover:text-white transition-all"
+                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
                         title="Account Settings"
                     >
                         <Settings size={24} />
                     </button>
                 </div>
 
-                <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 backdrop-blur-sm">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div style={styles.formContainer}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Episode Number (ID)
+                            <label style={styles.label}>
+                                Episode ID
                             </label>
                             <input
                                 type="text"
                                 value={episodeNumber}
                                 onChange={(e) => setEpisodeNumber(e.target.value)}
                                 placeholder="e.g. 104"
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
+                                style={styles.input}
                                 disabled={uploading}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#ffffff';
+                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                }}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                            <label style={styles.label}>
                                 Episode Title
                             </label>
                             <input
@@ -130,8 +217,16 @@ export default function UploadPage() {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder="e.g. The Future of AI"
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-white/20 focus:border-white/50 outline-none transition-all placeholder-gray-500 backdrop-blur-sm"
+                                style={styles.input}
                                 disabled={uploading}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = '#ffffff';
+                                    e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    e.target.style.background = 'rgba(0, 0, 0, 0.3)';
+                                }}
                             />
                         </div>
                     </div>
@@ -139,29 +234,13 @@ export default function UploadPage() {
                     <Dropzone onFileSelect={handleUpload} disabled={uploading} />
 
                     {uploading && (
-                        <div
-                            className="mt-12 p-8 rounded-2xl shadow-2xl border border-gray-800"
-                            style={{
-                                backgroundColor: '#111827', // bg-gray-900
-                                marginTop: '3rem',
-                                padding: '2rem',
-                                borderRadius: '1rem',
-                                border: '1px solid #1f2937'
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'flex-end',
-                                    marginBottom: '1.5rem'
-                                }}
-                            >
+                        <div style={styles.uploadCard}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
                                 <div>
                                     <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'white', marginBottom: '0.5rem' }}>
                                         {uploadSuccess ? "Upload Complete!" : "Uploading Episode"}
                                     </h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
+                                    <p style={{ fontSize: '0.875rem', color: '#888888' }}>
                                         {uploadSuccess ? "AI processing started..." : "Securely transferring to CADA Cloud..."}
                                     </p>
                                 </div>
@@ -171,33 +250,29 @@ export default function UploadPage() {
                             </div>
 
                             {/* Progress Bar Container */}
-                            <div
-                                style={{
-                                    width: '100%',
-                                    height: '24px',
-                                    backgroundColor: '#374151', // bg-gray-700
-                                    borderRadius: '9999px',
-                                    overflow: 'hidden',
-                                    position: 'relative',
-                                    border: '1px solid #4b5563'
-                                }}
-                            >
+                            <div style={{
+                                width: '100%',
+                                height: '24px',
+                                backgroundColor: 'rgba(255,255,255,0.05)',
+                                borderRadius: '9999px',
+                                overflow: 'hidden',
+                                position: 'relative',
+                                border: '1px solid rgba(255,255,255,0.1)'
+                            }}>
                                 {/* Animated Fill */}
-                                <div
-                                    style={{
-                                        height: '100%',
-                                        borderRadius: '9999px',
-                                        transition: 'width 300ms ease-out',
-                                        width: `${Math.max(progress, 5)}%`,
-                                        background: uploadSuccess
-                                            ? 'linear-gradient(to right, #22c55e, #4ade80)'
-                                            : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)',
-                                        position: 'relative',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'flex-end'
-                                    }}
-                                >
+                                <div style={{
+                                    height: '100%',
+                                    borderRadius: '9999px',
+                                    transition: 'width 300ms ease-out',
+                                    width: `${Math.max(progress, 5)}%`,
+                                    background: uploadSuccess
+                                        ? 'linear-gradient(to right, #22c55e, #4ade80)'
+                                        : 'linear-gradient(to right, #2563eb, #60a5fa, #ffffff)',
+                                    position: 'relative',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-end'
+                                }}>
                                     {/* Shimmer Overlay */}
                                     <div className="animate-shimmer" style={{
                                         position: 'absolute',
@@ -208,7 +283,7 @@ export default function UploadPage() {
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '0.875rem', color: '#9ca3af', fontWeight: 500 }}>
+                            <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '0.875rem', color: '#888888', fontWeight: 500 }}>
                                 <div style={{
                                     width: '8px',
                                     height: '8px',

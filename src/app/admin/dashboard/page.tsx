@@ -69,7 +69,14 @@ export default function DashboardPage() {
     // Helper to safely get keywords array
     const getKeywords = (ep: Episode): string[] => {
         if (Array.isArray(ep.keywords)) return ep.keywords;
-        if (typeof ep.keywords === 'string') return (ep.keywords as string).split(',').map(s => s.trim());
+        if (typeof ep.keywords === 'string') {
+            // Try splitting by comma first
+            if (ep.keywords.includes(',')) {
+                return ep.keywords.split(',').map(s => s.trim());
+            }
+            // If no commas, try splitting by newlines or just return as single item
+            return [ep.keywords];
+        }
         return [];
     };
 
@@ -77,7 +84,7 @@ export default function DashboardPage() {
         page: {
             backgroundColor: '#050505',
             minHeight: '100vh',
-            paddingTop: '120px', // Reduced top padding slightly
+            paddingTop: '240px', // Increased to ensure no overlap
             paddingBottom: '8rem',
             display: 'flex',
             flexDirection: 'column' as const,
@@ -120,6 +127,19 @@ export default function DashboardPage() {
             display: 'flex',
             flexDirection: 'column' as const,
             gap: '1.5rem'
+        },
+        // Inline styles for card to ensure visibility if Tailwind fails
+        card: {
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            transition: 'all 0.3s ease'
+        },
+        cardExpanded: {
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
         }
     };
 
@@ -172,10 +192,11 @@ export default function DashboardPage() {
                                 return (
                                     <div
                                         key={episode.id}
-                                        className={`group relative border rounded-[20px] overflow-hidden transition-all duration-300 backdrop-blur-sm ${isExpanded
-                                                ? "bg-white/[0.08] border-white/20 shadow-2xl shadow-black/50"
-                                                : "bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.06] hover:border-white/10"
-                                            }`}
+                                        className="group relative backdrop-blur-sm"
+                                        style={{
+                                            ...styles.card,
+                                            ...(isExpanded ? styles.cardExpanded : {})
+                                        }}
                                     >
                                         {/* Card Header / Summary Row */}
                                         <div
@@ -186,10 +207,10 @@ export default function DashboardPage() {
                                                 <div className="flex items-center gap-5">
                                                     {/* Status Icon */}
                                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${episode.status === "ready"
-                                                            ? "bg-green-500/10 border-green-500/20 text-green-400"
-                                                            : episode.status === "processing"
-                                                                ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
-                                                                : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
+                                                        ? "bg-green-500/10 border-green-500/20 text-green-400"
+                                                        : episode.status === "processing"
+                                                            ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                                                            : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
                                                         }`}>
                                                         {episode.status === "ready" ? (
                                                             <CheckCircle className="w-5 h-5" />
@@ -216,8 +237,8 @@ export default function DashboardPage() {
                                                 {/* Right Side Actions */}
                                                 <div className="flex items-center gap-6">
                                                     <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${episode.status === "ready"
-                                                            ? "bg-green-500/5 border-green-500/20 text-green-400"
-                                                            : "bg-blue-500/5 border-blue-500/20 text-blue-400"
+                                                        ? "bg-green-500/5 border-green-500/20 text-green-400"
+                                                        : "bg-blue-500/5 border-blue-500/20 text-blue-400"
                                                         }`}>
                                                         {episode.status || "UNKNOWN"}
                                                     </div>
@@ -234,12 +255,13 @@ export default function DashboardPage() {
                                         {/* Expanded Details */}
                                         {isExpanded && (
                                             <div className="border-t border-white/10 bg-black/20 p-8 animate-in slide-in-from-top-2 duration-300">
-                                                <div className="grid md:grid-cols-12 gap-8">
+                                                {/* Using inline grid style to force layout */}
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '2rem' }} className="md:grid-cols-12">
 
                                                     {/* Left Column: Core Info (7 cols) */}
-                                                    <div className="md:col-span-7 space-y-8">
+                                                    <div style={{ gridColumn: 'span 7' }} className="col-span-12 md:col-span-7 space-y-8">
                                                         {/* Summary Section */}
-                                                        <div className="bg-white/[0.03] rounded-2xl p-6 border border-white/5">
+                                                        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                                                             <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-4 uppercase tracking-widest">
                                                                 <FileText className="w-3 h-3" /> AI Summary
                                                             </h4>
@@ -275,10 +297,10 @@ export default function DashboardPage() {
                                                     </div>
 
                                                     {/* Right Column: Metadata (5 cols) */}
-                                                    <div className="md:col-span-5 space-y-8">
+                                                    <div style={{ gridColumn: 'span 5' }} className="col-span-12 md:col-span-5 space-y-8">
                                                         {/* Chapters */}
                                                         {episode.chapters && episode.chapters.length > 0 && (
-                                                            <div className="bg-white/[0.03] rounded-2xl p-6 border border-white/5">
+                                                            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                                                                 <h4 className="flex items-center gap-2 text-xs font-bold text-white/50 mb-4 uppercase tracking-widest">
                                                                     <List className="w-3 h-3" /> Chapters
                                                                 </h4>

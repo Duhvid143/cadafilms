@@ -42,17 +42,50 @@ const Navbar = () => {
             </div>
 
             <ul className={`navbar-links ${isOpen ? 'open' : ''}`}>
-                {['Home', 'Work', 'About', 'Contact'].map((item) => (
-                    <li key={item}>
-                        <Link
-                            href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                            className={`nav-link ${pathname === (item === 'Home' ? '/' : `/${item.toLowerCase()}`) ? 'active' : ''}`}
-                            onClick={closeMenu}
-                        >
-                            {item}
+                <li key="Home">
+                    <Link
+                        href="/"
+                        className={`nav-link ${pathname === '/' ? 'active' : ''}`}
+                        onClick={closeMenu}
+                    >
+                        Home
+                    </Link>
+                </li>
+                <li key="Projects" className="dropdown-container">
+                    <Link
+                        href="/projects"
+                        className={`nav-link ${pathname === '/projects' ? 'active' : ''}`}
+                        onClick={closeMenu}
+                    >
+                        Projects
+                    </Link>
+                    <div className="dropdown-menu">
+                        <Link href="/tium" className="dropdown-item" onClick={closeMenu}>
+                            _TIUM
                         </Link>
-                    </li>
-                ))}
+                        <Link href="/muit" className="dropdown-item" onClick={closeMenu}>
+                            MUIT
+                        </Link>
+                    </div>
+                </li>
+                <li key="About">
+                    <Link
+                        href="/about"
+                        className={`nav-link ${pathname === '/about' ? 'active' : ''}`}
+                        onClick={closeMenu}
+                    >
+                        About
+                    </Link>
+                </li>
+                <li key="Contact">
+                    <Link
+                        href="/contact"
+                        className={`nav-link ${pathname === '/contact' ? 'active' : ''}`}
+                        onClick={closeMenu}
+                    >
+                        Contact
+                    </Link>
+                </li>
             </ul>
         </nav>
     );

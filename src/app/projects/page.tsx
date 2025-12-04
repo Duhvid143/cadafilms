@@ -44,7 +44,7 @@ const projects = [
     }
 ];
 
-export default function Work() {
+export default function Projects() {
     return (
         <div className="work-page">
             <div className="work-header">

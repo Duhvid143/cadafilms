@@ -1,5 +1,167 @@
-/* 
-  Most styles have been moved to Tailwind classes in Navbar.tsx.
-  Keeping this file for any future custom animations or complex gradients 
-  that are harder to express with utility classes.
-*/
+/* Navbar Container - Floating Pill */
+.navbar-container {
+  position: fixed;
+  top: 1.5rem;
+  /* top-6 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  width: 95%;
+  max-width: 64rem;
+  /* max-w-5xl */
+  transition: transform 0.5s ease;
+}
+
+.navbar-container.hidden-nav {
+  transform: translate(-50%, -200%);
+}
+
+.navbar-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 9999px;
+  /* rounded-full */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(24px);
+  /* backdrop-blur-xl */
+  padding: 0.75rem 1.5rem;
+  /* px-6 py-3 */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Logo */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+}
+
+.nav-logo img {
+  height: 1.5rem;
+  /* h-6 */
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  .nav-logo img {
+    height: 2rem;
+    /* sm:h-8 */
+  }
+
+  .nav-logo {
+    padding-left: 1rem;
+  }
+}
+
+/* Desktop Links */
+.nav-links-desktop {
+  display: none;
+  position: relative;
+  align-items: center;
+  gap: 2rem;
+  /* gap-8 */
+}
+
+@media (min-width: 768px) {
+  .nav-links-desktop {
+    display: flex;
+  }
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  /* text-sm */
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  /* tracking-widest */
+  color: #a1a1aa;
+  /* text-zinc-400 */
+  transition: color 0.4s ease;
+  position: relative;
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+/* Active Line */
+.active-line {
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, white, transparent);
+  pointer-events: none;
+  transform-origin: left;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: block;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.mobile-close-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobile-nav-link {
+  font-size: 1.875rem;
+  /* text-3xl */
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobile-nav-link:hover {
+  color: #a1a1aa;
+}

@@ -123,48 +123,45 @@ const Navbar = () => {
         <>
             <nav
                 ref={navRef}
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl transition-transform duration-500 ${isHidden ? '-translate-y-[150%]' : 'translate-y-0'}`}
+                className={`navbar-container ${isHidden ? 'hidden-nav' : ''}`}
                 role="navigation"
             >
-                <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/70 backdrop-blur-xl px-6 py-3 shadow-2xl">
+                <div className="navbar-pill">
                     {/* 5. Responsive Logo */}
-                    <Link href="/" onClick={handleHomeClick} className="flex items-center">
+                    <Link href="/" onClick={handleHomeClick} className="nav-logo">
                         <img
                             ref={logoRef}
                             src="/assets/logo-text-white.png"
                             alt="CADA"
-                            className="h-6 sm:h-8 w-auto object-contain"
                         />
                     </Link>
 
                     {/* Desktop Links */}
-                    <div className="hidden md:flex items-center gap-8 relative">
+                    <div className="nav-links-desktop">
                         {navLinks.map((link, i) => (
                             <Link
                                 key={link.name}
                                 href={link.path}
                                 ref={el => { linksRef.current[i] = el }}
-                                className={`text-xs sm:text-sm font-medium tracking-widest text-zinc-400 transition-colors duration-400 hover:text-white relative group py-2`}
+                                className="nav-link"
                                 onMouseEnter={() => handleLinkHover(i, true)}
                                 onMouseLeave={() => handleLinkHover(i, false)}
                                 aria-current={pathname === link.path ? 'page' : undefined}
                                 onClick={link.name === 'HOME' ? handleHomeClick : undefined}
                             >
                                 {link.name}
-                                {/* 2. Glow Effect */}
-                                <span className="absolute inset-0 -z-10 scale-0 rounded-full bg-white/20 blur-md transition-transform duration-300 group-hover:scale-150" />
                             </Link>
                         ))}
                         {/* 1. Active Line */}
                         <div
                             ref={activeLineRef}
-                            className="absolute bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"
+                            className="active-line"
                         />
                     </div>
 
                     {/* 3. Mobile Hamburger */}
                     <button
-                        className="md:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+                        className="mobile-menu-btn"
                         onClick={() => setIsMobileMenuOpen(true)}
                         aria-label="Open menu"
                     >
@@ -176,17 +173,17 @@ const Navbar = () => {
             {/* 3. Mobile Menu Overlay */}
             {isMobileMenuOpen && (
                 <div
-                    className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center"
+                    className="mobile-menu-overlay"
                     onClick={() => setIsMobileMenuOpen(false)}
                     onKeyDown={(e) => e.key === 'Escape' && setIsMobileMenuOpen(false)}
                 >
                     <div
                         ref={mobileMenuRef}
-                        className="flex flex-col items-center gap-8"
+                        className="mobile-menu-content"
                         onClick={e => e.stopPropagation()}
                     >
                         <button
-                            className="absolute top-8 right-8 text-white p-2"
+                            className="mobile-close-btn"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             <X size={32} />
@@ -196,7 +193,7 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 href={link.path}
-                                className="text-3xl font-light tracking-widest text-white hover:text-zinc-400 transition-colors"
+                                className="mobile-nav-link"
                                 onClick={() => {
                                     setIsMobileMenuOpen(false);
                                     if (link.name === 'HOME') handleHomeClick();

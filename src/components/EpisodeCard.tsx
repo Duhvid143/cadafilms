@@ -28,7 +28,6 @@ const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode, onPlay, index }) => 
                 <div className="episode-meta">
                     <Calendar size={14} />
                     <span>{formattedDate}</span>
-                    <span style={{ marginLeft: 'auto', fontSize: '0.7em', opacity: 0.7 }}>[{episode.status}]</span>
                 </div>
 
                 <h3 className="episode-title">{episode.title}</h3>

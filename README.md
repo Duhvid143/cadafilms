@@ -1,6 +1,8 @@
-# Project Antigravity: Headless Podcast CMS
+# CADA Films Website & CMS
 
-A "Headless Podcast CMS" that handles 2GB+ video uploads via Next.js + Firebase without Vercel timeouts.
+The official website for CADA Films, designed to attract, inform, and direct users to CADA's productions.
+
+Powered by "Project Antigravity", a custom Headless Podcast CMS that handles 2GB+ video uploads via Next.js + Firebase without Vercel timeouts.
 
 ## 🚀 Features
 - **Direct-to-Cloud Uploads**: Bypasses Vercel server limits using `uploadBytesResumable`.

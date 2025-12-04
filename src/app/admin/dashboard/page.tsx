@@ -263,13 +263,13 @@ export default function DashboardPage() {
                                         <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full text-xs font-medium backdrop-blur-md transition-colors border border-zinc-700"
+                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full text-xs font-bold backdrop-blur-md transition-colors border border-zinc-500 shadow-lg"
                                             >
                                                 <Youtube className="w-3 h-3" /> Copy YouTube
                                             </button>
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); copyXPost(episode); }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full text-xs font-medium backdrop-blur-md transition-colors border border-zinc-700"
+                                                className="flex items-center gap-2 px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full text-xs font-bold backdrop-blur-md transition-colors border border-zinc-500 shadow-lg"
                                             >
                                                 <Twitter className="w-3 h-3" /> Copy X
                                             </button>
@@ -281,9 +281,9 @@ export default function DashboardPage() {
                                             onClick={() => toggleExpand(episode.id)}
                                         >
                                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                                                <div className="flex items-start gap-6">
+                                                <div className="flex flex-col items-start gap-4">
                                                     {/* Status Badge */}
-                                                    <div className={`mt-1 px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
+                                                    <div className={`px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
                                                         ? "bg-emerald-400/[0.15] border-emerald-400/20 text-emerald-400"
                                                         : isProcessing
                                                             ? "bg-amber-400/[0.15] border-amber-400/20 text-amber-400"
@@ -305,7 +305,7 @@ export default function DashboardPage() {
 
                                                     {/* Title & Meta */}
                                                     <div>
-                                                        <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-2">
+                                                        <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-3">
                                                             {episode.title || "Untitled Episode"}
                                                         </h3>
                                                         <div className="flex items-center gap-3 text-sm text-zinc-500 font-medium">

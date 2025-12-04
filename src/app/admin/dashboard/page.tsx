@@ -64,7 +64,7 @@ export default function DashboardPage() {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/20 rounded-full blur-[120px]" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-48 pb-12">
                 {/* Header */}
                 <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
                     <div>
@@ -137,8 +137,8 @@ export default function DashboardPage() {
 
                                         <div className="flex items-center gap-4">
                                             <div className={`px-3 py-1 rounded-full text-xs font-medium border ${episode.status === "ready"
-                                                    ? "bg-green-500/10 border-green-500/20 text-green-400"
-                                                    : "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                                                ? "bg-green-500/10 border-green-500/20 text-green-400"
+                                                : "bg-blue-500/10 border-blue-500/20 text-blue-400"
                                                 }`}>
                                                 {episode.status?.toUpperCase() || "UNKNOWN"}
                                             </div>

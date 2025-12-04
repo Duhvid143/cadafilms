@@ -1,11 +1,15 @@
 import { VertexAI } from "@google-cloud/vertexai";
 import * as admin from "firebase-admin";
+import * as logger from "firebase-functions/logger";
 
-const vertexAI = new VertexAI({ project: process.env.GCLOUD_PROJECT || "cada-productions", location: "us-east1" });
+const project = process.env.GCLOUD_PROJECT;
+if (!project) throw new Error("GCLOUD_PROJECT environment variable is missing");
+
+const vertexAI = new VertexAI({ project, location: "us-east1" });
 const model = vertexAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
 export async function analyzeVideo(bucketName: string, filePath: string, epId: string) {
-    console.log(`Starting AI analysis for ${epId}...`);
+    logger.info("Starting AI analysis", { epId, bucketName, filePath });
     const gcsUri = `gs://${bucketName}/${filePath}`;
 
     const prompt = `
@@ -32,11 +36,11 @@ export async function analyzeVideo(bucketName: string, filePath: string, epId: s
         const jsonStr = text.replace(/```json\n|\n```/g, "").trim();
         const aiData = JSON.parse(jsonStr);
 
-        console.log(`AI Analysis success. Writing to Firestore for ${epId}...`);
+        logger.info("AI Analysis success. Writing to Firestore", { epId });
         await admin.firestore().collection("episodes").doc(epId).set(aiData, { merge: true });
-        console.log(`AI analysis complete for ${epId}`);
+        logger.info("AI analysis complete", { epId });
     } catch (error) {
-        console.error(`Error analyzing video ${epId}:`, error);
+        logger.error("Error analyzing video", { epId, error });
         // Don't throw, so other processes can continue
     }
 }

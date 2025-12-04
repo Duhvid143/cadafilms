@@ -225,6 +225,12 @@ export default function DashboardPage() {
             alignItems: 'center',
             gap: '8px',
             zIndex: 20
+        },
+        cardHeader: {
+            padding: '40px', // Increased padding for better spacing
+            cursor: 'pointer',
+            position: 'relative' as const,
+            zIndex: 10
         }
     };
 
@@ -315,7 +321,7 @@ export default function DashboardPage() {
 
                                         {/* Card Header */}
                                         <div
-                                            className="p-8 cursor-pointer relative z-10"
+                                            style={styles.cardHeader}
                                             onClick={() => toggleExpand(episode.id)}
                                         >
                                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
@@ -336,8 +342,8 @@ export default function DashboardPage() {
                                                         {!isProcessing && (
                                                             <div className={`w-2 h-2 rounded-full ${episode.status === "ready" ? "bg-emerald-400" : "bg-red-400"}`} />
                                                         )}
-                                                        <span className="text-xs font-bold uppercase tracking-widest">
-                                                            {episode.status || "UNKNOWN"}
+                                                        <span className="text-xs font-bold capitalize tracking-wide">
+                                                            {episode.status || "Unknown"}
                                                         </span>
                                                     </div>
 
@@ -363,7 +369,10 @@ export default function DashboardPage() {
 
                                         {/* Expanded Content */}
                                         {isExpanded && (
-                                            <div className="border-t border-zinc-800/50 bg-black/20 p-8 animate-in slide-in-from-top-4 duration-500">
+                                            <div
+                                                className="border-t border-zinc-800/50 bg-black/20 animate-in slide-in-from-top-4 duration-500"
+                                                style={{ padding: '40px' }}
+                                            >
                                                 <div className="grid md:grid-cols-2 gap-8">
                                                     {/* Left Column */}
                                                     <div className="space-y-10">

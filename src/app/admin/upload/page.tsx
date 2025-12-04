@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import logger from "@/lib/logger";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { storage, db, auth } from "@/lib/firebase";
@@ -41,6 +42,7 @@ export default function UploadPage() {
 
     const handleFileSelect = (file: File) => {
         setSelectedFile(file);
+        logger.info({ fileName: file.name, size: file.size }, "File selected for upload.");
         // Auto-populate title from filename if empty
         if (!title) {
             const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
@@ -53,6 +55,7 @@ export default function UploadPage() {
         setSelectedFile(null);
         setProgress(0);
         setUploadSuccess(false);
+        logger.info("Selected file cleared.");
     };
 
     const startUpload = async () => {
@@ -64,6 +67,7 @@ export default function UploadPage() {
 
         setUploading(true);
         const storageRef = ref(storage, `episodes/${episodeNumber}.mp4`);
+        logger.info({ episodeNumber, title, fileName: selectedFile.name }, "Starting file upload to Firebase Storage.");
 
         const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
@@ -71,15 +75,17 @@ export default function UploadPage() {
             (snapshot) => {
                 const p = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 setProgress(p);
+                logger.info({ progress: p, fileName: selectedFile.name }, "Upload progress.");
             },
             (error) => {
-                console.error(error);
+                logger.error({ error }, "Upload failed.");
                 toast.error("Upload failed: " + error.message);
                 setUploading(false);
             },
             async () => {
                 // Upload Complete
                 const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                logger.info({ downloadURL, fileName: selectedFile.name }, "File uploaded successfully, getting download URL.");
 
                 // Save initial metadata to trigger Cloud Function
                 await setDoc(doc(db, "episodes", episodeNumber), {

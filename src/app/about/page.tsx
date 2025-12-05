@@ -68,10 +68,8 @@ export default function About() {
                 </motion.h2>
                 <div className="team-grid">
                     {[
-                        { name: "Alex Cadence", role: "Director", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-                        { name: "Sarah Davis", role: "Producer", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-                        { name: "Michael Chen", role: "Cinematographer", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-                        { name: "Jessica Lee", role: "Editor", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" }
+                        { name: "David Lannon", role: "Co-Founder", img: "/assets/david-lannon.png" },
+                        { name: "Cam Cooper", role: "Co-Founder", img: "" }
                     ].map((member, index) => (
                         <motion.div
                             key={index}
@@ -81,7 +79,11 @@ export default function About() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                         >
-                            <img src={member.img} alt={member.name} className="member-img" />
+                            {member.img ? (
+                                <img src={member.img} alt={member.name} className="member-img" />
+                            ) : (
+                                <div className="member-img" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }} />
+                            )}
                             <h3 className="member-name">{member.name}</h3>
                             <span className="member-role">{member.role}</span>
                         </motion.div>

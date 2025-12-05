@@ -182,15 +182,23 @@
 
 /* Subnav Wrapper */
 .subnav-wrapper {
-  position: fixed;
-  top: 88px;
-  /* Match Navbar top + height approx */
+  position: absolute;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 39;
-  /* Below Navbar (40) */
   padding-top: 20px;
   /* Bridge for hover */
+  width: max-content;
+  /* Ensure it doesn't collapse */
+}
+
+/* Ensure parent has relative positioning */
+.nav-item-wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 /* Ensure ProjectSubNav is relative to wrapper */

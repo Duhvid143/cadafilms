@@ -85,7 +85,7 @@ export default function Home() {
                         transition={{ duration: 1.5, ease: "easeOut" }}
                         style={{ marginBottom: '2rem', zIndex: 10 }}
                     >
-                        {/* <InteractiveLogo isOpen={isCarouselOpen} works={featuredWork} /> */}
+                        <InteractiveLogo isOpen={isCarouselOpen} works={featuredWork} />
                     </motion.div>
 
                     {/* Removed CADA text logo as requested */}

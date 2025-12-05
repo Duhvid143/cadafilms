@@ -97,6 +97,11 @@ const Navbar = () => {
                                     {link.name}
                                     <span className="nav-link-dot"></span>
                                 </Link>
+                                {link.name === 'PROJECTS' && (
+                                    <div className="subnav-wrapper">
+                                        <ProjectSubNav isOpen={isProjectsHovered} />
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -112,15 +117,6 @@ const Navbar = () => {
                     </button>
                 </div>
             </nav>
-
-            {/* Project Sub-Nav - Centered below Navbar */}
-            <div
-                className="subnav-wrapper"
-                onMouseEnter={() => setIsProjectsHovered(true)}
-                onMouseLeave={() => setIsProjectsHovered(false)}
-            >
-                <ProjectSubNav isOpen={isProjectsHovered} />
-            </div>
 
             {/* Mobile Menu Overlay */}
             <div className="mobile-menu-overlay" ref={mobileMenuRef}>

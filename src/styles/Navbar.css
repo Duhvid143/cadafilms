@@ -135,6 +135,23 @@
   }
 }
 
+.hamburger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger-line.open:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-line.open:nth-child(2) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 /* Mobile Menu Overlay */
 .mobile-menu-overlay {
   position: fixed;

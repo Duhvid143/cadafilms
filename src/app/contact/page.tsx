@@ -24,6 +24,13 @@ export default function Contact() {
         e.preventDefault();
         setIsSubmitting(true);
 
+        // Basic validation
+        if (!formData.name || !formData.email || !formData.message) {
+            alert("Please fill in all required fields.");
+            setIsSubmitting(false);
+            return;
+        }
+
         // Google Apps Script Web App URL
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-6ncIAmdb-gTt95shPYApqdu3-oGdfqDEirCghU1nrPWOrvhYntRO-RvicJ7ilSfzZQ/exec";
 

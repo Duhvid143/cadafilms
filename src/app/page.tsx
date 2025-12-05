@@ -81,9 +81,9 @@ export default function Home() {
                 >
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
+                        animate={{ scale: 1.5, opacity: 1 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        style={{ marginBottom: '2rem', zIndex: 10 }}
+                        style={{ marginTop: '10rem', marginBottom: '2rem', zIndex: 10 }}
                     >
                         <InteractiveLogo isOpen={isCarouselOpen} works={featuredWork} />
                     </motion.div>

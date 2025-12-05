@@ -131,7 +131,7 @@ const Navbar = () => {
                     <Link href="/" onClick={handleHomeClick} className="nav-logo">
                         <img
                             ref={logoRef}
-                            src="/assets/logo-text-white.png"
+                            src="/assets/logo-cada-new.png"
                             alt="CADA"
                         />
                     </Link>

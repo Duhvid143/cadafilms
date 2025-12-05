@@ -33,36 +33,42 @@
 
 /* Logo */
 .nav-logo {
-  display: flex;
-  align-items: center;
-  padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    order: 1; /* Default: Left */
 }
 
 .nav-logo img {
-  height: 1.5rem;
-  /* h-6 */
-  width: auto;
-  object-fit: contain;
+    height: 1.5rem; /* h-6 */
+    width: auto;
+    object-fit: contain;
+    filter: invert(1); /* Invert black logo to white */
 }
 
 @media (min-width: 640px) {
-  .nav-logo img {
-    height: 2rem;
-    /* sm:h-8 */
-  }
+    .nav-logo img {
+        height: 2rem; /* sm:h-8 */
+    }
+    .nav-logo {
+        padding-left: 0;
+        padding-right: 1rem;
+    }
+}
 
-  .nav-logo {
-    padding-left: 1rem;
-  }
+@media (min-width: 768px) {
+    .nav-logo {
+        order: 2; /* Desktop: Right */
+    }
 }
 
 /* Desktop Links */
 .nav-links-desktop {
-  display: none;
-  position: relative;
-  align-items: center;
-  gap: 2rem;
-  /* gap-8 */
+    display: none;
+    position: relative;
+    align-items: center;
+    gap: 2rem; /* gap-8 */
+    order: 1; /* Desktop: Left */
 }
 
 @media (min-width: 768px) {

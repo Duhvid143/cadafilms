@@ -18,9 +18,9 @@ export default function Contact() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log('Form submitted:', formData);
-        alert('Message sent! (This is a demo)');
+        const subject = `New Contact from ${formData.name}`;
+        const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+        window.location.href = `mailto:productionsbycada@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setFormData({ name: '', email: '', message: '' });
     };
 
@@ -43,15 +43,7 @@ export default function Contact() {
                     <div className="contact-details">
                         <div className="detail-item">
                             <Mail className="detail-icon" />
-                            <span className="detail-text">hello@cadaproductions.com</span>
-                        </div>
-                        <div className="detail-item">
-                            <Phone className="detail-icon" />
-                            <span className="detail-text">+1 (555) 123-4567</span>
-                        </div>
-                        <div className="detail-item">
-                            <MapPin className="detail-icon" />
-                            <span className="detail-text">123 Creative Ave, Los Angeles, CA</span>
+                            <span className="detail-text">productionsbycada@gmail.com</span>
                         </div>
                     </div>
                 </motion.div>

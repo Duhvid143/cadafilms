@@ -2,11 +2,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
 import '@/styles/InteractiveLogo.css'; // We will move CSS here
 
 const InteractiveLogo = ({ isOpen, works = [] }: any) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -22,6 +25,27 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, [isOpen]);
+
+    // Animate title overlay
+    useEffect(() => {
+        if (titleRef.current) {
+            if (hoveredProject) {
+                gsap.to(titleRef.current, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            } else {
+                gsap.to(titleRef.current, {
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.in"
+                });
+            }
+        }
+    }, [hoveredProject]);
 
     // Generate petals/diamonds
     const numPetals = 16;
@@ -62,7 +86,6 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
         >
             <div className="carousel-rotator">
                 {petals.map((petal) => {
-                    // Interaction logic (only when closed)
                     let moveX = 0;
                     let moveY = 0;
                     let rotateVal = 0;
@@ -86,7 +109,7 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
                     return (
                         <motion.div
                             key={petal.id}
-                            className="logo-shape"
+                            className={`logo-shape ${isOpen ? 'custom-cursor-diamond' : ''}`}
                             style={{
                                 left: `calc(50% + ${petal.x}px - ${isOpen ? 60 : 20}px)`,
                                 top: `calc(50% + ${petal.y}px - ${isOpen ? 100 : 40}px)`,
@@ -95,16 +118,30 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
                                 x: isOpen ? 0 : moveX,
                                 y: isOpen ? 0 : moveY,
                                 rotate: petal.rotation + rotateVal,
-                                scale: scaleVal,
+                                scale: (isOpen && hoveredProject === petal.workItem?.title) ? 1.2 : scaleVal,
                             }}
                             transition={{
                                 duration: 1.2,
-                                ease: [0.2, 0.8, 0.2, 1], // Custom cubic bezier for smooth easeInOut
+                                ease: [0.2, 0.8, 0.2, 1],
                                 layout: { duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }
                             }}
                             onClick={() => {
                                 if (isOpen && petal.workItem) {
-                                    router.push('/work');
+                                    // Mock opening project modal - for now push to route or log
+                                    // Assuming _TIUM or MUIT based on title or random for demo
+                                    if (petal.workItem.title.includes('MUIT')) router.push('/muit');
+                                    else if (petal.workItem.title.includes('TIUM')) router.push('/tium');
+                                    else router.push('/projects');
+                                }
+                            }}
+                            onMouseEnter={() => {
+                                if (isOpen && petal.workItem) {
+                                    setHoveredProject(petal.workItem.title);
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (isOpen) {
+                                    setHoveredProject(null);
                                 }
                             }}
                         >
@@ -118,6 +155,11 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
                         </motion.div>
                     );
                 })}
+            </div>
+
+            {/* Project Title Overlay */}
+            <div className="project-title-overlay" ref={titleRef}>
+                {hoveredProject}
             </div>
         </div>
     );

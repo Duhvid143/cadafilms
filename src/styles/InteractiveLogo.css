@@ -1,86 +1,65 @@
 .interactive-logo-container {
     position: relative;
-    width: 300px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1000px;
-    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.interactive-logo-container.open {
-    width: 800px;
-    height: 800px;
+.carousel-rotator {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
 }
 
 .logo-shape {
     position: absolute;
     width: 40px;
     height: 80px;
-    background-color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Diamond shape */
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    transform-origin: center center;
-    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-    mix-blend-mode: difference;
-    overflow: hidden;
     cursor: pointer;
-}
-
-.interactive-logo-container.open .logo-shape {
-    width: 120px;
-    height: 200px;
-    mix-blend-mode: normal;
-    /* Remove difference mode to show images */
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .logo-shape-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    transform: scale(1.5);
-    /* Zoom in initially */
+    opacity: 0.8;
+    transition: opacity 0.3s;
 }
 
-.interactive-logo-container.open .logo-shape-img {
-    opacity: 0.6;
-}
-
-.interactive-logo-container.open .logo-shape:hover .logo-shape-img {
+.logo-shape:hover .logo-shape-img {
     opacity: 1;
-    transform: scale(1.1);
 }
 
-/* Rotation Animation */
-.carousel-rotator {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: none;
+/* Custom Cursor Class */
+.custom-cursor-diamond {
+    cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0L24 12L12 24L0 12L12 0Z" fill="white"/></svg>') 12 12, auto;
 }
 
-.interactive-logo-container.open .carousel-rotator {
-    animation: rotate-carousel 60s linear infinite;
+.project-title-overlay {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Times New Roman', serif;
+    font-size: 2.5rem;
+    color: white;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 50;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
-
-@keyframes rotate-carousel {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Counter-rotate items to keep them upright if desired, 
-   but for abstract shapes, rotating with the container is fine. 
-   If we want images to stay upright, we'd need to counter-rotate.
-   Let's let them rotate with the ring for a kaleidoscope effect first. */

@@ -1,10 +1,12 @@
 "use client";
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Button from '@/components/Button';
 import { ArrowRight } from 'lucide-react';
 import InteractiveLogo from '@/components/InteractiveLogo';
+import ProjectSubNav from '@/components/ProjectSubNav';
 import '@/styles/Home.css'; // We moved CSS here
 
 export default function Home() {
@@ -19,6 +21,23 @@ export default function Home() {
 
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+    // Keyboard Shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === '1') {
+                router.push('/tium');
+            } else if (e.key === '2') {
+                router.push('/muit');
+            } else if (e.key === 'Escape' || e.key === '0') {
+                if (isCarouselOpen) setIsCarouselOpen(false);
+                else router.push('/');
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isCarouselOpen, router]);
 
     const featuredWork = [
         {
@@ -49,6 +68,8 @@ export default function Home() {
 
     return (
         <div className="home" ref={containerRef}>
+            <ProjectSubNav isOpen={isCarouselOpen} />
+
             {/* Hero Section */}
             <section className="hero">
                 <div className="hero-bg-curve"></div>
@@ -81,7 +102,15 @@ export default function Home() {
                             translateY: isCarouselOpen ? 200 : 0 // Move down when open
                         }}
                         transition={{ duration: 1, delay: 1 }}
+                        className="flex flex-col items-center gap-4"
                     >
+                        {/* Home Links - Bypass Carousel */}
+                        <div className="home-links-container">
+                            <Link href="/tium" className="subnav-link">_TIUM</Link>
+                            <div className="subnav-separator" />
+                            <Link href="/muit" className="subnav-link">MUIT</Link>
+                        </div>
+
                         <Button variant="organic" onClick={() => setIsCarouselOpen(!isCarouselOpen)}>
                             {isCarouselOpen ? "Close View" : "Explore Work"}
                         </Button>

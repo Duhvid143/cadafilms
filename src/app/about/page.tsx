@@ -1,9 +1,21 @@
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import gsap from 'gsap';
 import '@/styles/About.css';
 
 export default function About() {
+    useEffect(() => {
+        gsap.from('.founder-card', {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power2.out',
+            delay: 0.5 // Wait for page transition
+        });
+    }, []);
+
     return (
         <div className="about-page">
             <div className="about-hero">
@@ -57,37 +69,42 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="about-section">
-                <motion.h2
-                    className="section-header"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                >
-                    The Team
-                </motion.h2>
+            <section className="team-section">
+                <h2 className="section-header text-center text-2xl uppercase tracking-widest mb-16 opacity-60">The Team</h2>
                 <div className="team-grid">
-                    {[
-                        { name: "David Lannon", role: "Co-Founder", img: "/assets/david-lannon.png" },
-                        { name: "Cam Cooper", role: "Co-Founder", img: "" }
-                    ].map((member, index) => (
-                        <motion.div
-                            key={index}
-                            className="team-member"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            {member.img ? (
-                                <img src={member.img} alt={member.name} className="member-img" />
-                            ) : (
-                                <div className="member-img" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }} />
-                            )}
-                            <h3 className="member-name">{member.name}</h3>
-                            <span className="member-role">{member.role}</span>
-                        </motion.div>
-                    ))}
+                    {/* Founder 1 */}
+                    <div className="founder-card text-center">
+                        <div className="photo-container relative mb-8">
+                            <img src="/assets/david-lannon.png" alt="David Lannon" className="photo-blob" />
+                            <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
+                        <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">David Lannon</h3>
+                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
+                        <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
+                            David brings 10+ years in motion design, specializing in surreal narratives and VFX integration.
+                        </p>
+                    </div>
+
+                    {/* Diamond Divider (only on desktop) */}
+                    <div className="divider md:block hidden flex justify-center items-center">
+                        <svg className="diamond-divider" viewBox="0 0 50 50" width="24" height="24">
+                            <polygon points="25,5 45,25 25,45 5,25" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
+                        </svg>
+                    </div>
+
+                    {/* Founder 2 */}
+                    <div className="founder-card text-center">
+                        <div className="photo-container relative mb-8">
+                            {/* Placeholder for Cam */}
+                            <div className="photo-blob" style={{ backgroundColor: '#1a1a1a' }}></div>
+                            <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
+                        <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">Cam Cooper</h3>
+                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
+                        <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
+                            Cam's expertise in directing and sound design crafts immersive worlds for global brands.
+                        </p>
+                    </div>
                 </div>
             </section>
         </div>

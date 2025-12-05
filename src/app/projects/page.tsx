@@ -10,7 +10,7 @@ export default function Projects() {
             <Link href="/tium" className="project-split">
                 <div
                     className="project-bg"
-                    style={{ backgroundImage: 'url(/assets/tium-cover.jpg)' }}
+                    style={{ backgroundImage: 'url(/assets/tium-cover.png)' }}
                 />
                 <div className="project-overlay" />
                 <div className="project-content">

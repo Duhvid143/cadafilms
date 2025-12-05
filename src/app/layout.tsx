@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
+import FaviconManager from "@/components/FaviconManager";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <SmoothScroll>
+                    <FaviconManager />
                     <CustomCursor />
                     <Navbar />
                     {children}

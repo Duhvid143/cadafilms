@@ -45,6 +45,10 @@ export default function Contact() {
                             <Mail className="detail-icon" />
                             <span className="detail-text">productionsbycada@gmail.com</span>
                         </div>
+                        <div className="detail-item">
+                            <MapPin className="detail-icon" />
+                            <span className="detail-text">Everywhere</span>
+                        </div>
                     </div>
                 </motion.div>
 

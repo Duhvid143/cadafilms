@@ -1,0 +1,131 @@
+.projects-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    background: #000;
+}
+
+.project-split {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: flex 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.project-split:hover {
+    flex: 1.8;
+}
+
+/* Dim the sibling when one is hovered */
+.projects-page:hover .project-split:not(:hover) {
+    filter: grayscale(100%) brightness(0.5);
+}
+
+.project-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+.project-split:hover .project-bg {
+    transform: scale(1.1);
+}
+
+.project-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    transition: background 0.5s ease;
+    z-index: 1;
+}
+
+.project-split:hover .project-overlay {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.project-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: white;
+    mix-blend-mode: difference;
+    /* Cool effect for text over images */
+}
+
+.project-title {
+    font-family: 'Inter', sans-serif;
+    /* Or custom font if available */
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    transition: all 0.5s ease;
+}
+
+.project-desc {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.1s;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.project-split:hover .project-desc {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-btn {
+    margin-top: 2rem;
+    padding: 12px 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    color: white;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.2s;
+}
+
+.project-split:hover .project-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .projects-page {
+        flex-direction: column;
+    }
+
+    .project-title {
+        font-size: 2.5rem;
+    }
+
+    .project-split:hover {
+        flex: 1.5;
+    }
+}

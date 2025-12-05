@@ -72,8 +72,8 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="navbar" ref={navRef}>
-                <div className="nav-container">
+            <nav className="navbar-container" ref={navRef}>
+                <div className="navbar-pill">
                     {/* Logo - Right Side on Desktop */}
                     <div className="nav-logo" ref={logoRef}>
                         <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>

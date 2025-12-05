@@ -33,8 +33,9 @@ export default function About() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                    CADA Films is a visionary creative studio founded by co-directors Cam Cooper and David Lannon, where cinematic storytelling meets bold innovation.
-                    Drawing from decades of collaborative experience in motion design, commercial direction, and immersive media, we craft narratives that blur the lines between art and commerce.
+                    CADA is a creative studio founded by Cam Cooper and David Lannon.
+                    <br /><br />
+                    We don’t confine ourselves to a single medium. We make whatever the idea demands to exist—films, podcasts, installations, objects, editorials, experiences, or forms that haven’t been named yet. The only constants are craft, authenticity, and stories that actually matter.
                 </motion.p>
             </div>
 
@@ -45,14 +46,13 @@ export default function About() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                 >
-                    Core Values
+                    The Core
                 </motion.h2>
                 <div className="values-grid">
                     {[
-                        { title: "Innovation", desc: "Pushing boundaries with tools like Houdini and Unreal Engine to engineer experiences that linger." },
-                        { title: "Authenticity", desc: "Crafting narratives that pulse with emotional depth and resonate on a human level." },
-                        { title: "Collaboration", desc: "Turning concepts into visceral realities through cross-disciplinary partnerships." }
-                    ].map((value, index) => (
+                        { title: "_TIUM", desc: "A broken clock that still keeps perfect time. A sharp, unfiltered take on culture, politics, and the forces fracturing the world right now. No sponsors. No script approval. No filter." },
+                        { title: "MUIT", desc: "Our video podcast. Raw, long-form conversations with the people shaping what we care about. No chyrons. No cuts for time. Just real thoughts in real time." }
+                    ].map((project, index) => (
                         <motion.div
                             key={index}
                             className="value-item"
@@ -61,11 +61,21 @@ export default function About() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                         >
-                            <h3 className="value-title">{value.title}</h3>
-                            <p className="value-desc">{value.desc}</p>
+                            <h3 className="value-title">{project.title}</h3>
+                            <p className="value-desc">{project.desc}</p>
                         </motion.div>
                     ))}
                 </div>
+                <motion.p
+                    className="about-mission"
+                    style={{ marginTop: '4rem', fontSize: '1.2rem' }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                >
+                    Everything else we create—whether a commercial piece, a brand collaboration, an installation, or something that resists categorization—comes from the same place: an obsession with getting it right and making it feel true.
+                </motion.p>
             </section>
 
             <section className="team-section">

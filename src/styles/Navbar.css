@@ -233,7 +233,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 39;
-  padding-top: 20px;
+  padding-top: 12px;
   /* Bridge for hover */
   width: max-content;
   /* Ensure it doesn't collapse */

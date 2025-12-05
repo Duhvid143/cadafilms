@@ -117,40 +117,41 @@
 
 .photo-container {
     display: block;
-    /* Ensure anchor tag behaves like a block for dimensions and margins */
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    /* Wider */
+    height: 450px;
+    /* Taller (2:3 aspect ratio) */
     margin: 0 auto 2rem;
     position: relative;
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    /* Clean rectangle, no border radius or very subtle */
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
 }
 
 .photo-container:hover {
-    transform: scale(1.05);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 .photo-blob {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Start grayscale */
     filter: grayscale(100%) contrast(1.1);
-    transition: filter 0.4s ease, clip-path 0.5s ease;
-    clip-path: ellipse(55% 60% at 50% 50%);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: filter 0.6s ease, transform 0.8s ease;
 }
 
 .photo-container:hover .photo-blob {
-    filter: grayscale(0%) contrast(1.2);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    /* Reveal color on hover */
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.05);
 }
 
 .diamond-overlay {
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0L20 10L10 20L0 10Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
-    background-size: 20px;
-    mix-blend-mode: overlay;
-    pointer-events: none;
+    display: none;
 }
 
 .name {

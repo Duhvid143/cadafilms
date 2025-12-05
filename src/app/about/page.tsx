@@ -94,9 +94,6 @@ export default function About() {
                         </a>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">David Lannon</h3>
                         <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
-                        <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
-                            A filmmaker and creative strategist, David shapes CADA’s narrative voice, obsessing over story, emotion, and authenticity across every medium the work demands.
-                        </p>
                     </div>
 
                     {/* Diamond Divider (only on desktop) */}
@@ -120,9 +117,6 @@ export default function About() {
                         </a>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">Cam Cooper</h3>
                         <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
-                        <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
-                            An architecture-trained Product Manager, Cam brings structure, precision, and a builder’s mindset to CADA, turning ambitious creative ideas into grounded, executable realities.
-                        </p>
                     </div>
                 </div>
             </section>

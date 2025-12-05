@@ -33,42 +33,50 @@
 
 /* Logo */
 .nav-logo {
-    display: flex;
-    align-items: center;
-    padding-left: 0.5rem;
-    order: 1; /* Default: Left */
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  order: 1;
+  /* Default: Left */
 }
 
 .nav-logo img {
-    height: 1.5rem; /* h-6 */
-    width: auto;
-    object-fit: contain;
-    filter: invert(1); /* Invert black logo to white */
+  height: 1.5rem;
+  /* h-6 */
+  width: auto;
+  object-fit: contain;
+  filter: invert(1);
+  /* Invert black logo to white */
 }
 
 @media (min-width: 640px) {
-    .nav-logo img {
-        height: 2rem; /* sm:h-8 */
-    }
-    .nav-logo {
-        padding-left: 0;
-        padding-right: 1rem;
-    }
+  .nav-logo img {
+    height: 2rem;
+    /* sm:h-8 */
+  }
+
+  .nav-logo {
+    padding-left: 0;
+    padding-right: 1rem;
+  }
 }
 
 @media (min-width: 768px) {
-    .nav-logo {
-        order: 2; /* Desktop: Right */
-    }
+  .nav-logo {
+    order: 2;
+    /* Desktop: Right */
+  }
 }
 
 /* Desktop Links */
 .nav-links-desktop {
-    display: none;
-    position: relative;
-    align-items: center;
-    gap: 2rem; /* gap-8 */
-    order: 1; /* Desktop: Left */
+  display: none;
+  position: relative;
+  align-items: center;
+  gap: 2rem;
+  /* gap-8 */
+  order: 1;
+  /* Desktop: Left */
 }
 
 @media (min-width: 768px) {
@@ -170,4 +178,25 @@
 
 .mobile-nav-link:hover {
   color: #a1a1aa;
+}
+
+/* Subnav Wrapper */
+.subnav-wrapper {
+  position: fixed;
+  top: 88px;
+  /* Match Navbar top + height approx */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 39;
+  /* Below Navbar (40) */
+  padding-top: 20px;
+  /* Bridge for hover */
+}
+
+/* Ensure ProjectSubNav is relative to wrapper */
+.project-subnav {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
 }

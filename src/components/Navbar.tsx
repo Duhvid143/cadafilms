@@ -1,210 +1,142 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
 import gsap from 'gsap';
-import Lenis from '@studio-freight/lenis';
 import '@/styles/Navbar.css';
+import ProjectSubNav from './ProjectSubNav';
 
 const Navbar = () => {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isHidden, setIsHidden] = useState(false);
-    const lastScrollY = useRef(0);
+    const [isProjectsHovered, setIsProjectsHovered] = useState(false);
+
+    // Refs for GSAP
     const navRef = useRef<HTMLElement>(null);
-    const logoRef = useRef<HTMLImageElement>(null);
-    const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
+    const logoRef = useRef<HTMLDivElement>(null);
+    const linksRef = useRef<HTMLDivElement>(null);
     const mobileMenuRef = useRef<HTMLDivElement>(null);
-    const activeLineRef = useRef<HTMLDivElement>(null);
+    const mobileLinksRef = useRef<HTMLDivElement>(null);
 
-    // 10. Entrance Animation
+    // Initial Entrance Animation
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.from(logoRef.current, {
-                y: -20,
-                opacity: 0,
-                duration: 0.6,
-                ease: "power2.out"
-            });
+        const tl = gsap.timeline();
 
-            gsap.from(linksRef.current, {
-                y: -20,
-                opacity: 0,
-                duration: 0.6,
-                stagger: 0.08,
-                ease: "power2.out",
-                delay: 0.2
-            });
-        }, navRef);
-
-        return () => ctx.revert();
+        tl.fromTo(navRef.current,
+            { y: -100, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+        )
+            .fromTo(logoRef.current,
+                { x: -20, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                "-=0.5"
+            )
+            .fromTo(linksRef.current?.children || [],
+                { y: -20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out" },
+                "-=0.6"
+            );
     }, []);
 
-    // 15. Smart Hide-on-Scroll (using window scroll for simplicity as Lenis events can be tricky to hook globally without context)
-    // Ideally we hook into the global Lenis instance, but window scroll works with Lenis too.
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > 100 && currentScrollY > lastScrollY.current) {
-                setIsHidden(true);
-            } else {
-                setIsHidden(false);
-            }
-            lastScrollY.current = currentScrollY;
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // 1. Active Link Indicator
-    useEffect(() => {
-        const activeLink = linksRef.current.find(link => link?.getAttribute('href') === pathname);
-        if (activeLink && activeLineRef.current) {
-            const { left, width } = activeLink.getBoundingClientRect();
-            const navRect = navRef.current?.getBoundingClientRect();
-            if (navRect) {
-                gsap.to(activeLineRef.current, {
-                    left: left - navRect.left,
-                    width: width,
-                    scaleX: 1,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
-            }
-        } else if (activeLineRef.current) {
-            gsap.to(activeLineRef.current, { scaleX: 0, duration: 0.3 });
-        }
-    }, [pathname]);
-
-    // 8. HOME Reset Logic
-    const handleHomeClick = () => {
-        // Reset logic placeholder (carousel, scene, etc.)
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        // If we had access to the scene/carousel state, we'd reset it here.
-    };
-
-    // 11. Bullet Dots Animation
-    const handleLinkHover = (index: number, isEnter: boolean) => {
-        // Logic to animate adjacent dots would go here if we rendered dots between links.
-        // For now, implementing the requested hover effect on the link itself.
-        const link = linksRef.current[index];
-        if (link) {
-            if (isEnter) {
-                gsap.to(link, { y: -2, scale: 1.02, color: "#fff", duration: 0.3 });
-            } else {
-                gsap.to(link, { y: 0, scale: 1, color: "#a1a1aa", duration: 0.3 });
-            }
-        }
-    };
-
-    // 14. Mobile Menu Animation
+    // Mobile Menu Animation
     useEffect(() => {
         if (isMobileMenuOpen) {
-            gsap.fromTo(mobileMenuRef.current,
-                { scale: 0.95, opacity: 0 },
-                { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
-            );
             document.body.style.overflow = 'hidden';
+            gsap.to(mobileMenuRef.current, {
+                opacity: 1,
+                pointerEvents: 'all',
+                duration: 0.5,
+                ease: "power2.out"
+            });
+            gsap.fromTo(mobileLinksRef.current?.children || [],
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.2, ease: "power2.out" }
+            );
         } else {
             document.body.style.overflow = '';
+            gsap.to(mobileMenuRef.current, {
+                opacity: 0,
+                pointerEvents: 'none',
+                duration: 0.5,
+                ease: "power2.in"
+            });
         }
     }, [isMobileMenuOpen]);
 
     const navLinks = [
-        { name: 'HOME', path: '/' },
-        { name: 'PROJECTS', path: '/projects' },
-        { name: 'ABOUT', path: '/about' },
-        { name: 'CONTACT', path: '/contact' }
+        { name: 'HOME', href: '/' },
+        { name: 'PROJECTS', href: '/projects' },
+        { name: 'ABOUT', href: '/about' },
+        { name: 'CONTACT', href: '/contact' },
     ];
 
     return (
         <>
-            <nav
-                ref={navRef}
-                className={`navbar-container ${isHidden ? 'hidden-nav' : ''}`}
-                role="navigation"
-            >
-                <div className="navbar-pill">
-                    {/* 5. Responsive Logo */}
-                    <Link href="/" onClick={handleHomeClick} className="nav-logo">
-                        <img
-                            ref={logoRef}
-                            src="/assets/logo-cada-new.png"
-                            alt="CADA"
-                        />
-                    </Link>
-
-                    {/* Desktop Links */}
-                    <div className="nav-links-desktop">
-                        {navLinks.map((link, i) => (
-                            <Link
-                                key={link.name}
-                                href={link.path}
-                                ref={el => { linksRef.current[i] = el }}
-                                className="nav-link"
-                                onMouseEnter={() => handleLinkHover(i, true)}
-                                onMouseLeave={() => handleLinkHover(i, false)}
-                                aria-current={pathname === link.path ? 'page' : undefined}
-                                onClick={link.name === 'HOME' ? handleHomeClick : undefined}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                        {/* 1. Active Line */}
-                        <div
-                            ref={activeLineRef}
-                            className="active-line"
-                        />
+            <nav className="navbar" ref={navRef}>
+                <div className="nav-container">
+                    {/* Logo - Right Side on Desktop */}
+                    <div className="nav-logo" ref={logoRef}>
+                        <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                            <img src="/assets/logo-cada-new.png" alt="CADA" className="logo-image" />
+                        </Link>
                     </div>
 
-                    {/* 3. Mobile Hamburger */}
+                    {/* Desktop Links - Left Side */}
+                    <div className="nav-links-desktop" ref={linksRef}>
+                        {navLinks.map((link) => (
+                            <div
+                                key={link.name}
+                                className="nav-item-wrapper"
+                                onMouseEnter={() => link.name === 'PROJECTS' && setIsProjectsHovered(true)}
+                                onMouseLeave={() => link.name === 'PROJECTS' && setIsProjectsHovered(false)}
+                            >
+                                <Link
+                                    href={link.href}
+                                    className={`nav-link ${pathname === link.href ? 'active' : ''}`}
+                                >
+                                    {link.name}
+                                    <span className="nav-link-dot"></span>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Mobile Menu Button */}
                     <button
                         className="mobile-menu-btn"
-                        onClick={() => setIsMobileMenuOpen(true)}
-                        aria-label="Open menu"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label="Toggle menu"
                     >
-                        <Menu size={20} />
+                        <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
+                        <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
                     </button>
                 </div>
             </nav>
 
-            {/* 3. Mobile Menu Overlay */}
-            {isMobileMenuOpen && (
-                <div
-                    className="mobile-menu-overlay"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    onKeyDown={(e) => e.key === 'Escape' && setIsMobileMenuOpen(false)}
-                >
-                    <div
-                        ref={mobileMenuRef}
-                        className="mobile-menu-content"
-                        onClick={e => e.stopPropagation()}
-                    >
-                        <button
-                            className="mobile-close-btn"
+            {/* Project Sub-Nav - Centered below Navbar */}
+            <div
+                className="subnav-wrapper"
+                onMouseEnter={() => setIsProjectsHovered(true)}
+                onMouseLeave={() => setIsProjectsHovered(false)}
+            >
+                <ProjectSubNav isOpen={isProjectsHovered} />
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div className="mobile-menu-overlay" ref={mobileMenuRef}>
+                <div className="mobile-menu-content" ref={mobileLinksRef}>
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className="mobile-nav-link"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <X size={32} />
-                        </button>
-
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.path}
-                                className="mobile-nav-link"
-                                onClick={() => {
-                                    setIsMobileMenuOpen(false);
-                                    if (link.name === 'HOME') handleHomeClick();
-                                }}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                    </div>
+                            {link.name}
+                        </Link>
+                    ))}
                 </div>
-            )}
+            </div>
         </>
     );
 };

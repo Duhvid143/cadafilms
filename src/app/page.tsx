@@ -68,7 +68,7 @@ export default function Home() {
 
     return (
         <div className="home" ref={containerRef}>
-            <ProjectSubNav isOpen={isCarouselOpen} />
+            {/* <ProjectSubNav isOpen={isCarouselOpen} /> */}
 
             {/* Hero Section */}
             <section className="hero">
@@ -85,7 +85,7 @@ export default function Home() {
                         transition={{ duration: 1.5, ease: "easeOut" }}
                         style={{ marginBottom: '2rem', zIndex: 10 }}
                     >
-                        <InteractiveLogo isOpen={isCarouselOpen} works={featuredWork} />
+                        {/* <InteractiveLogo isOpen={isCarouselOpen} works={featuredWork} /> */}
                     </motion.div>
 
                     {/* Removed CADA text logo as requested */}
@@ -105,15 +105,15 @@ export default function Home() {
                         className="flex flex-col items-center gap-4"
                     >
                         {/* Home Links - Bypass Carousel */}
-                        <div className="home-links-container">
+                        {/* <div className="home-links-container">
                             <Link href="/tium" className="subnav-link">_TIUM</Link>
                             <div className="subnav-separator" />
                             <Link href="/muit" className="subnav-link">MUIT</Link>
-                        </div>
+                        </div> */}
 
-                        <Button variant="organic" onClick={() => setIsCarouselOpen(!isCarouselOpen)}>
+                        {/* <Button variant="organic" onClick={() => setIsCarouselOpen(!isCarouselOpen)}>
                             {isCarouselOpen ? "Close View" : "Explore Work"}
-                        </Button>
+                        </Button> */}
                     </motion.div>
                 </motion.div>
             </section>

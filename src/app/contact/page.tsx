@@ -94,7 +94,7 @@ export default function Contact() {
                                 required
                             ></textarea>
                         </div>
-                        <Button type="submit" style={{ width: '100%' }} icon={Send}>
+                        <Button type="submit" variant="secondary" style={{ width: '100%' }} icon={Send}>
                             Send Message
                         </Button>
                     </form>

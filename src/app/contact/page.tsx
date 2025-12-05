@@ -9,7 +9,8 @@ export default function Contact() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
+        website_url: '' // Honeypot field
     });
 
     const handleChange = (e: any) => {
@@ -43,7 +44,7 @@ export default function Contact() {
             });
 
             setSubmitStatus('success');
-            setFormData({ name: '', email: '', message: '' });
+            setFormData({ name: '', email: '', message: '', website_url: '' });
             alert("Message sent successfully!");
         } catch (error) {
             console.error("Error sending message:", error);
@@ -89,6 +90,20 @@ export default function Contact() {
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
                     <form onSubmit={handleSubmit}>
+                        {/* Honeypot Field - Hidden from users, visible to bots */}
+                        <div style={{ display: 'none' }}>
+                            <label htmlFor="website_url">Website</label>
+                            <input
+                                type="text"
+                                id="website_url"
+                                name="website_url"
+                                value={formData.website_url}
+                                onChange={handleChange}
+                                tabIndex={-1}
+                                autoComplete="off"
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label htmlFor="name" className="form-label">Name</label>
                             <input

@@ -106,11 +106,40 @@
 /* Active Line */
 .active-line {
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
+  /* Push it down slightly */
+  left: 0;
+  width: 100%;
   height: 1px;
   background: linear-gradient(to right, transparent, white, transparent);
   pointer-events: none;
-  transform-origin: left;
+  transform-origin: center;
+  animation: scaleX 0.3s ease forwards;
+}
+
+@keyframes scaleX {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ... (skipping mobile menu styles) ... */
+
+/* Subnav Wrapper */
+.subnav-wrapper {
+  position: absolute;
+  top: 60%;
+  /* Pull it up significantly to close the gap */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 39;
+  padding-top: 25px;
+  /* Increase bridge to ensure no mouse-leave gap */
+  width: max-content;
 }
 
 /* Mobile Menu Button */
@@ -200,11 +229,11 @@
 /* Subnav Wrapper */
 .subnav-wrapper {
   position: absolute;
-  top: 100%;
+  top: 60%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 39;
-  padding-top: 15px;
+  padding-top: 25px;
   /* Bridge for hover */
   width: max-content;
   /* Ensure it doesn't collapse */

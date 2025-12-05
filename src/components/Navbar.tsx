@@ -95,7 +95,9 @@ const Navbar = () => {
                                     className={`nav-link ${pathname === link.href ? 'active' : ''}`}
                                 >
                                     {link.name}
-                                    <span className="nav-link-dot"></span>
+                                    {pathname === link.href && (
+                                        <span className="active-line" />
+                                    )}
                                 </Link>
                                 {link.name === 'PROJECTS' && (
                                     <div className="subnav-wrapper">

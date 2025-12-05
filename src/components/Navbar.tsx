@@ -100,7 +100,20 @@ const Navbar = () => {
                                     )}
                                 </Link>
                                 {link.name === 'PROJECTS' && (
-                                    <div className="subnav-wrapper">
+                                    <div
+                                        className="subnav-wrapper"
+                                        ref={(el) => {
+                                            if (el) {
+                                                gsap.to(el, {
+                                                    width: isProjectsHovered ? "auto" : 0,
+                                                    opacity: isProjectsHovered ? 1 : 0,
+                                                    marginLeft: isProjectsHovered ? "1rem" : 0,
+                                                    duration: 0.4,
+                                                    ease: "power2.out"
+                                                });
+                                            }
+                                        }}
+                                    >
                                         <ProjectSubNav isOpen={isProjectsHovered} />
                                     </div>
                                 )}

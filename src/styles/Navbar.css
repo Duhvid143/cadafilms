@@ -129,18 +129,7 @@
 
 /* ... (skipping mobile menu styles) ... */
 
-/* Subnav Wrapper */
-.subnav-wrapper {
-  position: absolute;
-  top: 60%;
-  /* Pull it up significantly to close the gap */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 39;
-  padding-top: 25px;
-  /* Increase bridge to ensure no mouse-leave gap */
-  width: max-content;
-}
+
 
 /* Mobile Menu Button */
 .mobile-menu-btn {
@@ -224,19 +213,6 @@
 
 .mobile-nav-link:hover {
   color: #a1a1aa;
-}
-
-/* Subnav Wrapper */
-.subnav-wrapper {
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 39;
-  padding-top: 5px;
-  /* Bridge for hover */
-  width: max-content;
-  /* Ensure it doesn't collapse */
 }
 
 /* Ensure parent has relative positioning */

@@ -92,6 +92,9 @@ export default function About() {
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
                             The technical wizard behind CADA's most audacious visions. With roots in Adobe's creative labs and Framestore's Hollywood pipeline, David blends VFX mastery with narrative precision to push the boundaries of what's possible on screen.
                         </p>
+                        <a href="https://www.linkedin.com/in/david-lannon/" target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity">
+                            LinkedIn
+                        </a>
                     </div>
 
                     {/* Diamond Divider (only on desktop) */}
@@ -113,6 +116,9 @@ export default function About() {
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
                             A master of visual poetry and sound-driven experiences. With a foundation from NYU Tisch and Wieden+Kennedy, Cam directs high-stakes commercials and music videos that pulse with emotional depth and glitch-art aesthetics.
                         </p>
+                        <a href="https://www.linkedin.com/in/camcoop/" target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity">
+                            LinkedIn
+                        </a>
                     </div>
                 </div>
             </section>

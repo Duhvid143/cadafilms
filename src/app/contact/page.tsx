@@ -16,12 +16,42 @@ export default function Contact() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: any) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const subject = `New Contact from ${formData.name}`;
-        const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
-        window.location.href = `mailto:productionsbycada@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        setFormData({ name: '', email: '', message: '' });
+        setIsSubmitting(true);
+
+        // Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-6ncIAmdb-gTt95shPYApqdu3-oGdfqDEirCghU1nrPWOrvhYntRO-RvicJ7ilSfzZQ/exec";
+
+        if (!GOOGLE_SCRIPT_URL) {
+            alert("Please provide the Google Apps Script URL to connect the form.");
+            setIsSubmitting(false);
+            return;
+        }
+
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors", // Required for Google Apps Script
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+            alert("Message sent successfully!");
+        } catch (error) {
+            console.error("Error sending message:", error);
+            setSubmitStatus('error');
+            alert("Failed to send message. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -94,8 +124,8 @@ export default function Contact() {
                                 required
                             ></textarea>
                         </div>
-                        <Button type="submit" variant="secondary" style={{ width: '100%' }} icon={Send}>
-                            Send Message
+                        <Button type="submit" variant="secondary" style={{ width: '100%' }} icon={isSubmitting ? undefined : Send} disabled={isSubmitting}>
+                            {isSubmitting ? 'Sending...' : 'Send Message'}
                         </Button>
                     </form>
                 </motion.div>

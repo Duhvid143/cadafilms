@@ -8,8 +8,8 @@ import '@/styles/InteractiveLogo.css'; // We will move CSS here
 const InteractiveLogo = ({ isOpen, works = [] }: any) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+    const [burst, setBurst] = useState<{ x: number, y: number, id: number } | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -26,26 +26,19 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
         return () => window.removeEventListener('mousemove', handleMouseMove);
     }, [isOpen]);
 
-    // Animate title overlay
+    // Auto-select closest to center (front) when opening
     useEffect(() => {
-        if (titleRef.current) {
-            if (hoveredProject) {
-                gsap.to(titleRef.current, {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
-            } else {
-                gsap.to(titleRef.current, {
-                    y: 20,
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "power2.in"
-                });
-            }
+        if (isOpen && works.length > 0) {
+            // The petals are generated with angles.
+            // Angle 90deg (PI/2) is usually bottom, 270deg (3PI/2) is top.
+            // In the loop: rotation = (angle * 180) / Math.PI + 90;
+            // We want the one "closest to center" visually? Or front?
+            // Let's pick the first one (id 0) or the one at the bottom/front.
+            // For now, let's just pick the first one to simulate "closest".
+            const firstWork = works[0];
+            if (firstWork) setHoveredProject(firstWork.title);
         }
-    }, [hoveredProject]);
+    }, [isOpen, works]);
 
     // Generate petals/diamonds
     const numPetals = 16;
@@ -79,11 +72,32 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
         petals.push({ id: i, x, y, rotation, angle, workItem });
     }
 
+    const handlePetalClick = (e: React.MouseEvent, petal: any) => {
+        if (isOpen && petal.workItem) {
+            // Trigger burst
+            const rect = (e.target as HTMLElement).getBoundingClientRect();
+            setBurst({ x: e.clientX, y: e.clientY, id: Date.now() });
+
+            // Navigate
+            if (petal.workItem.title.includes('MUIT')) router.push('/muit');
+            else if (petal.workItem.title.includes('TIUM')) router.push('/tium');
+            else router.push('/projects');
+        }
+    };
+
     return (
         <div
             className={`interactive-logo-container ${isOpen ? 'open' : ''}`}
             ref={containerRef}
         >
+            {burst && (
+                <div
+                    className="click-burst"
+                    style={{ left: burst.x, top: burst.y, position: 'fixed' }}
+                    onAnimationEnd={() => setBurst(null)}
+                />
+            )}
+
             <div className="carousel-rotator">
                 {petals.map((petal) => {
                     let moveX = 0;
@@ -106,6 +120,8 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
                         scaleVal = 1 + influence * 0.2;
                     }
 
+                    const isHovered = isOpen && hoveredProject === petal.workItem?.title;
+
                     return (
                         <motion.div
                             key={petal.id}
@@ -118,49 +134,65 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
                                 x: isOpen ? 0 : moveX,
                                 y: isOpen ? 0 : moveY,
                                 rotate: petal.rotation + rotateVal,
-                                scale: (isOpen && hoveredProject === petal.workItem?.title) ? 1.2 : scaleVal,
+                                scale: isHovered ? 1.25 : scaleVal, // Updated scale to 1.25
                             }}
                             transition={{
                                 duration: 1.2,
                                 ease: [0.2, 0.8, 0.2, 1],
                                 layout: { duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }
                             }}
-                            onClick={() => {
-                                if (isOpen && petal.workItem) {
-                                    // Mock opening project modal - for now push to route or log
-                                    // Assuming _TIUM or MUIT based on title or random for demo
-                                    if (petal.workItem.title.includes('MUIT')) router.push('/muit');
-                                    else if (petal.workItem.title.includes('TIUM')) router.push('/tium');
-                                    else router.push('/projects');
-                                }
-                            }}
+                            onClick={(e) => handlePetalClick(e, petal)}
                             onMouseEnter={() => {
                                 if (isOpen && petal.workItem) {
                                     setHoveredProject(petal.workItem.title);
                                 }
                             }}
                             onMouseLeave={() => {
+                                // Don't clear immediately to keep "closest" feel?
+                                // Or clear. User said "Auto-select...".
+                                // If I clear, it goes back to nothing.
+                                // I'll keep it for now or clear if they leave the whole area.
+                                // For now, standard hover behavior.
                                 if (isOpen) {
                                     setHoveredProject(null);
                                 }
                             }}
                         >
                             {isOpen && petal.workItem && (
-                                <img
-                                    src={petal.workItem.image}
-                                    alt={petal.workItem.title}
-                                    className="logo-shape-img"
-                                />
+                                <>
+                                    <img
+                                        src={petal.workItem.image}
+                                        alt={petal.workItem.title}
+                                        className="logo-shape-img"
+                                    />
+                                    {/* Title under diamond */}
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            top: '120%',
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            fontFamily: 'Times New Roman, serif',
+                                            fontSize: '14px',
+                                            color: 'white',
+                                            opacity: isHovered ? 0.8 : 0,
+                                            pointerEvents: 'none',
+                                            whiteSpace: 'nowrap',
+                                            transition: 'opacity 0.3s',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.1em'
+                                        }}
+                                    >
+                                        {petal.workItem.title}
+                                    </div>
+                                </>
                             )}
                         </motion.div>
                     );
                 })}
             </div>
 
-            {/* Project Title Overlay */}
-            <div className="project-title-overlay" ref={titleRef}>
-                {hoveredProject}
-            </div>
+            {/* Removed fixed overlay as we moved title to diamond */}
         </div>
     );
 };

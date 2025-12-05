@@ -31,9 +31,12 @@
     text-decoration: none;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    padding: 6px 16px;
-    border-radius: 20px;
+    padding: 8px 20px;
+    /* Updated padding */
+    border-radius: 30px;
+    /* Updated radius */
     display: inline-block;
+    z-index: 1;
 }
 
 .subnav-link:hover {
@@ -48,12 +51,15 @@
 .subnav-link-bg {
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
+    /* Updated background */
     /* #ffffff1a */
-    border-radius: 20px;
+    border-radius: 30px;
+    /* Updated radius */
     z-index: -1;
-    transform-origin: left;
-    transform: scaleX(0);
+    opacity: 0;
+    /* Start hidden for fade-in */
+    /* Transform handled by GSAP */
 }
 
 .subnav-separator {

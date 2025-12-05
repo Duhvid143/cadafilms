@@ -24,6 +24,7 @@ const ProjectSubNav: React.FC<ProjectSubNavProps> = ({ isOpen }) => {
         if (tiumBgRef.current) {
             gsap.to(tiumBgRef.current, {
                 scaleX: isTium ? 1 : 0,
+                opacity: isTium ? 1 : 0,
                 duration: 0.4,
                 ease: "power2.out"
             });
@@ -32,6 +33,7 @@ const ProjectSubNav: React.FC<ProjectSubNavProps> = ({ isOpen }) => {
         if (muitBgRef.current) {
             gsap.to(muitBgRef.current, {
                 scaleX: isMuit ? 1 : 0,
+                opacity: isMuit ? 1 : 0,
                 duration: 0.4,
                 ease: "power2.out"
             });

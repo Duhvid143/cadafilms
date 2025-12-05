@@ -8,6 +8,12 @@
     padding: 8px 24px;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.home-links-container:hover {
+    opacity: 1;
 }
 
 .home {

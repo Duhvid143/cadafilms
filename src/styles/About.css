@@ -112,8 +112,7 @@
 
 .founder-card {
     text-align: center;
-    opacity: 0;
-    /* Initial state for GSAP */
+    /* opacity: 0; Removed to allow GSAP .from() to work correctly */
 }
 
 .photo-container {

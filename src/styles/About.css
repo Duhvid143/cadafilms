@@ -116,6 +116,8 @@
 }
 
 .photo-container {
+    display: block;
+    /* Ensure anchor tag behaves like a block for dimensions and margins */
     width: 200px;
     height: 200px;
     margin: 0 auto 2rem;

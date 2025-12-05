@@ -83,18 +83,20 @@ export default function About() {
                 <div className="team-grid">
                     {/* Founder 1 */}
                     <div className="founder-card text-center">
-                        <div className="photo-container relative mb-8">
+                        <a
+                            href="https://www.linkedin.com/in/david-lannon/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="photo-container relative mb-8"
+                        >
                             <img src="/assets/david-lannon.png" alt="David Lannon" className="photo-blob" />
                             <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
+                        </a>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">David Lannon</h3>
                         <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder & Director</p>
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
                             The technical wizard behind CADA's most audacious visions. With roots in Adobe's creative labs and Framestore's Hollywood pipeline, David blends VFX mastery with narrative precision to push the boundaries of what's possible on screen.
                         </p>
-                        <a href="https://www.linkedin.com/in/david-lannon/" target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity">
-                            LinkedIn
-                        </a>
                     </div>
 
                     {/* Diamond Divider (only on desktop) */}
@@ -106,19 +108,21 @@ export default function About() {
 
                     {/* Founder 2 */}
                     <div className="founder-card text-center">
-                        <div className="photo-container relative mb-8">
+                        <a
+                            href="https://www.linkedin.com/in/camcoop/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="photo-container relative mb-8"
+                        >
                             {/* Placeholder for Cam */}
                             <div className="photo-blob" style={{ backgroundColor: '#1a1a1a' }}></div>
                             <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
+                        </a>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">Cam Cooper</h3>
                         <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder & Director</p>
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
                             A master of visual poetry and sound-driven experiences. With a foundation from NYU Tisch and Wieden+Kennedy, Cam directs high-stakes commercials and music videos that pulse with emotional depth and glitch-art aesthetics.
                         </p>
-                        <a href="https://www.linkedin.com/in/camcoop/" target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity">
-                            LinkedIn
-                        </a>
                     </div>
                 </div>
             </section>

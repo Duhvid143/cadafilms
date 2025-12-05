@@ -183,11 +183,11 @@
 /* Subnav Wrapper */
 .subnav-wrapper {
   position: absolute;
-  top: 70%;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 39;
-  padding-top: 25px;
+  padding-top: 15px;
   /* Bridge for hover */
   width: max-content;
   /* Ensure it doesn't collapse */

@@ -33,9 +33,8 @@ export default function About() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                    Founded in 2020, CADA Productions was born from a passion for visual storytelling.
-                    We believe that every brand, artist, and individual has a unique story to tell,
-                    and our mission is to bring those stories to life through cinematic excellence.
+                    CADA Films is a visionary creative studio founded by co-directors Cam Cooper and David Lannon, where cinematic storytelling meets bold innovation.
+                    Drawing from decades of collaborative experience in motion design, commercial direction, and immersive media, we craft narratives that blur the lines between art and commerce.
                 </motion.p>
             </div>
 
@@ -50,9 +49,9 @@ export default function About() {
                 </motion.h2>
                 <div className="values-grid">
                     {[
-                        { title: "Innovation", desc: "We constantly push the boundaries of what's possible in filmmaking, utilizing the latest technology and techniques." },
-                        { title: "Authenticity", desc: "We strive to capture the true essence of our subjects, creating content that resonates on a human level." },
-                        { title: "Collaboration", desc: "We work closely with our clients, viewing every project as a partnership to achieve a shared vision." }
+                        { title: "Innovation", desc: "Pushing boundaries with tools like Houdini and Unreal Engine to engineer experiences that linger." },
+                        { title: "Authenticity", desc: "Crafting narratives that pulse with emotional depth and resonate on a human level." },
+                        { title: "Collaboration", desc: "Turning concepts into visceral realities through cross-disciplinary partnerships." }
                     ].map((value, index) => (
                         <motion.div
                             key={index}
@@ -79,9 +78,9 @@ export default function About() {
                             <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">David Lannon</h3>
-                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
+                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder & Director</p>
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
-                            David brings 10+ years in motion design, specializing in surreal narratives and VFX integration.
+                            The technical wizard behind CADA's most audacious visions. With roots in Adobe's creative labs and Framestore's Hollywood pipeline, David blends VFX mastery with narrative precision to push the boundaries of what's possible on screen.
                         </p>
                     </div>
 
@@ -100,9 +99,9 @@ export default function About() {
                             <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">Cam Cooper</h3>
-                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder</p>
+                        <p className="title text-lg uppercase tracking-wider opacity-70">Co-Founder & Director</p>
                         <p className="bio mt-6 text-sm leading-relaxed max-w-md mx-auto opacity-80">
-                            Cam's expertise in directing and sound design crafts immersive worlds for global brands.
+                            A master of visual poetry and sound-driven experiences. With a foundation from NYU Tisch and Wieden+Kennedy, Cam directs high-stakes commercials and music videos that pulse with emotional depth and glitch-art aesthetics.
                         </p>
                     </div>
                 </div>

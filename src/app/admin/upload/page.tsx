@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import logger from "@/lib/logger";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { storage, db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
@@ -93,21 +93,24 @@ export default function UploadPage() {
                 // Save initial metadata to trigger Cloud Function
                 // Use merge: true so we don't wipe out any data if the Cloud Function 
                 // has already processed the file (race condition fix)
-                await setDoc(doc(db, "episodes", safeEpisodeNumber), {
+
+                const docRef = doc(db, "episodes", safeEpisodeNumber);
+                const docSnap = await getDoc(docRef);
+
+                const dataToSet: any = {
                     title: safeTitle,
                     videoUrl: downloadURL,
                     sizeBytes: selectedFile.size,
                     uploadedAt: new Date().toISOString(),
-                    // We DO NOT set status here if it already exists, to avoid reverting "ready" to "processing"
-                    // But since we can't conditionally set fields in setDoc easily without reading first,
-                    // and we want to be fast, we will set status to processing BUT rely on merge.
-                    // Actually, to be safe, let's READ first or just rely on the fact that if it's "ready",
-                    // the timestamp check or AI data presence is key. 
-                    // Simpler fix: Just set basic metadata. The Cloud Function sets "status: ready".
-                    // If we overwrite "status: ready" with "processing", it breaks.
-                    // Let's NOT write status here if we can avoid it, OR we accept the race condition is rare with merge:true 
-                    status: "processing"
-                }, { merge: true });
+                };
+
+                // Only set status to processing if it's not already ready
+                // This prevents the race condition where we overwrite "ready" from the Cloud Function
+                if (!docSnap.exists() || docSnap.data()?.status !== 'ready') {
+                    dataToSet.status = "processing";
+                }
+
+                await setDoc(docRef, dataToSet, { merge: true });
 
                 toast.success("Upload Complete! AI is processing...");
                 setUploadSuccess(true);

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { signInWithEmailAndPassword, getMultiFactorResolver, PhoneAuthProvider, PhoneMultiFactorGenerator, RecaptchaVerifier } from "firebase/auth";
+import { signInWithEmailAndPassword, getMultiFactorResolver, PhoneAuthProvider, PhoneMultiFactorGenerator, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -43,6 +43,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
+            await setPersistence(auth, browserSessionPersistence);
             await signInWithEmailAndPassword(auth, email, password);
             toast.success("Welcome back!");
             router.push("/admin/upload");

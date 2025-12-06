@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link"; // Added Link import
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
-import { Settings, Upload, FileVideo, X, ArrowRight } from "lucide-react"; // Added ArrowRight
+import { Settings, Upload, FileVideo, X, ArrowRight, LayoutDashboard } from "lucide-react"; // Added LayoutDashboard
 import Button from "@/components/Button"; // Assuming we have this, or use standard button
 // import MFAEnrollment from "@/components/MFAEnrollment";
 // import AdminSettings from "@/components/AdminSettings";
@@ -225,6 +225,23 @@ export default function UploadPage() {
             alignItems: 'center',
             gap: '1rem',
             marginBottom: '2rem'
+        },
+        fab: {
+            position: 'fixed' as const,
+            bottom: '40px',
+            right: '40px',
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 10px 30px rgba(255,255,255,0.2)',
+            cursor: 'pointer',
+            transition: 'transform 0.2s ease',
+            zIndex: 50
         }
     };
 
@@ -238,14 +255,6 @@ export default function UploadPage() {
                             Upload and manage your video content
                         </p>
                     </div>
-
-                    <Link
-                        href="/admin/dashboard"
-                        className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all group"
-                    >
-                        <span className="text-sm font-medium tracking-wide">View Dashboard</span>
-                        <ArrowRight className="w-4 h-4 text-white/60 group-hover:text-white transition-colors" />
-                    </Link>
                 </div>
 
                 <div
@@ -435,6 +444,17 @@ export default function UploadPage() {
                     )}
                 </div>
             </div>
+
+            {/* View Dashboard FAB */}
+            <Link
+                href="/admin/dashboard"
+                style={styles.fab}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                title="View Dashboard"
+            >
+                <LayoutDashboard className="w-8 h-8" />
+            </Link>
         </div>
     );
 }

@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link"; // Added Link import
 import { toast } from "sonner";
 import Dropzone from "@/components/Dropzone";
-import { Settings, Upload, FileVideo, X, ArrowRight, LayoutDashboard } from "lucide-react"; // Added LayoutDashboard
+import { Settings, Upload, FileVideo, X, ArrowRight, LayoutDashboard, LogOut } from "lucide-react"; // Added LayoutDashboard
 import Button from "@/components/Button"; // Assuming we have this, or use standard button
 import AdminAuthGuard from "@/components/AdminAuthGuard";
+import { Episode } from "@/types";
 // import MFAEnrollment from "@/components/MFAEnrollment";
 // import AdminSettings from "@/components/AdminSettings";
 
@@ -87,7 +88,7 @@ export default function UploadPage() {
                 const docRef = doc(db, "episodes", safeEpisodeNumber);
                 const docSnap = await getDoc(docRef);
 
-                const dataToSet: any = {
+                const dataToSet: Partial<Episode> = {
                     title: safeTitle,
                     videoUrl: downloadURL,
                     sizeBytes: selectedFile.size,
@@ -234,6 +235,17 @@ export default function UploadPage() {
             transition: 'transform 0.2s ease',
             zIndex: 50
         }
+    }
+
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            toast.success("Logged out successfully");
+            router.push("/admin/login");
+        } catch (error) {
+            toast.error("Error logging out");
+        }
     };
 
     return (
@@ -247,6 +259,14 @@ export default function UploadPage() {
                                 Upload and manage your video content
                             </p>
                         </div>
+
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-6 py-3 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-full backdrop-blur-md transition-all group text-xs font-medium tracking-widest uppercase text-zinc-300 hover:text-white"
+                        >
+                            <span>Logout</span>
+                            <LogOut className="w-3 h-3 text-zinc-500 group-hover:text-white transition-colors" />
+                        </button>
                     </div>
 
                     <div

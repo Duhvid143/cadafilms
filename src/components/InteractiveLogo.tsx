@@ -5,7 +5,17 @@ import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import '@/styles/InteractiveLogo.css'; // We will move CSS here
 
-const InteractiveLogo = ({ isOpen, works = [] }: any) => {
+interface WorkItem {
+    title: string;
+    image: string;
+}
+
+interface InteractiveLogoProps {
+    isOpen: boolean;
+    works?: WorkItem[];
+}
+
+const InteractiveLogo = ({ isOpen, works = [] }: InteractiveLogoProps) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     const [burst, setBurst] = useState<{ x: number, y: number, id: number } | null>(null);
@@ -72,7 +82,7 @@ const InteractiveLogo = ({ isOpen, works = [] }: any) => {
         petals.push({ id: i, x, y, rotation, angle, workItem });
     }
 
-    const handlePetalClick = (e: React.MouseEvent, petal: any) => {
+    const handlePetalClick = (e: React.MouseEvent, petal: { workItem: WorkItem | null }) => {
         if (isOpen && petal.workItem) {
             // Trigger burst
             const rect = (e.target as HTMLElement).getBoundingClientRect();

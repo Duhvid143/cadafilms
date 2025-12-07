@@ -8,8 +8,8 @@ if (!project) throw new Error("GCLOUD_PROJECT environment variable is missing");
 const vertexAI = new VertexAI({ project, location: "us-east1" });
 const model = vertexAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
-export async function analyzeVideo(bucketName: string, filePath: string, epId: string) {
-    logger.info("Starting AI analysis", { epId, bucketName, filePath });
+export async function analyzeVideo(bucketName: string, filePath: string, epId: string, mimeType: string) {
+    logger.info("Starting AI analysis", { epId, bucketName, filePath, mimeType });
     const gcsUri = `gs://${bucketName}/${filePath}`;
 
     const prompt = `
@@ -24,7 +24,7 @@ export async function analyzeVideo(bucketName: string, filePath: string, epId: s
 
     try {
         const result = await model.generateContent({
-            contents: [{ role: "user", parts: [{ file_data: { file_uri: gcsUri, mime_type: "video/mp4" } }, { text: prompt }] }],
+            contents: [{ role: "user", parts: [{ file_data: { file_uri: gcsUri, mime_type: mimeType } }, { text: prompt }] }],
         });
 
         const response = result.response;

@@ -1,62 +1,58 @@
-import { Podcast } from "podcast";
 import * as admin from "firebase-admin";
+import * as logger from "firebase-functions/logger";
+import { Bucket } from "@google-cloud/storage";
 
-export async function generateRSS(bucketName: string) {
-    console.log("Generating RSS feed...");
+export async function generateRSS(bucket: Bucket) {
+    logger.info("Generating RSS feed...");
+
+    const siteUrl = "https://cadafilms.com"; // Configure this
+
+    const rssHeader = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CADA Films Podcast</title>
+    <link>${siteUrl}</link>
+    <language>en-us</language>
+    <itunes:author>CADA Films</itunes:author>
+    <description>Latest episodes from CADA Films</description>
+    <itunes:image href="${siteUrl}/logo.png"/>
+`;
+
     try {
-        const feed = new Podcast({
-            title: "MUIT",
-            description: "Weekly insights from CADA Productions.",
-            feedUrl: "https://cadafilms.com/rss.xml",
-            siteUrl: "https://cadafilms.com",
-            author: "CADA",
-            imageUrl: "https://cadafilms.com/artwork.jpg",
-            itunesOwner: { name: "CADA", email: "you@cadafilms.com" }
-        });
+        logger.info("Querying Firestore for episodes...");
+        const snapshot = await admin.firestore()
+            .collection("episodes")
+            .where("status", "==", "ready")
+            .orderBy("uploadedAt", "desc")
+            .get();
 
-        console.log("Querying Firestore for episodes...");
-        const snapshot = await admin.firestore().collection("episodes").get();
-        console.log(`Found ${snapshot.size} episodes.`);
+        logger.info(`Found ${snapshot.size} episodes.`);
 
-        const episodes: any[] = [];
+        let items = "";
+
         snapshot.forEach(doc => {
-            episodes.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+            items += `
+    <item>
+      <title>${data.title}</title>
+      <enclosure url="${data.videoUrl}" type="video/mp4" length="${data.sizeBytes}"/>
+      <guid>${doc.id}</guid>
+      <pubDate>${new Date(data.uploadedAt).toUTCString()}</pubDate>
+      <description>${data.summary || data.description || ""}</description>
+    </item>`;
         });
 
-        // Sort in memory
-        episodes.sort((a, b) => {
-            const dateA = new Date(a.date || a.uploadedAt).getTime();
-            const dateB = new Date(b.date || b.uploadedAt).getTime();
-            return dateB - dateA;
+        const rssContent = `${rssHeader}${items}
+  </channel>
+</rss>`;
+
+        await bucket.file("public/feed.xml").save(rssContent, {
+            contentType: "application/xml",
+            public: true
         });
 
-        for (const data of episodes) {
-            if (data.status === "ready") {
-                feed.addItem({
-                    title: data.title,
-                    description: data.description || data.summary,
-                    url: `https://cadafilms.com/muit/${data.id}`,
-                    date: data.date || data.uploadedAt,
-                    enclosure: {
-                        url: data.videoUrl,
-                        type: "video/mp4",
-                        size: data.sizeBytes
-                    },
-                    itunesDuration: data.durationSeconds
-                });
-            }
-        }
-
-        const xml = feed.buildXml();
-        const bucket = admin.storage().bucket(bucketName);
-        await bucket.file("public/feed.xml").save(xml, {
-            public: true,
-            contentType: "application/rss+xml"
-        });
-        console.log("RSS feed generated successfully");
+        logger.info("RSS feed generated successfully");
     } catch (error) {
-        console.error("Error generating RSS feed:", error);
-        // Try to log the project ID we are connected to
-        console.error("Current Project ID:", admin.app().options.projectId);
+        logger.error("Error generating RSS", error);
     }
 }

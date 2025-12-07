@@ -19,7 +19,8 @@ export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
         onDrop,
         accept: {
             'video/mp4': ['.mp4'],
-            'video/quicktime': ['.mov']
+            'video/quicktime': ['.mov'],
+            'audio/mpeg': ['.mp3']
         },
         maxFiles: 1,
         disabled
@@ -44,7 +45,7 @@ export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
                         {isDragActive ? "Drop it like it's hot" : "Drag & drop your episode here"}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
-                        or click to select (MP4, MOV)
+                        or click to select (MP4, MOV, MP3)
                     </p>
                 </div>
             </div>

@@ -42,7 +42,8 @@ export default function MFAEnrollment() {
             setVerificationId(vId);
             setStep('code');
             toast.success("Verification code sent!");
-        } catch (error: any) {
+        } catch (err: unknown) {
+            const error = err as Error;
             console.error(error);
             toast.error(error.message || "Failed to send code");
         } finally {
@@ -60,7 +61,7 @@ export default function MFAEnrollment() {
             await multiFactor(auth.currentUser!).enroll(multiFactorAssertion, "Admin Phone");
             toast.success("2FA Enabled Successfully!");
             setStep('initial'); // Or 'success' state
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             toast.error("Invalid code or enrollment failed");
         } finally {

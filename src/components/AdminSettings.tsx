@@ -35,7 +35,8 @@ export default function AdminSettings({ isOpen, onClose, user }: AdminSettingsPr
             toast.success("Verification email sent! Please check your new inbox.");
             setNewEmail('');
             onClose();
-        } catch (error: any) {
+        } catch (err: unknown) {
+            const error = err as { code?: string; message: string }; // Basic shape for Firebase errors
             console.error(error);
             if (error.code === 'auth/requires-recent-login') {
                 toast.error("Security Requirement: Please log out and log back in to update your email.", {

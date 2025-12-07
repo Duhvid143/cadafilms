@@ -20,6 +20,7 @@ export const processEpisode = onObjectFinalized({
     if (!filePath.startsWith("episodes/")) return; // Only process episodes
 
     const bucket = event.data.bucket;
+    const contentType = event.data.contentType;
     const fileName = filePath.split("/").pop();
     const episodeId = fileName?.split(".")[0];
 
@@ -33,7 +34,7 @@ export const processEpisode = onObjectFinalized({
     // 1. Parallel Processing: Drive Backup + AI Analysis
     await Promise.all([
         backupToDrive(bucket, filePath, fileName),
-        analyzeVideo(bucket, filePath, episodeId)
+        analyzeVideo(bucket, filePath, episodeId, contentType || "video/mp4")
     ]);
 
     // 2. Mark as Ready

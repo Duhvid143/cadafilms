@@ -21,28 +21,13 @@ import {
     Plus,
     Copy,
     Youtube,
-    Twitter
+    Twitter,
+    LogOut
 } from "lucide-react";
 import { toast } from "sonner";
 import AdminAuthGuard from "@/components/AdminAuthGuard";
 
-interface Chapter {
-    time: string;
-    title: string;
-}
-
-interface Episode {
-    id: string;
-    title: string;
-    uploadedAt: string; // ISO string or timestamp
-    status: string;
-    videoUrl?: string;
-    summary?: string;
-    description?: string;
-    chapters?: Chapter[];
-    keywords?: string[] | string; // Handle potential string return from AI
-    showNotes?: string[];
-}
+import { Episode } from "@/types";
 
 export default function DashboardPage() {
     const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -228,6 +213,18 @@ export default function DashboardPage() {
         }
     };
 
+
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            toast.success("Logged out successfully");
+            router.push("/admin/login");
+        } catch (error) {
+            toast.error("Error logging out");
+        }
+    };
+
     return (
         <AdminAuthGuard>
             <div style={styles.page}>
@@ -260,6 +257,14 @@ export default function DashboardPage() {
                                 <span className="text-xs font-medium tracking-widest uppercase text-zinc-300 group-hover:text-white">RSS Feed</span>
                                 <ExternalLink className="w-3 h-3 text-zinc-500 group-hover:text-white transition-colors" />
                             </a>
+
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 px-6 py-3 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-full backdrop-blur-md transition-all group"
+                            >
+                                <span className="text-xs font-medium tracking-widest uppercase text-zinc-300 group-hover:text-white">Logout</span>
+                                <LogOut className="w-3 h-3 text-zinc-500 group-hover:text-white transition-colors" />
+                            </button>
                         </div>
                     </div>
 

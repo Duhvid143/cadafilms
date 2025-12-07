@@ -3,7 +3,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import '@/styles/Button.css'; // We will move CSS here
 
-const Button = ({ children, onClick, type = 'button', variant = 'primary', className = '', icon: Icon }: any) => {
+import { LucideIcon } from 'lucide-react';
+
+interface ButtonProps {
+    children: React.ReactNode;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    type?: 'button' | 'submit' | 'reset';
+    variant?: 'primary' | 'secondary' | 'outline' | 'ghost'; // Added common variants
+    className?: string;
+    icon?: LucideIcon;
+    disabled?: boolean;
+    style?: React.CSSProperties;
+}
+
+const Button = ({ children, onClick, type = 'button', variant = 'primary', className = '', icon: Icon, disabled, style }: ButtonProps) => {
     return (
         <motion.button
             className={`btn btn-${variant} ${className}`}

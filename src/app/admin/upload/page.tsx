@@ -262,17 +262,10 @@ export default function UploadPage() {
 
                         <button
                             onClick={handleLogout}
-                            style={{
-                                backgroundColor: '#ffffff',
-                                color: '#000000',
-                                border: '2px solid #ffffff',
-                                opacity: 1,
-                                visibility: 'visible'
-                            }}
-                            className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase shadow-lg hover:bg-gray-200 hover:border-gray-200 scale-100"
+                            className="flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-white border border-white/50 hover:border-white rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-white hover:text-black"
                         >
                             <span>Logout</span>
-                            <LogOut className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
+                            <LogOut className="w-4 h-4 text-white group-hover:text-black transition-colors" />
                         </button>
                     </div>
 

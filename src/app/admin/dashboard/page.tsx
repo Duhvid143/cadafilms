@@ -260,10 +260,10 @@ export default function DashboardPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-white shadow-lg"
+                                className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-200 border border-white hover:border-gray-200 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-black shadow-lg shadow-white/10"
                             >
                                 <span>Logout</span>
-                                <LogOut className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+                                <LogOut className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
                             </button>
                         </div>
                     </div>

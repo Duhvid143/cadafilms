@@ -261,17 +261,40 @@ export default function DashboardPage() {
                             <button
                                 onClick={handleLogout}
                                 style={{
-                                    backgroundColor: 'transparent',
-                                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                                    color: '#ffffff'
+                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    backdropFilter: 'blur(10px)',
+                                    padding: '12px 24px',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    letterSpacing: '0.1em',
+                                    textTransform: 'uppercase',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    transition: 'all 0.3s ease',
+                                    cursor: 'pointer',
+                                    outline: 'none'
                                 }}
-                                className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase hover:bg-white hover:border-white hover:text-black"
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                                    e.currentTarget.style.color = '#ffffff';
+                                    e.currentTarget.style.transform = 'translateY(-1px)';
+                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                    e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
                             >
                                 <span>Logout</span>
-                                <LogOut
-                                    className="w-4 h-4 transition-colors group-hover:text-black"
-                                    style={{ color: 'inherit' }}
-                                />
+                                <LogOut size={14} />
                             </button>
                         </div>
                     </div>

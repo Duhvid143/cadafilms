@@ -262,10 +262,10 @@ export default function UploadPage() {
 
                         <button
                             onClick={handleLogout}
-                            className="flex items-center gap-2 px-6 py-3 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 rounded-full backdrop-blur-md transition-all group text-xs font-medium tracking-widest uppercase text-zinc-300 hover:text-white"
+                            className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-white shadow-lg"
                         >
                             <span>Logout</span>
-                            <LogOut className="w-3 h-3 text-zinc-500 group-hover:text-white transition-colors" />
+                            <LogOut className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                         </button>
                     </div>
 

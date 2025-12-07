@@ -260,10 +260,18 @@ export default function DashboardPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-white border border-white/50 hover:border-white rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-white hover:text-black"
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                                    color: '#ffffff'
+                                }}
+                                className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase hover:bg-white hover:border-white hover:text-black"
                             >
                                 <span>Logout</span>
-                                <LogOut className="w-4 h-4 text-white group-hover:text-black transition-colors" />
+                                <LogOut
+                                    className="w-4 h-4 transition-colors group-hover:text-black"
+                                    style={{ color: 'inherit' }}
+                                />
                             </button>
                         </div>
                     </div>

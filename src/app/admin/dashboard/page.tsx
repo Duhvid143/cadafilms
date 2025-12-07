@@ -260,7 +260,14 @@ export default function DashboardPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-200 border border-white hover:border-gray-200 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase text-black shadow-lg shadow-white/10"
+                                style={{
+                                    backgroundColor: '#ffffff',
+                                    color: '#000000',
+                                    border: '2px solid #ffffff',
+                                    opacity: 1,
+                                    visibility: 'visible'
+                                }}
+                                className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-all group text-xs font-bold tracking-widest uppercase shadow-lg hover:bg-gray-200 hover:border-gray-200 scale-100"
                             >
                                 <span>Logout</span>
                                 <LogOut className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />

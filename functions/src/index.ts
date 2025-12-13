@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 import { onObjectFinalized } from "firebase-functions/v2/storage";
+import { onDocumentWritten } from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
 import { generateRSS } from "./rss";
 import { backupToDrive } from "./drive";
@@ -48,7 +49,12 @@ export const processEpisode = onObjectFinalized({
     // Note: In a real app, you might trigger this separately or wait for AI
     // For now, we run it here, but ideally AI analysis updates DB which triggers another function
     // or we wait for AI to finish (which we do above with Promise.all)
-    await generateRSS(bucket);
+    await generateRSS(admin.storage().bucket(bucket));
 
     logger.info("Processing complete", { episodeId });
+});
+
+export const updateRSSEpisode = onDocumentWritten("episodes/{episodeId}", async (event) => {
+    logger.info("Episode changed, regenerating RSS feed...");
+    await generateRSS();
 });

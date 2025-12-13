@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as logger from "firebase-functions/logger";
 import { Bucket } from "@google-cloud/storage";
 
-export async function generateRSS(bucket: Bucket) {
+export async function generateRSS(bucket: Bucket = admin.storage().bucket()) {
     logger.info("Generating RSS feed...");
 
     const siteUrl = "https://cadafilms.com"; // Configure this
@@ -48,7 +48,10 @@ export async function generateRSS(bucket: Bucket) {
 
         await bucket.file("public/feed.xml").save(rssContent, {
             contentType: "application/xml",
-            public: true
+            public: true,
+            metadata: {
+                cacheControl: "public, max-age=0, no-transform"
+            }
         });
 
         logger.info("RSS feed generated successfully");

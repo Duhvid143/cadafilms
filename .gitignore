@@ -21,6 +21,7 @@ firebase-debug.log*
 !package.json
 !tsconfig.json
 !firebase.json
+!firestore.indexes.json
 !cors.json
 !functions/package.json
 !functions/tsconfig.json

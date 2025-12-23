@@ -1,8 +1,5 @@
 import * as admin from "firebase-admin";
 import { google } from "googleapis";
-import * as path from "path";
-import * as fs from "fs";
-import * as os from "os";
 import * as logger from "firebase-functions/logger";
 
 // OAuth2 Configuration
@@ -20,15 +17,12 @@ oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 export async function backupToDrive(bucketName: string, filePath: string, fileName: string) {
-    logger.info("Backing up to Google Drive", { fileName });
+    logger.info("Backing up to Google Drive (Streaming)", { fileName });
 
-    const tempFilePath = path.join(os.tmpdir(), fileName);
     const bucket = admin.storage().bucket(bucketName);
+    const file = bucket.file(filePath);
 
     try {
-        logger.debug("Downloading file", { tempFilePath });
-        await bucket.file(filePath).download({ destination: tempFilePath });
-
         // Use the folder ID from env or fallback to root
         const folderId = process.env.DRIVE_FOLDER_ID;
 
@@ -37,9 +31,14 @@ export async function backupToDrive(bucketName: string, filePath: string, fileNa
             parents: folderId ? [folderId] : []
         };
 
+        // Create a pass-through stream to pipe GCS -> Drive
+        // GCS createReadStream() returns a readable stream
+        const gcsStream = file.createReadStream()
+            .on('error', (err) => logger.error("GCS Stream Error", err));
+
         const media = {
             mimeType: 'video/mp4',
-            body: fs.createReadStream(tempFilePath)
+            body: gcsStream
         };
 
         try {
@@ -59,9 +58,16 @@ export async function backupToDrive(bucketName: string, filePath: string, fileNa
             if (folderId) {
                 logger.info("Retrying upload to root directory...");
                 delete fileMetadata.parents;
+
+                // Re-create stream for retry as the previous one might be consumed/errored
+                const retryStream = file.createReadStream();
+
                 const retryResponse = await drive.files.create({
                     requestBody: fileMetadata,
-                    media: media,
+                    media: {
+                        mimeType: 'video/mp4',
+                        body: retryStream
+                    },
                     fields: 'id',
                     supportsAllDrives: true
                 });
@@ -73,9 +79,6 @@ export async function backupToDrive(bucketName: string, filePath: string, fileNa
 
     } catch (error) {
         logger.error("Error backing up to Drive", { error });
-    } finally {
-        if (fs.existsSync(tempFilePath)) {
-            fs.unlinkSync(tempFilePath);
-        }
+        throw error; // Re-throw so Promise.allSettled catches it
     }
 }

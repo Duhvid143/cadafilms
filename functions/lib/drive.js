@@ -3,9 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.backupToDrive = backupToDrive;
 const admin = require("firebase-admin");
 const googleapis_1 = require("googleapis");
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
 const logger = require("firebase-functions/logger");
 // OAuth2 Configuration
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -18,21 +15,23 @@ const oauth2Client = new googleapis_1.google.auth.OAuth2(CLIENT_ID, CLIENT_SECRE
 oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 const drive = googleapis_1.google.drive({ version: 'v3', auth: oauth2Client });
 async function backupToDrive(bucketName, filePath, fileName) {
-    logger.info("Backing up to Google Drive", { fileName });
-    const tempFilePath = path.join(os.tmpdir(), fileName);
+    logger.info("Backing up to Google Drive (Streaming)", { fileName });
     const bucket = admin.storage().bucket(bucketName);
+    const file = bucket.file(filePath);
     try {
-        logger.debug("Downloading file", { tempFilePath });
-        await bucket.file(filePath).download({ destination: tempFilePath });
         // Use the folder ID from env or fallback to root
         const folderId = process.env.DRIVE_FOLDER_ID;
         const fileMetadata = {
             name: fileName,
             parents: folderId ? [folderId] : []
         };
+        // Create a pass-through stream to pipe GCS -> Drive
+        // GCS createReadStream() returns a readable stream
+        const gcsStream = file.createReadStream()
+            .on('error', (err) => logger.error("GCS Stream Error", err));
         const media = {
             mimeType: 'video/mp4',
-            body: fs.createReadStream(tempFilePath)
+            body: gcsStream
         };
         try {
             if (folderId)
@@ -51,9 +50,14 @@ async function backupToDrive(bucketName, filePath, fileName) {
             if (folderId) {
                 logger.info("Retrying upload to root directory...");
                 delete fileMetadata.parents;
+                // Re-create stream for retry as the previous one might be consumed/errored
+                const retryStream = file.createReadStream();
                 const retryResponse = await drive.files.create({
                     requestBody: fileMetadata,
-                    media: media,
+                    media: {
+                        mimeType: 'video/mp4',
+                        body: retryStream
+                    },
                     fields: 'id',
                     supportsAllDrives: true
                 });
@@ -66,11 +70,7 @@ async function backupToDrive(bucketName, filePath, fileName) {
     }
     catch (error) {
         logger.error("Error backing up to Drive", { error });
-    }
-    finally {
-        if (fs.existsSync(tempFilePath)) {
-            fs.unlinkSync(tempFilePath);
-        }
+        throw error; // Re-throw so Promise.allSettled catches it
     }
 }
 //# sourceMappingURL=drive.js.map

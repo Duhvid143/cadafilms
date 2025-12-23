@@ -14,7 +14,7 @@ logger.info("Firebase Admin Initialized", { projectId: admin.app().options.proje
 export const processEpisode = onObjectFinalized({
     cpu: 2,
     memory: "8GiB",
-    timeoutSeconds: 540, // 9 mins
+    timeoutSeconds: 3600, // 1 hour
     region: "us-east1"
 }, async (event) => {
     const filePath = event.data.name;
@@ -33,10 +33,17 @@ export const processEpisode = onObjectFinalized({
     logger.info("Processing episode", { episodeId, fileName });
 
     // 1. Parallel Processing: Drive Backup + AI Analysis
-    await Promise.all([
+    // Use allSettled so one failure doesn't stop the other
+    const results = await Promise.allSettled([
         backupToDrive(bucket, filePath, fileName),
         analyzeVideo(bucket, filePath, episodeId, contentType || "video/mp4")
     ]);
+
+    results.forEach((result, index) => {
+        if (result.status === "rejected") {
+            logger.error(`Task ${index === 0 ? "Backup" : "AI"} failed`, { reason: result.reason });
+        }
+    });
 
     // 2. Mark as Ready
     logger.info("Marking episode as ready", { episodeId });

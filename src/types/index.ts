@@ -23,6 +23,8 @@ export interface Article {
     slug: string;
     coverImageUrl: string;
     content: string;
+    author?: string; // New field
+    hideTitleOverlay?: boolean; // New field
     createdAt: string;
     updatedAt: string;
 }

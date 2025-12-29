@@ -55,29 +55,33 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
     return (
         <div className="min-h-screen bg-[#050505] text-white pb-20">
             {/* Hero Image */}
-            <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden">
+            <div className="relative w-full h-[35vh] md:h-[60vh] overflow-hidden">
                 <img
                     src={article.coverImageUrl}
                     alt={article.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/30" />
 
                 <div className="absolute top-8 left-8 z-10">
-                    <Link href="/tium" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-md px-4 py-2 rounded-full">
+                    <Link href="/tium" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/60 backdrop-blur-md px-4 py-2 rounded-full">
                         <ArrowLeft size={20} />
                         <span>Back</span>
                     </Link>
                 </div>
 
                 <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 max-w-5xl mx-auto">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-light mb-4 text-white leading-tight"
-                    >
-                        {article.title}
-                    </motion.h1>
+                    {!article.hideTitleOverlay && (
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-4xl md:text-6xl font-light mb-4 text-white leading-tight"
+                        >
+                            {article.title}
+                        </motion.h1>
+                    )}
+                    {article.hideTitleOverlay && <h1 className="sr-only">{article.title}</h1>}
+
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -86,7 +90,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                     >
                         <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         <span>•</span>
-                        <span>By TIUM</span>
+                        <span>By {article.author || "TIUM"}</span>
                     </motion.div>
                 </div>
             </div>

@@ -32,6 +32,8 @@ function UploadContent() {
     // -- Article State --
     const [articleTitle, setArticleTitle] = useState("");
     const [slug, setSlug] = useState("");
+    const [author, setAuthor] = useState("");
+    const [hideTitleOverlay, setHideTitleOverlay] = useState(false);
     const [content, setContent] = useState("");
 
     // Initialize from URL query param
@@ -173,26 +175,36 @@ function UploadContent() {
                     setUploading(false);
                 },
                 async () => {
-                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    try {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-                    await addDoc(collection(db, "articles"), {
-                        title: articleTitle.trim(),
-                        slug: slug.trim(),
-                        coverImageUrl: downloadURL,
-                        content: content,
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    });
+                        await addDoc(collection(db, "articles"), {
+                            title: articleTitle.trim(),
+                            slug: slug.trim(),
+                            coverImageUrl: downloadURL,
+                            content: content,
+                            author: author.trim(),
+                            hideTitleOverlay: hideTitleOverlay,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        });
 
-                    toast.success("Article published successfully!");
-                    setUploading(false);
+                        toast.success("Article published successfully!");
+                        setUploading(false);
 
-                    // Reset
-                    setArticleTitle("");
-                    setSlug("");
-                    setContent("");
-                    setSelectedFile(null);
-                    setProgress(0);
+                        // Reset
+                        setArticleTitle("");
+                        setSlug("");
+                        setAuthor("");
+                        setHideTitleOverlay(false);
+                        setContent("");
+                        setSelectedFile(null);
+                        setProgress(0);
+                    } catch (err: any) {
+                        console.error('Error saving article metadata:', err);
+                        toast.error("Upload finished but failed to save article data: " + err.message);
+                        setUploading(false);
+                    }
                 }
             );
 
@@ -503,6 +515,32 @@ function UploadContent() {
                                 style={{ ...styles.input, color: '#666', marginBottom: '2rem' }}
                                 disabled
                             />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                                <div>
+                                    <label style={styles.label}>Author</label>
+                                    <input
+                                        type="text"
+                                        value={author}
+                                        onChange={(e) => setAuthor(e.target.value)}
+                                        placeholder="e.g. David Lannon"
+                                        style={styles.input}
+                                        disabled={uploading}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', height: '100%', paddingTop: '1.5rem' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', color: '#fff' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={hideTitleOverlay}
+                                            onChange={(e) => setHideTitleOverlay(e.target.checked)}
+                                            style={{ width: '20px', height: '20px', accentColor: '#ffffff' }}
+                                            disabled={uploading}
+                                        />
+                                        <span style={{ fontSize: '0.9rem', color: '#ccc' }}>Hide Title Overlay (Use if cover has text)</span>
+                                    </label>
+                                </div>
+                            </div>
 
                             <label style={styles.label}>Cover Image</label>
                             {!selectedFile ? (

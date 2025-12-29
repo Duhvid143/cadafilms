@@ -521,7 +521,7 @@ function DashboardContent() {
                                                 className="group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 transition-all hover:-translate-y-1 hover:shadow-2xl"
                                             >
                                                 {/* Image */}
-                                                <div className="aspect-[4/3] w-full relative overflow-hidden bg-zinc-900">
+                                                <div className="h-48 w-full relative overflow-hidden bg-zinc-900">
                                                     <img
                                                         src={article.coverImageUrl}
                                                         alt={article.title}

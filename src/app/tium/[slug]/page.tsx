@@ -100,10 +100,17 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="max-w-3xl mx-auto px-6 md:px-0 mt-12"
+                className="max-w-2xl mx-auto px-6 md:px-0 mt-16 mb-32"
             >
-                <article className="prose prose-invert prose-lg max-w-none">
-                    <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.8', color: '#e0e0e0', fontSize: '1.1rem' }}>
+                <article className="prose prose-invert prose-xl max-w-none">
+                    <div style={{
+                        whiteSpace: 'pre-wrap',
+                        lineHeight: '2',
+                        color: '#e2e2e2',
+                        fontSize: '1.25rem',
+                        fontFamily: '"Times New Roman", Times, serif',
+                        fontWeight: 400
+                    }}>
                         {article.content}
                     </div>
                 </article>

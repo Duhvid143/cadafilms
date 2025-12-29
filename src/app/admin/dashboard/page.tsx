@@ -254,7 +254,7 @@ function DashboardContent() {
             WebkitBackdropFilter: 'blur(12px)',
         },
         toggleContainer: {
-            display: 'flex',
+            display: 'inline-flex',
             gap: '1rem',
             marginBottom: '1rem',
             padding: '4px',

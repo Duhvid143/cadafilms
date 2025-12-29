@@ -240,7 +240,7 @@ function UploadContent() {
             lineHeight: 1
         },
         toggleContainer: {
-            display: 'flex',
+            display: 'inline-flex',
             gap: '1rem',
             marginBottom: '1rem',
             padding: '4px',
@@ -506,7 +506,13 @@ function UploadContent() {
 
                             <label style={styles.label}>Cover Image</label>
                             {!selectedFile ? (
-                                <Dropzone onFileSelect={handleFileSelect} disabled={uploading} />
+                                <Dropzone
+                                    onFileSelect={handleFileSelect}
+                                    disabled={uploading}
+                                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] }}
+                                    label="Drag & drop cover image"
+                                    subLabel="JPG, PNG, WEBP"
+                                />
                             ) : (
                                 <div style={styles.fileCard}>
                                     <div className="p-3 bg-blue-500/20 rounded-full text-blue-400">

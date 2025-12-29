@@ -1,14 +1,27 @@
 "use client";
 import { useCallback } from "react";
-import { useDropzone } from "react-dropzone"; // Need to install react-dropzone
+import { useDropzone, Accept } from "react-dropzone";
 import { UploadCloud } from "lucide-react";
 
 interface DropzoneProps {
     onFileSelect: (file: File) => void;
     disabled?: boolean;
+    accept?: Accept;
+    label?: string;
+    subLabel?: string;
 }
 
-export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
+export default function Dropzone({
+    onFileSelect,
+    disabled,
+    accept = {
+        'video/mp4': ['.mp4'],
+        'video/quicktime': ['.mov'],
+        'audio/mpeg': ['.mp3']
+    },
+    label = "Drag & drop your episode here",
+    subLabel = "or click to select (MP4, MOV, MP3)"
+}: DropzoneProps) {
     const onDrop = useCallback((acceptedFiles: File[]) => {
         if (acceptedFiles?.length > 0) {
             onFileSelect(acceptedFiles[0]);
@@ -17,11 +30,7 @@ export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: {
-            'video/mp4': ['.mp4'],
-            'video/quicktime': ['.mov'],
-            'audio/mpeg': ['.mp3']
-        },
+        accept,
         maxFiles: 1,
         disabled
     });
@@ -42,10 +51,10 @@ export default function Dropzone({ onFileSelect, disabled }: DropzoneProps) {
                 </div>
                 <div>
                     <p className="text-lg font-medium text-white">
-                        {isDragActive ? "Drop it like it's hot" : "Drag & drop your episode here"}
+                        {isDragActive ? "Drop it like it's hot" : label}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
-                        or click to select (MP4, MOV, MP3)
+                        {subLabel}
                     </p>
                 </div>
             </div>

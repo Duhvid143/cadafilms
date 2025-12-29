@@ -27,10 +27,11 @@ async function analyzeVideo(bucketName, filePath, epId, mimeType) {
     - Write the 'summary' and 'description' in the **FIRST PERSON PLURAL ("We", "Us")**. 
     - Write as if the two hosts (Cam and David) are writing this together for their audience. 
     - Do NOT use phrases like "The hosts discuss..." or "Cam and David talk about...". Instead say "We discuss..." or "In this episode, we talk about...".
+    - **FORMATTING**: Write the 'description' as proper HTML using <p> tags for paragraphs.
 
     Return ONLY a valid JSON object with these fields:
-    - summary: A 2-sentence hook.
-    - description: A detailed paragraph covering the full episode content.
+    - summary: A 2-sentence hook (Plain text).
+    - description: A detailed HTML paragraph(s) covering the full episode content.
     - showNotes: A list of bullet points with timestamps (e.g., "01:30 - Topic", "01:15:00 - Later Topic").
     - chapters: An array of objects { time: "MM:SS", title: "Chapter Title" }.
     - keywords: An array of 5-10 tags.

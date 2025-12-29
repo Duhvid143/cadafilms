@@ -18,13 +18,15 @@ async function generateRSS(bucket = admin.storage().bucket()) {
         webMaster: "you@cadafilms.com", // Fallback
         copyright: "2025 CADA",
         language: "en",
-        categories: ["Arts", "TV & Film"], // Add relevant categories
+        categories: ["Society & Culture"], // Matched to Spotify feed
         pubDate: new Date(),
         ttl: 60,
-        itunesAuthor: "CADA",
-        itunesSummary: "Weekly insights from CADA Productions.",
-        itunesOwner: { name: "CADA", email: "you@cadafilms.com" },
-        itunesExplicit: false
+        itunesAuthor: "MUIT", // Changed from CADA to MUIT to match Spotify
+        itunesSummary: "Exercising thought about economics, technology, politics, philosophy, culture, and meaning to confront the questions that shape our time.",
+        itunesOwner: { name: "MUIT", email: "productionsbycada@gmail.com" }, // Matched to Spotify
+        itunesExplicit: false,
+        itunesCategory: [{ text: "Society & Culture" }],
+        itunesType: "episodic"
     });
     try {
         logger.info("Querying Firestore for episodes...");

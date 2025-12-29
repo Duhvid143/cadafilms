@@ -12,6 +12,7 @@ export default function Muit() {
     const [loading, setLoading] = useState(true);
     const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
 
+
     useEffect(() => {
         const fetchData = async () => {
             const data = await getEpisodes();
@@ -20,6 +21,18 @@ export default function Muit() {
         };
         fetchData();
     }, []);
+
+    // Scroll Locking
+    useEffect(() => {
+        if (selectedEpisode) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [selectedEpisode]);
 
     const handlePlay = (episode: Episode) => {
         setSelectedEpisode(episode);
@@ -104,19 +117,27 @@ export default function Muit() {
                             style={{
                                 width: '100%',
                                 maxWidth: '1000px',
-                                position: 'relative'
+                                position: 'relative',
+                                maxHeight: '90vh', // Ensure it fits heavily
+                                overflowY: 'auto', // Allow scrolling within modal
+                                background: '#000', // Solid background for content
+                                borderRadius: '16px',
+                                padding: '1rem'
                             }}
                         >
                             <button
                                 onClick={closePlayer}
                                 style={{
                                     position: 'absolute',
-                                    top: '-40px',
-                                    right: 0,
-                                    background: 'none',
+                                    top: '10px',
+                                    right: '10px',
+                                    background: 'rgba(255,255,255,0.1)',
                                     border: 'none',
                                     color: '#fff',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    padding: '8px',
+                                    borderRadius: '50%',
+                                    zIndex: 10
                                 }}
                             >
                                 <X size={24} />
@@ -128,10 +149,27 @@ export default function Muit() {
                                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{selectedEpisode.title}</h2>
                                 <p style={{ color: '#aaa', lineHeight: '1.6' }}>{selectedEpisode.description}</p>
                             </div>
+
+                            {/* Bottom Close Button for Mobile */}
+                            <button
+                                onClick={closePlayer}
+                                style={{
+                                    marginTop: '2rem',
+                                    width: '100%',
+                                    padding: '1rem',
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderRadius: '12px',
+                                    color: 'white',
+                                    fontWeight: 500
+                                }}
+                            >
+                                Close Player
+                            </button>
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 }

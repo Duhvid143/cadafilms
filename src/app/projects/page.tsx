@@ -26,7 +26,7 @@ export default function Projects() {
             <Link href="/muit" className="project-split">
                 <div
                     className="project-bg"
-                    style={{ backgroundImage: 'url(/assets/muit-cover.jpg)' }}
+                    style={{ backgroundImage: 'url(/assets/muit-new.jpg)' }}
                 />
                 <div className="project-overlay" />
                 <div className="project-content">

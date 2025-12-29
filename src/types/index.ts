@@ -16,3 +16,13 @@ export interface Episode {
     keywords?: string[] | string;
     showNotes?: string[];
 }
+
+export interface Article {
+    id: string;
+    title: string;
+    slug: string;
+    coverImageUrl: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+}

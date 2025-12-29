@@ -514,14 +514,14 @@ function DashboardContent() {
                             {/* ==================== ARTICLE VIEW ==================== */}
                             {viewType === 'article' && (
                                 <>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
                                         {articles.map((article) => (
                                             <div
                                                 key={article.id}
                                                 className="group relative flex flex-col overflow-hidden rounded-3xl bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 transition-all hover:-translate-y-1 hover:shadow-2xl"
                                             >
                                                 {/* Image */}
-                                                <div className="h-48 w-full relative overflow-hidden bg-zinc-900">
+                                                <div className="aspect-[3/2] w-full relative overflow-hidden bg-zinc-900">
                                                     <img
                                                         src={article.coverImageUrl}
                                                         alt={article.title}

@@ -50,7 +50,7 @@ export default function About() {
                 </motion.h2>
                 <div className="values-grid">
                     {[
-                        { title: "_TIUM", desc: "A broken clock that still keeps perfect time. A sharp, unfiltered take on culture, politics, and the forces fracturing the world right now. No sponsors. No script approval. No filter." },
+                        { title: "TIUM_", desc: "A broken clock that still keeps perfect time. A sharp, unfiltered take on culture, politics, and the forces fracturing the world right now. No sponsors. No script approval. No filter." },
                         { title: "MUIT", desc: "Our video podcast. Raw, long-form conversations with the people shaping what we care about. No chyrons. No cuts for time. Just real thoughts in real time." }
                     ].map((project, index) => (
                         <motion.div

@@ -47,7 +47,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         return (
             <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center gap-4">
                 <h1 className="text-2xl">Article not found</h1>
-                <Link href="/tium" className="text-gray-400 hover:text-white underline">Back to TIUM</Link>
+                <Link href="/tium" className="text-gray-400 hover:text-white underline">Back to TIUM_</Link>
             </div>
         );
     }
@@ -55,7 +55,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
     return (
         <div className="min-h-screen bg-[#050505] text-white pb-20">
             {/* Hero Image */}
-            <div className="relative w-full h-[35vh] md:h-[60vh] overflow-hidden">
+            <div className="relative w-full h-[25vh] md:h-[60vh] overflow-hidden">
                 <img
                     src={article.coverImageUrl}
                     alt={article.title}
@@ -90,7 +90,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                     >
                         <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         <span>•</span>
-                        <span>By {article.author || "TIUM"}</span>
+                        <span>By {article.author || "TIUM_"}</span>
                     </motion.div>
                 </div>
             </div>

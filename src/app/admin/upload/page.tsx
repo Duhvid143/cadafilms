@@ -502,7 +502,7 @@ function UploadContent() {
                                 type="text"
                                 value={articleTitle}
                                 onChange={handleArticleTitleChange}
-                                placeholder="e.g. The Philosophy of TIUM"
+                                placeholder="e.g. The Philosophy of TIUM_"
                                 style={{ ...styles.input, marginBottom: '2rem' }}
                                 disabled={uploading}
                             />

@@ -106,7 +106,7 @@ export default function Home() {
                     >
                         {/* Home Links - Bypass Carousel */}
                         {/* <div className="home-links-container">
-                            <Link href="/tium" className="subnav-link">_TIUM</Link>
+                            <Link href="/tium" className="subnav-link">TIUM_</Link>
                             <div className="subnav-separator" />
                             <Link href="/muit" className="subnav-link">MUIT</Link>
                         </div> */}

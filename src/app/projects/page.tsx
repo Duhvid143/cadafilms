@@ -5,8 +5,7 @@ import '@/styles/Projects.css';
 export default function Projects() {
     return (
         <div className="projects-page">
-            {/* Project 1: _TIUM */}
-            {/* Project 1: _TIUM */}
+            {/* Project 1: TIUM_ */}
             <Link href="/tium" className="project-split">
                 <div
                     className="project-bg"
@@ -14,7 +13,7 @@ export default function Projects() {
                 />
                 <div className="project-overlay" />
                 <div className="project-content">
-                    {/* <h2 className="project-title">_TIUM</h2> */}
+                    {/* <h2 className="project-title">TIUM_</h2> */}
                     <div className="project-desc">
                         <p>A cinematic journey through light and sound.</p>
                         <div className="project-btn">View Project</div>

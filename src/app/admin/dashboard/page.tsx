@@ -569,7 +569,7 @@ function DashboardContent() {
                                                 <FileText className="w-8 h-8 text-zinc-600" />
                                             </div>
                                             <h3 className="text-2xl font-light text-zinc-200 mb-2">No articles yet</h3>
-                                            <p className="text-zinc-500 font-light">Publish your first article for TIUM</p>
+                                            <p className="text-zinc-500 font-light">Publish your first article for TIUM_</p>
                                         </div>
                                     )}
                                 </>

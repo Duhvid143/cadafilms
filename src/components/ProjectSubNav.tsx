@@ -43,7 +43,7 @@ const ProjectSubNav: React.FC<ProjectSubNavProps> = ({ isOpen }) => {
     return (
         <div className={`project-subnav ${isOpen ? 'visible' : ''}`}>
             <Link href="/tium" className={`subnav-link ${pathname.includes('tium') ? 'active' : ''}`} ref={tiumRef}>
-                _TIUM
+                TIUM_
                 <div className="subnav-link-bg" ref={tiumBgRef} />
             </Link>
 

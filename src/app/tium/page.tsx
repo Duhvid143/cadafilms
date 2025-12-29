@@ -40,7 +40,7 @@ export default function Tium() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    _TIUM
+                    TIUM_
                 </motion.h1>
                 <motion.p
                     className="work-subtitle"

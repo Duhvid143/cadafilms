@@ -515,15 +515,7 @@ function DashboardContent() {
                             {viewType === 'article' && (
                                 <>
                                     {articles.map((article) => {
-                                        const isExpanded = expandedEpisode === article.id; // Reusing expandedEpisode state for simplicity since they are exclusive views, or we can add a new state.
-                                        // Actually, let's use a separate state to be safe: const [expandedArticle, setExpandedArticle] = useState<string | null>(null);
-                                        // Wait, I need to add that state first.
-                                        // For now, I will use `expandedEpisode` since only one view is active at a time, BUT strictly speaking I should use a new state variable. 
-                                        // Let's assume I will add `const [expandedArticle, setExpandedArticle] = useState<string | null>(null);` in a separate edit or I can reuse `expandedEpisode` if I rename it to `expandedItem`.
-                                        // To avoid breaking, I'll use `expandedEpisode` for now as `expandedItem` conceptually, OR I'll add the state variable in a multi-edit. 
-                                        // Actually, I can just stick to `expandedEpisode` and rename it conceptually in my head, but TypeScript might get confused if I typed it strictly.
-                                        // Let's look at the file... line 43: `const [expandedEpisode, setExpandedEpisode] = useState<string | null>(null);`
-                                        // It is generic string. I can reuse it.
+                                        const isExpanded = expandedEpisode === article.id;
 
                                         return (
                                             <div
@@ -537,26 +529,6 @@ function DashboardContent() {
                                                     e.currentTarget.style.boxShadow = 'none';
                                                 }}
                                             >
-                                                {/* Hover Action Bar */}
-                                                <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
-                                                    <Link
-                                                        href={`/tium/${article.slug}`}
-                                                        target="_blank"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                        style={styles.copyButton}
-                                                        className="hover:bg-zinc-700 transition-colors"
-                                                    >
-                                                        <Eye className="w-3 h-3" /> View Public
-                                                    </Link>
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); deleteArticle(article.id); }}
-                                                        style={styles.copyButton}
-                                                        className="hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-colors"
-                                                    >
-                                                        <Trash2 className="w-3 h-3" /> Delete
-                                                    </button>
-                                                </div>
-
                                                 {/* Card Header (Collapsed) */}
                                                 <div style={{ padding: '32px 40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(article.id)}>
                                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -578,8 +550,30 @@ function DashboardContent() {
                                                             </div>
                                                         </div>
 
-                                                        <div className="text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
-                                                            {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                                        <div className="flex items-center gap-4">
+                                                            {/* Action Buttons (Hover) */}
+                                                            <div className="flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                                                                <Link
+                                                                    href={`/tium/${article.slug}`}
+                                                                    target="_blank"
+                                                                    onClick={(e) => e.stopPropagation()}
+                                                                    style={styles.copyButton}
+                                                                    className="hover:bg-zinc-700 transition-colors whitespace-nowrap"
+                                                                >
+                                                                    <Eye className="w-3 h-3" /> View Public
+                                                                </Link>
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); deleteArticle(article.id); }}
+                                                                    style={styles.copyButton}
+                                                                    className="hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-colors whitespace-nowrap"
+                                                                >
+                                                                    <Trash2 className="w-3 h-3" /> Delete
+                                                                </button>
+                                                            </div>
+
+                                                            <div className="text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
+                                                                {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

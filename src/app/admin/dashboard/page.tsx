@@ -375,30 +375,10 @@ function DashboardContent() {
                                                     e.currentTarget.style.boxShadow = 'none';
                                                 }}
                                             >
-                                                {/* Hover Action Bar */}
-                                                <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
-                                                        style={styles.copyButton}
-                                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#52525b'}
-                                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3f3f46'}
-                                                    >
-                                                        <Youtube className="w-3 h-3" /> Copy YouTube
-                                                    </button>
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); copyXPost(episode); }}
-                                                        style={styles.copyButton}
-                                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#52525b'}
-                                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3f3f46'}
-                                                    >
-                                                        <Twitter className="w-3 h-3" /> Copy X
-                                                    </button>
-                                                </div>
-
-                                                {/* Card Header */}
+                                                {/* Card Header (refactored for forced row layout) */}
                                                 <div style={{ padding: '40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(episode.id)}>
-                                                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                                                        <div className="flex flex-col items-start gap-4">
+                                                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '24px' }}>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '16px', flex: 1, minWidth: 0 }}>
                                                             {/* Status Badge */}
                                                             <div className={`px-4 py-1.5 rounded-full flex items-center gap-2 border ${episode.status === "ready"
                                                                 ? "bg-emerald-400/[0.15] border-emerald-400/20 text-emerald-400"
@@ -421,8 +401,8 @@ function DashboardContent() {
                                                             </div>
 
                                                             {/* Title & Meta */}
-                                                            <div>
-                                                                <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-3">
+                                                            <div className="w-full">
+                                                                <h3 className="text-3xl font-light text-zinc-100 tracking-tight leading-tight mb-3 truncate w-full">
                                                                     {episode.title || "Untitled Episode"}
                                                                 </h3>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.875rem', color: '#71717a', fontWeight: 500 }}>
@@ -433,8 +413,28 @@ function DashboardContent() {
                                                             </div>
                                                         </div>
 
-                                                        <div className="mt-2 text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
-                                                            {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0, marginTop: '8px' }}>
+                                                            {/* Action Buttons (Hover) - Moved here */}
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); copyYouTubeData(episode); }}
+                                                                    style={styles.copyButton}
+                                                                    className="hover:bg-zinc-700 transition-colors whitespace-nowrap"
+                                                                >
+                                                                    <Youtube className="w-3 h-3" /> Copy YouTube
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); copyXPost(episode); }}
+                                                                    style={styles.copyButton}
+                                                                    className="hover:bg-zinc-700 transition-colors whitespace-nowrap"
+                                                                >
+                                                                    <Twitter className="w-3 h-3" /> Copy X
+                                                                </button>
+                                                            </div>
+
+                                                            <div className="text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
+                                                                {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

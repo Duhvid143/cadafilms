@@ -532,7 +532,7 @@ function DashboardContent() {
                                                 {/* Card Header (Collapsed) */}
                                                 <div style={{ padding: '32px 40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(article.id)}>
                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-                                                        <div className="flex items-center gap-6 flex-1 min-w-0">
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flex: 1, minWidth: 0 }}>
                                                             {/* Status Dot (Assumed Published) */}
                                                             <div className="w-2 h-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
 
@@ -550,9 +550,9 @@ function DashboardContent() {
                                                             </div>
                                                         </div>
 
-                                                        <div className="flex items-center gap-4 shrink-0">
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
                                                             {/* Action Buttons (Hover) */}
-                                                            <div className="flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
                                                                 <Link
                                                                     href={`/tium/${article.slug}`}
                                                                     target="_blank"
@@ -560,7 +560,7 @@ function DashboardContent() {
                                                                     style={styles.copyButton}
                                                                     className="hover:bg-zinc-700 transition-colors whitespace-nowrap"
                                                                 >
-                                                                    <Eye className="w-3 h-3" /> Open Article
+                                                                    <Eye className="w-3 h-3" /> View Public
                                                                 </Link>
                                                                 <button
                                                                     onClick={(e) => { e.stopPropagation(); deleteArticle(article.id); }}

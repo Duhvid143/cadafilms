@@ -178,7 +178,8 @@ function UploadContent() {
                     try {
                         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-                        await addDoc(collection(db, "articles"), {
+                        // Use setDoc with the slug as the ID for readable document IDs
+                        await setDoc(doc(db, "articles", slug.trim()), {
                             title: articleTitle.trim(),
                             slug: slug.trim(),
                             coverImageUrl: downloadURL,

@@ -537,6 +537,26 @@ function DashboardContent() {
                                                     e.currentTarget.style.boxShadow = 'none';
                                                 }}
                                             >
+                                                {/* Hover Action Bar */}
+                                                <div className="absolute top-6 right-6 flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 z-20">
+                                                    <Link
+                                                        href={`/tium/${article.slug}`}
+                                                        target="_blank"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        style={styles.copyButton}
+                                                        className="hover:bg-zinc-700 transition-colors"
+                                                    >
+                                                        <Eye className="w-3 h-3" /> View Public
+                                                    </Link>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); deleteArticle(article.id); }}
+                                                        style={styles.copyButton}
+                                                        className="hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-colors"
+                                                    >
+                                                        <Trash2 className="w-3 h-3" /> Delete
+                                                    </button>
+                                                </div>
+
                                                 {/* Card Header (Collapsed) */}
                                                 <div style={{ padding: '32px 40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(article.id)}>
                                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -577,7 +597,7 @@ function DashboardContent() {
                                                                 />
                                                             </div>
 
-                                                            {/* Content Preview & Actions */}
+                                                            {/* Content Preview */}
                                                             <div className="flex-1 space-y-6">
                                                                 <div>
                                                                     <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-3 uppercase tracking-widest">
@@ -586,23 +606,6 @@ function DashboardContent() {
                                                                     <p className="text-zinc-300 leading-relaxed font-light line-clamp-4">
                                                                         {article.content}
                                                                     </p>
-                                                                </div>
-
-                                                                <div className="flex items-center gap-4 pt-4 border-t border-zinc-800/50">
-                                                                    <Link
-                                                                        href={`/tium/${article.slug}`}
-                                                                        target="_blank"
-                                                                        className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs font-medium uppercase tracking-wider text-white transition-all"
-                                                                    >
-                                                                        <Eye size={14} /> View Public Page
-                                                                    </Link>
-
-                                                                    <button
-                                                                        onClick={() => deleteArticle(article.id)}
-                                                                        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 rounded-lg text-xs font-medium uppercase tracking-wider transition-all"
-                                                                    >
-                                                                        <Trash2 size={14} /> Delete Article
-                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>

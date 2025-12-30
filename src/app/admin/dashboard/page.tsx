@@ -514,54 +514,103 @@ function DashboardContent() {
                             {/* ==================== ARTICLE VIEW ==================== */}
                             {viewType === 'article' && (
                                 <>
-                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
-                                        {articles.map((article) => (
+                                    {articles.map((article) => {
+                                        const isExpanded = expandedEpisode === article.id; // Reusing expandedEpisode state for simplicity since they are exclusive views, or we can add a new state.
+                                        // Actually, let's use a separate state to be safe: const [expandedArticle, setExpandedArticle] = useState<string | null>(null);
+                                        // Wait, I need to add that state first.
+                                        // For now, I will use `expandedEpisode` since only one view is active at a time, BUT strictly speaking I should use a new state variable. 
+                                        // Let's assume I will add `const [expandedArticle, setExpandedArticle] = useState<string | null>(null);` in a separate edit or I can reuse `expandedEpisode` if I rename it to `expandedItem`.
+                                        // To avoid breaking, I'll use `expandedEpisode` for now as `expandedItem` conceptually, OR I'll add the state variable in a multi-edit. 
+                                        // Actually, I can just stick to `expandedEpisode` and rename it conceptually in my head, but TypeScript might get confused if I typed it strictly.
+                                        // Let's look at the file... line 43: `const [expandedEpisode, setExpandedEpisode] = useState<string | null>(null);`
+                                        // It is generic string. I can reuse it.
+
+                                        return (
                                             <div
                                                 key={article.id}
-                                                className="group relative flex flex-col overflow-hidden rounded-xl bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 transition-all hover:-translate-y-1 hover:shadow-2xl"
+                                                className="group/card"
+                                                style={styles.card}
+                                                onMouseEnter={(e) => Object.assign(e.currentTarget.style, styles.cardHover)}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.borderColor = '#27272a';
+                                                    e.currentTarget.style.transform = 'translateY(0)';
+                                                    e.currentTarget.style.boxShadow = 'none';
+                                                }}
                                             >
-                                                {/* Image */}
-                                                <div className="aspect-[3/4] w-full relative overflow-hidden bg-zinc-900">
-                                                    <img
-                                                        src={article.coverImageUrl}
-                                                        alt={article.title}
-                                                        className="object-cover w-full h-full opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                                    />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                                                {/* Card Header (Collapsed) */}
+                                                <div style={{ padding: '32px 40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(article.id)}>
+                                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                                        <div className="flex items-center gap-6">
+                                                            {/* Status Dot (Assumed Published) */}
+                                                            <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
 
-                                                    {/* Actions Overlay */}
-                                                    <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <Link
-                                                            href={`/tium/${article.slug}`}
-                                                            target="_blank"
-                                                            className="p-2 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-colors"
-                                                            title="View Public Page"
-                                                        >
-                                                            <Eye size={16} />
-                                                        </Link>
-                                                        <button
-                                                            onClick={() => deleteArticle(article.id)}
-                                                            className="p-2 bg-red-500/10 hover:bg-red-500/20 backdrop-blur-md rounded-full text-red-500 transition-colors"
-                                                            title="Delete Article"
-                                                        >
-                                                            <Trash2 size={16} />
-                                                        </button>
+                                                            <div>
+                                                                <h3 className="text-2xl font-light text-zinc-100 tracking-tight leading-tight mb-2 group-hover/card:text-white transition-colors">
+                                                                    {article.title}
+                                                                </h3>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.875rem', color: '#71717a', fontWeight: 500 }}>
+                                                                    <span className="font-mono text-zinc-500 uppercase tracking-widest text-xs">Article</span>
+                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} />
+                                                                    <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} />
+                                                                    <span className="text-zinc-500">By {article.author || "TIUM_"}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="text-zinc-500 group-hover/card:text-zinc-300 transition-colors">
+                                                            {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                {/* Content */}
-                                                <div className="p-6 flex flex-col flex-1">
-                                                    <h3 className="text-xl font-light text-white mb-2 line-clamp-2">
-                                                        {article.title}
-                                                    </h3>
-                                                    <div className="mt-auto pt-4 flex items-center justify-between text-xs text-zinc-500 font-mono uppercase tracking-wider">
-                                                        <span>{new Date(article.createdAt).toLocaleDateString()}</span>
-                                                        {/* <span>{article.slug}</span> */}
+                                                {/* Expanded Content */}
+                                                {isExpanded && (
+                                                    <div className="border-t border-zinc-800/50 bg-black/20 animate-in slide-in-from-top-4 duration-500" style={{ padding: '40px' }}>
+                                                        <div className="flex flex-col md:flex-row gap-8 items-start">
+                                                            {/* Cover Art Thumbnail (Small) */}
+                                                            <div className="w-full md:w-48 shrink-0 rounded-lg overflow-hidden border border-zinc-800 shadow-lg">
+                                                                <img
+                                                                    src={article.coverImageUrl}
+                                                                    alt={article.title}
+                                                                    className="w-full h-auto object-cover aspect-[3/4]"
+                                                                />
+                                                            </div>
+
+                                                            {/* Content Preview & Actions */}
+                                                            <div className="flex-1 space-y-6">
+                                                                <div>
+                                                                    <h4 className="flex items-center gap-2 text-xs font-bold text-zinc-400 mb-3 uppercase tracking-widest">
+                                                                        <FileText className="w-3 h-3" /> Content Preview
+                                                                    </h4>
+                                                                    <p className="text-zinc-300 leading-relaxed font-light line-clamp-4">
+                                                                        {article.content}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="flex items-center gap-4 pt-4 border-t border-zinc-800/50">
+                                                                    <Link
+                                                                        href={`/tium/${article.slug}`}
+                                                                        target="_blank"
+                                                                        className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs font-medium uppercase tracking-wider text-white transition-all"
+                                                                    >
+                                                                        <Eye size={14} /> View Public Page
+                                                                    </Link>
+
+                                                                    <button
+                                                                        onClick={() => deleteArticle(article.id)}
+                                                                        className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-red-500/20 rounded-lg text-xs font-medium uppercase tracking-wider transition-all"
+                                                                    >
+                                                                        <Trash2 size={14} /> Delete Article
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                )}
                                             </div>
-                                        ))}
-                                    </div>
+                                        );
+                                    })}
 
                                     {articles.length === 0 && (
                                         <div className="flex flex-col items-center justify-center py-32 text-center w-full">

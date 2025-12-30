@@ -531,26 +531,26 @@ function DashboardContent() {
                                             >
                                                 {/* Card Header (Collapsed) */}
                                                 <div style={{ padding: '32px 40px', cursor: 'pointer', position: 'relative', zIndex: 10 }} onClick={() => toggleExpand(article.id)}>
-                                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                                        <div className="flex items-center gap-6">
+                                                    <div className="flex items-center justify-between gap-6">
+                                                        <div className="flex items-center gap-6 flex-1 min-w-0">
                                                             {/* Status Dot (Assumed Published) */}
-                                                            <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                                                            <div className="w-2 h-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
 
-                                                            <div>
-                                                                <h3 className="text-2xl font-light text-zinc-100 tracking-tight leading-tight mb-2 group-hover/card:text-white transition-colors">
+                                                            <div className="min-w-0">
+                                                                <h3 className="text-2xl font-light text-zinc-100 tracking-tight leading-tight mb-2 group-hover/card:text-white transition-colors truncate">
                                                                     {article.title}
                                                                 </h3>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.875rem', color: '#71717a', fontWeight: 500 }}>
-                                                                    <span className="font-mono text-zinc-500 uppercase tracking-widest text-xs">Article</span>
-                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} />
-                                                                    <span>{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} />
-                                                                    <span className="text-zinc-500">By {article.author || "TIUM_"}</span>
+                                                                    <span className="font-mono text-zinc-500 uppercase tracking-widest text-xs shrink-0">Article</span>
+                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} className="shrink-0" />
+                                                                    <span className="shrink-0">{new Date(article.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                                                    <span style={{ width: '1px', height: '12px', backgroundColor: '#3f3f46' }} className="shrink-0" />
+                                                                    <span className="text-zinc-500 truncate">By {article.author || "TIUM_"}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div className="flex items-center gap-4">
+                                                        <div className="flex items-center gap-4 shrink-0">
                                                             {/* Action Buttons (Hover) */}
                                                             <div className="flex items-center gap-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
                                                                 <Link

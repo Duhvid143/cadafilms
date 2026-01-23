@@ -89,14 +89,14 @@ graph TD
 ### Large File Uploads
 - **Issue**: Uploads fail or stall for files > 1GB.
 - **Solution**:
-    - Ensure you are using a stable internet connection.
+    - Ensure stable internet connection.
     - The app uses `uploadBytesResumable` which handles network interruptions, but extremely poor connections may still time out.
-    - Check the browser console for CORS errors. Ensure your `cors.json` allows the correct origin.
+    - Check browser console for CORS errors. Ensure your `cors.json` allows the correct origin.
 
 ### AI Analysis Failures
 - **Issue**: "Quota exceeded" or "Internal error" from Gemini.
 - **Solution**:
-    - Check your Google Cloud Quotas for Vertex AI.
+    - Check Google Cloud Quotas for Vertex AI.
     - Ensure the Cloud Function has the `Cloud Vertex AI User` role.
 
 ## 📂 Project Structure

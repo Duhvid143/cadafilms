@@ -6,7 +6,7 @@ Powered by "Project Antigravity", a custom Headless Podcast CMS that handles 2GB
 
 ## 🚀 Features
 - **Direct-to-Cloud Uploads**: Bypasses Vercel server limits using `uploadBytesResumable`.
-- **AI Analysis**: Gemini 1.5 Flash analyzes video content for summaries, chapters, and show notes.
+- **AI Analysis**: Gemini 2.5 Flash analyzes video content for summaries, chapters, and show notes.
 - **Automated Backups**: Backs up every episode to Google Drive.
 - **RSS Generation**: Automatically updates the RSS feed for podcast distribution.
 - **Social Pack**: One-click copy for YouTube and X metadata.
@@ -18,7 +18,7 @@ graph TD
     User[User] -->|Uploads Video| Client[Next.js Client]
     Client -->|Direct Upload| Storage[Firebase Storage]
     Storage -->|Trigger| Function[Cloud Function]
-    Function -->|Analyze| Gemini[Gemini 1.5 Flash]
+    Function -->|Analyze| Gemini[Gemini 2.5 Flash]
     Function -->|Backup| Drive[Google Drive]
     Function -->|Update| Firestore[Firestore DB]
     Client -->|Read| Firestore

@@ -20,6 +20,9 @@ export default function AdminAuthGuard({ children }: AdminAuthGuardProps) {
             if (!user) {
                 setAuthenticated(false);
                 router.push("/admin/login");
+            } else if (!user.emailVerified) {
+                setAuthenticated(false);
+                router.push("/admin/verify-email");
             } else {
                 setAuthenticated(true);
                 setLoading(false);

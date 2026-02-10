@@ -16,7 +16,7 @@ oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
-export async function backupToDrive(bucketName: string, filePath: string, fileName: string) {
+export async function backupToDrive(bucketName: string, filePath: string, fileName: string, mimeType: string = "video/mp4") {
     logger.info("Backing up to Google Drive (Streaming)", { fileName });
 
     const bucket = admin.storage().bucket(bucketName);
@@ -37,7 +37,7 @@ export async function backupToDrive(bucketName: string, filePath: string, fileNa
             .on('error', (err) => logger.error("GCS Stream Error", err));
 
         const media = {
-            mimeType: 'video/mp4',
+            mimeType,
             body: gcsStream
         };
 
@@ -65,7 +65,7 @@ export async function backupToDrive(bucketName: string, filePath: string, fileNa
                 const retryResponse = await drive.files.create({
                     requestBody: fileMetadata,
                     media: {
-                        mimeType: 'video/mp4',
+                        mimeType,
                         body: retryStream
                     },
                     fields: 'id',

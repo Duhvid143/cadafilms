@@ -35,7 +35,7 @@ export const processEpisode = onObjectFinalized({
     // 1. Parallel Processing: Drive Backup + AI Analysis
     // Use allSettled so one failure doesn't stop the other
     const results = await Promise.allSettled([
-        backupToDrive(bucket, filePath, fileName),
+        backupToDrive(bucket, filePath, fileName, contentType || "video/mp4"),
         analyzeVideo(bucket, filePath, episodeId, contentType || "video/mp4")
     ]);
 

@@ -37,6 +37,9 @@ firebase-debug.log*
 !next.config.js
 !README.md
 
+# TypeScript
+tsconfig.tsbuildinfo
+
 # System
 .DS_Store
 ._*

@@ -2,7 +2,8 @@
     {
         "origin": [
             "http://localhost:3000",
-            "https://cadafilms.com"
+            "https://cadafilms.com",
+            "https://www.cadafilms.com"
         ],
         "method": [
             "GET",

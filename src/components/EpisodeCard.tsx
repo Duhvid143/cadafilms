@@ -11,11 +11,13 @@ interface EpisodeCardProps {
 }
 
 const EpisodeCard: React.FC<EpisodeCardProps> = ({ episode, onPlay, index }) => {
-    const formattedDate = new Date(episode.processedAt).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const formattedDate = episode.processedAt
+        ? new Date(episode.processedAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+        : '';
 
     return (
         <motion.div

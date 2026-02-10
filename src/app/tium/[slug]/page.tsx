@@ -33,7 +33,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     const article = await getArticle(params.slug);
 
     if (!article) {
-        notFound();
+        return notFound();
     }
 
     return <ArticleView article={article} />;

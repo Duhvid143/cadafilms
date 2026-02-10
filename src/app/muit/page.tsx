@@ -10,14 +10,20 @@ import '@/styles/Work.css'; // Reuse work styles for layout
 export default function Muit() {
     const [episodes, setEpisodes] = useState<Episode[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
-
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getEpisodes();
-            setEpisodes(data);
-            setLoading(false);
+            try {
+                const data = await getEpisodes();
+                setEpisodes(data);
+            } catch (err) {
+                console.error("Failed to fetch episodes:", err);
+                setError("Failed to load episodes. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
         };
         fetchData();
     }, []);
@@ -67,6 +73,10 @@ export default function Muit() {
                 {loading ? (
                     <div style={{ textAlign: 'center', color: '#666', marginTop: '4rem' }}>
                         Loading episodes...
+                    </div>
+                ) : error ? (
+                    <div style={{ textAlign: 'center', color: '#ef4444', marginTop: '4rem' }}>
+                        {error}
                     </div>
                 ) : episodes.length > 0 ? (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>

@@ -3,6 +3,7 @@ import { db } from "@/lib/firebase";
 import { episodeConverter } from "@/lib/converters";
 import SocialPack from "@/components/SocialPack";
 import { notFound } from "next/navigation";
+import EpisodeChapters from "./EpisodeChapters";
 
 // Force dynamic rendering to ensure fresh data
 export const dynamic = 'force-dynamic';
@@ -31,12 +32,12 @@ export default async function EpisodePage({ params }: { params: { slug: string }
             <div className="bg-black text-white">
                 <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
                     <div className="aspect-video w-full bg-gray-900 rounded-xl overflow-hidden shadow-2xl mb-8">
-                        {/* Native Video Player for simplicity, can be upgraded to Vidstack later */}
                         <video
+                            id="episode-video"
                             src={episode.videoUrl}
                             controls
                             className="w-full h-full object-contain"
-                            poster="/artwork.jpg" // Fallback poster
+                            poster="/artwork.jpg"
                         >
                             Your browser does not support the video tag.
                         </video>
@@ -62,21 +63,7 @@ export default async function EpisodePage({ params }: { params: { slug: string }
                     )}
 
                     {episode.chapters && episode.chapters.length > 0 && (
-                        <section>
-                            <h2 className="text-2xl font-bold mb-6 text-gray-900">Chapters</h2>
-                            <div className="space-y-2">
-                                {episode.chapters.map((chapter, i) => (
-                                    <div key={i} className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer group">
-                                        <span className="font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded text-sm group-hover:bg-blue-100 transition-colors">
-                                            {chapter.time}
-                                        </span>
-                                        <span className="text-gray-700 font-medium group-hover:text-gray-900">
-                                            {chapter.title}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
+                        <EpisodeChapters chapters={episode.chapters} />
                     )}
                 </div>
 
@@ -101,10 +88,12 @@ export default async function EpisodePage({ params }: { params: { slug: string }
                                 <span>Duration</span>
                                 <span className="font-medium">{episode.durationSeconds ? `${Math.floor(episode.durationSeconds / 60)} mins` : 'Unknown'}</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span>File Size</span>
-                                <span className="font-medium">{(episode.sizeBytes / (1024 * 1024)).toFixed(1)} MB</span>
-                            </div>
+                            {episode.sizeBytes && (
+                                <div className="flex justify-between">
+                                    <span>File Size</span>
+                                    <span className="font-medium">{(episode.sizeBytes / (1024 * 1024)).toFixed(1)} MB</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

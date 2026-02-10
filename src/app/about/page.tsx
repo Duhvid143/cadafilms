@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
+import Image from 'next/image';
 import '@/styles/About.css';
 
 export default function About() {
@@ -89,7 +90,7 @@ export default function About() {
                             rel="noopener noreferrer"
                             className="photo-container relative mb-8"
                         >
-                            <img src="/assets/david-lannon.png" alt="David Lannon" className="photo-blob" />
+                            <Image src="/assets/david-lannon.png" alt="David Lannon" className="photo-blob" width={300} height={300} />
                             <div className="diamond-overlay absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                         </a>
                         <h3 className="name text-4xl md:text-5xl font-bold uppercase tracking-wide mb-2">David Lannon</h3>

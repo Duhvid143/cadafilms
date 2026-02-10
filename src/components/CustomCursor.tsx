@@ -1,13 +1,19 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import '@/styles/globals_legacy.css'; // Ensure styles are available
+import '@/styles/globals_legacy.css';
 
 const CustomCursor = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
+        // Detect touch devices and skip cursor setup
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        setIsTouchDevice(hasTouch);
+        if (hasTouch) return;
+
         const mouseMove = (e: MouseEvent) => {
             setMousePosition({ x: e.clientX, y: e.clientY });
         };
@@ -29,6 +35,8 @@ const CustomCursor = () => {
             window.removeEventListener("mouseover", handleMouseOver);
         };
     }, []);
+
+    if (isTouchDevice) return null;
 
     const variants = {
         default: {

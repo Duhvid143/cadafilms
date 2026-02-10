@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Instagram, Twitter, Linkedin, Mail } from 'lucide-react';
-import '@/styles/Footer.css'; // We moved CSS here
+import '@/styles/Footer.css';
 
 const Footer = () => {
     return (
@@ -11,16 +11,21 @@ const Footer = () => {
                 <div className="footer-logo">CADA Productions</div>
 
                 <div className="footer-links">
-                    <Link href="/work" className="footer-link">Work</Link>
+                    <Link href="/projects" className="footer-link">Work</Link>
                     <Link href="/about" className="footer-link">About</Link>
                     <Link href="/contact" className="footer-link">Contact</Link>
                 </div>
 
                 <div className="footer-socials">
-                    <Instagram className="social-icon" />
-                    <Twitter className="social-icon" />
-                    <Linkedin className="social-icon" />
-                    <Mail className="social-icon" />
+                    <a href="https://instagram.com/cadafilms" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <Instagram className="social-icon" />
+                    </a>
+                    <a href="https://x.com/cadafilms" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                        <Twitter className="social-icon" />
+                    </a>
+                    <a href="mailto:productionsbycada@gmail.com" aria-label="Email">
+                        <Mail className="social-icon" />
+                    </a>
                 </div>
 
                 <div className="footer-copyright">

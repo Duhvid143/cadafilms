@@ -39,29 +39,48 @@ export const processEpisode = onObjectFinalized({
         analyzeVideo(bucket, filePath, episodeId, contentType || "video/mp4")
     ]);
 
-    results.forEach((result, index) => {
-        if (result.status === "rejected") {
-            logger.error(`Task ${index === 0 ? "Backup" : "AI"} failed`, { reason: result.reason });
-        }
-    });
+    const [backupResult, aiResult] = results;
 
-    // 2. Mark as Ready
-    logger.info("Marking episode as ready", { episodeId });
+    if (backupResult.status === "rejected") {
+        logger.error("Backup failed", { reason: backupResult.reason });
+    }
+    if (aiResult.status === "rejected") {
+        logger.error("AI analysis failed", { reason: aiResult.reason });
+    }
+
+    // 2. Only mark "ready" if AI succeeded; mark "error" otherwise
+    const newStatus = aiResult.status === "fulfilled" ? "ready" : "error";
+    logger.info(`Marking episode as ${newStatus}`, { episodeId });
     await admin.firestore().collection("episodes").doc(episodeId).update({
-        status: "ready",
-        processedAt: new Date().toISOString()
+        status: newStatus,
+        processedAt: new Date().toISOString(),
+        ...(newStatus === "error" && { errorMessage: "AI analysis failed. Re-upload to retry." })
     });
 
-    // 3. RSS Regeneration (Must happen after metadata is in DB)
-    // Note: In a real app, you might trigger this separately or wait for AI
-    // For now, we run it here, but ideally AI analysis updates DB which triggers another function
-    // or we wait for AI to finish (which we do above with Promise.all)
-    await generateRSS(admin.storage().bucket(bucket));
+    // 3. Only regenerate RSS if episode is ready
+    if (newStatus === "ready") {
+        await generateRSS(admin.storage().bucket(bucket));
+    }
 
-    logger.info("Processing complete", { episodeId });
+    logger.info("Processing complete", { episodeId, status: newStatus });
 });
 
 export const updateRSSEpisode = onDocumentWritten("episodes/{episodeId}", async (event) => {
-    logger.info("Episode changed, regenerating RSS feed...");
-    await generateRSS();
+    // Skip if this is a delete (no after data) or if triggered by processEpisode
+    // (processEpisode already calls generateRSS directly)
+    const afterData = event.data?.after?.data();
+    const beforeData = event.data?.before?.data();
+
+    if (!afterData) {
+        logger.info("Episode deleted, regenerating RSS feed...");
+        await generateRSS();
+        return;
+    }
+
+    // Only regenerate if status changed to "ready" from a manual edit
+    // (processEpisode already handles its own RSS regeneration)
+    if (afterData.status === "ready" && beforeData?.status === "ready") {
+        logger.info("Ready episode metadata updated, regenerating RSS feed...");
+        await generateRSS();
+    }
 });

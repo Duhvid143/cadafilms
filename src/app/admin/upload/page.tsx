@@ -96,8 +96,16 @@ function UploadContent() {
         const safeEpisodeNumber = episodeNumber.trim();
         const safeTitle = podcastTitle.trim();
 
+        // Use actual file extension instead of hardcoding .mp4
+        const fileExt = selectedFile.name.split('.').pop()?.toLowerCase() || 'mp4';
+        const allowedExts = ['mp4', 'mov', 'mp3'];
+        if (!allowedExts.includes(fileExt)) {
+            toast.error("Unsupported file type. Please upload MP4, MOV, or MP3.");
+            return;
+        }
+
         setUploading(true);
-        const storageRef = ref(storage, `episodes/${safeEpisodeNumber}.mp4`);
+        const storageRef = ref(storage, `episodes/${safeEpisodeNumber}.${fileExt}`);
 
         const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 

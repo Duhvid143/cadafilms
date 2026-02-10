@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 // import Button from "@/components/Button"; // Using inline styled button instead
 
-// Add types for window
+import type { RecaptchaVerifier as RecaptchaVerifierType } from "firebase/auth";
+
 declare global {
     interface Window {
-        recaptchaVerifier: any;
+        recaptchaVerifier: RecaptchaVerifierType | undefined;
     }
 }
 
@@ -21,7 +22,7 @@ export default function LoginPage() {
     // MFA State
     const [mfaRequired, setMfaRequired] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
-    const [resolver, setResolver] = useState<any>(null);
+    const [resolver, setResolver] = useState<ReturnType<typeof getMultiFactorResolver> | null>(null);
     const [verificationId, setVerificationId] = useState("");
     const recaptchaContainerRef = useRef<HTMLDivElement>(null);
 

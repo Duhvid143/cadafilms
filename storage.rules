@@ -4,7 +4,8 @@ service firebase.storage {
     // Allow public to view episodes and RSS
     match /episodes/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null; 
+      // Only allow users with admin custom claim to upload
+      allow write: if request.auth != null && request.auth.token.admin == true;
     }
     match /public/{allPaths=**} {
       allow read: if true;
@@ -12,7 +13,7 @@ service firebase.storage {
     // Allow public to view article images, admins to upload
     match /articles/{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.admin == true;
     }
   }
 }

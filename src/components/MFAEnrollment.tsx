@@ -156,9 +156,4 @@ export default function MFAEnrollment() {
     );
 }
 
-// Add types for window
-declare global {
-    interface Window {
-        recaptchaVerifier: any;
-    }
-}
+// Global type is declared in admin/login/page.tsx

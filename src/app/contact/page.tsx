@@ -24,6 +24,15 @@ export default function Contact() {
         e.preventDefault();
         setIsSubmitting(true);
 
+        // Honeypot check — bots fill this hidden field, real users don't
+        if (formData.website_url) {
+            // Silently "succeed" to not tip off bots
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', message: '', website_url: '' });
+            setIsSubmitting(false);
+            return;
+        }
+
         // Basic validation
         if (!formData.name || !formData.email || !formData.message) {
             alert("Please fill in all required fields.");
@@ -31,23 +40,29 @@ export default function Contact() {
             return;
         }
 
-        // Google Apps Script Web App URL
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-6ncIAmdb-gTt95shPYApqdu3-oGdfqDEirCghU1nrPWOrvhYntRO-RvicJ7ilSfzZQ/exec";
+        const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_CONTACT_FORM_URL;
 
         if (!GOOGLE_SCRIPT_URL) {
-            alert("Please provide the Google Apps Script URL to connect the form.");
+            alert("Contact form is not configured. Please reach out via email.");
             setIsSubmitting(false);
             return;
         }
 
         try {
+            // Google Apps Script requires no-cors mode; the response is opaque so
+            // we can't read the status. We optimistically treat completion as success
+            // and rely on the script's own validation.
             await fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
-                mode: "no-cors", // Required for Google Apps Script
+                mode: "no-cors",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message,
+                }),
             });
 
             setSubmitStatus('success');

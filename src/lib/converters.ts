@@ -1,20 +1,5 @@
 import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions, WithFieldValue } from "firebase/firestore";
-
-export interface Episode {
-    id?: string;
-    title: string;
-    description?: string;
-    summary?: string;
-    videoUrl: string;
-    sizeBytes: number;
-    durationSeconds?: number;
-    uploadedAt: string;
-    date?: string;
-    status: "processing" | "ready" | "error";
-    chapters?: { time: string; title: string }[];
-    showNotes?: string;
-    hashtags?: string[];
-}
+import { Episode } from "@/types";
 
 export const episodeConverter: FirestoreDataConverter<Episode> = {
     toFirestore(episode: WithFieldValue<Episode>): DocumentData {
@@ -38,7 +23,9 @@ export const episodeConverter: FirestoreDataConverter<Episode> = {
             status: data.status,
             chapters: data.chapters,
             showNotes: data.showNotes,
-            hashtags: data.hashtags
+            hashtags: data.hashtags,
+            keywords: data.keywords,
+            processedAt: data.processedAt,
         };
     }
 };

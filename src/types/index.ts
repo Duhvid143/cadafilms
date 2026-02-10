@@ -6,15 +6,20 @@ export interface Chapter {
 export interface Episode {
     id: string;
     title: string;
-    uploadedAt: string; // ISO string or timestamp
-    status: string;
-    videoUrl?: string;
+    uploadedAt: string;
+    date?: string;
+    processedAt?: string;
+    status: "processing" | "ready" | "error";
+    videoUrl: string;
     sizeBytes?: number;
+    durationSeconds?: number;
     summary?: string;
-    description?: string; // AI generated
+    description?: string;
     chapters?: Chapter[];
-    keywords?: string[] | string;
-    showNotes?: string[];
+    keywords?: string[];
+    hashtags?: string[];
+    showNotes?: string;
+    errorMessage?: string;
 }
 
 export interface Article {
@@ -23,8 +28,8 @@ export interface Article {
     slug: string;
     coverImageUrl: string;
     content: string;
-    author?: string; // New field
-    hideTitleOverlay?: boolean; // New field
+    author?: string;
+    hideTitleOverlay?: boolean;
     createdAt: string;
     updatedAt: string;
 }

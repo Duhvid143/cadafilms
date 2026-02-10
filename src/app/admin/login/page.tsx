@@ -65,7 +65,7 @@ export default function LoginPage() {
                         multiFactorHint: selectedHint,
                         session: resolver.session
                     },
-                    window.recaptchaVerifier
+                    window.recaptchaVerifier!
                 );
                 setVerificationId(vId);
                 toast.info("Enter the 2FA code sent to your phone");

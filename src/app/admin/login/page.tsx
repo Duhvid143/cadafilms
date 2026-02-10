@@ -85,7 +85,7 @@ export default function LoginPage() {
         try {
             const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
             const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-            await resolver.resolveSignIn(multiFactorAssertion);
+            await resolver!.resolveSignIn(multiFactorAssertion);
 
             toast.success("Verified! Welcome back.");
             router.push("/admin/upload");

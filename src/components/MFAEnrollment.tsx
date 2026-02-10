@@ -38,7 +38,7 @@ export default function MFAEnrollment() {
                 session: session
             };
             const phoneAuthProvider = new PhoneAuthProvider(auth);
-            const vId = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, appVerifier);
+            const vId = await phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, appVerifier!);
             setVerificationId(vId);
             setStep('code');
             toast.success("Verification code sent!");

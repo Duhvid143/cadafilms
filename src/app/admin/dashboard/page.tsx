@@ -119,14 +119,7 @@ function DashboardContent() {
     };
 
     const getKeywords = (ep: Episode): string[] => {
-        if (Array.isArray(ep.keywords)) return ep.keywords;
-        if (typeof ep.keywords === 'string') {
-            if (ep.keywords.includes(',')) {
-                return ep.keywords.split(',').map(s => s.trim());
-            }
-            return [ep.keywords];
-        }
-        return [];
+        return ep.keywords || [];
     };
 
     const copyToClipboard = (text: string, label: string) => {

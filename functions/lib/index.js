@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRSSEpisode = exports.processEpisode = void 0;
+exports.submitContactForm = exports.updateRSSEpisode = exports.processEpisode = void 0;
 const admin = require("firebase-admin");
+const dotenv = require("dotenv");
+dotenv.config();
 const storage_1 = require("firebase-functions/v2/storage");
 const firestore_1 = require("firebase-functions/v2/firestore");
 const logger = require("firebase-functions/logger");
@@ -53,8 +55,10 @@ exports.processEpisode = (0, storage_1.onObjectFinalized)({
     await (0, rss_1.generateRSS)(admin.storage().bucket(bucket));
     logger.info("Processing complete", { episodeId });
 });
-exports.updateRSSEpisode = (0, firestore_1.onDocumentWritten)("episodes/{episodeId}", async (event) => {
+exports.updateRSSEpisode = (0, firestore_1.onDocumentWritten)({ document: "episodes/{episodeId}", region: "us-east1" }, async (event) => {
     logger.info("Episode changed, regenerating RSS feed...");
     await (0, rss_1.generateRSS)();
 });
+var contact_1 = require("./contact");
+Object.defineProperty(exports, "submitContactForm", { enumerable: true, get: function () { return contact_1.submitContactForm; } });
 //# sourceMappingURL=index.js.map

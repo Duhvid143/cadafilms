@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CADA FILMS</title>
+    <!-- Outfit font for elegant serif-like look or luxurious modern aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- The very tall scrolling canvas -->
+    <div id="scroll-container"></div>
+
+    <!-- The fixed wrapper for the video -->
+    <div id="video-wrapper">
+        <video id="hero-video" preload="auto" playsinline muted>
+            <source src="assets/Grok_Sun_rising_v5.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Fixed Overlay -->
+    <div id="contact-overlay">
+        <div class="contact-content">
+            <h2 class="contact-title">Contact Us</h2>
+            
+            <a href="mailto:info@cadafilms.com" class="contact-email">info@cadafilms.com</a>
+            
+            <a href="https://instagram.com/cadaproductions" target="_blank" class="contact-social">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span>@cadaproductions</span>
+            </a>
+
+            <form class="contact-form" id="contactForm">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Message" rows="3" required></textarea>
+                <button type="submit" class="btn-send">Send</button>
+                <a href="https://www.figma.com/deck/O3DwR7rVcOJVQttNQBzuxD/CADA-2026?node-id=4063-2101&t=axlLE2goBDYQLFjS-1" target="_blank" class="btn-deck">View Deck</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

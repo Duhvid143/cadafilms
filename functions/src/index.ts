@@ -1,4 +1,7 @@
 import * as admin from "firebase-admin";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { onObjectFinalized } from "firebase-functions/v2/storage";
 import { onDocumentWritten } from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
@@ -61,7 +64,9 @@ export const processEpisode = onObjectFinalized({
     logger.info("Processing complete", { episodeId });
 });
 
-export const updateRSSEpisode = onDocumentWritten("episodes/{episodeId}", async (event) => {
+export const updateRSSEpisode = onDocumentWritten({ document: "episodes/{episodeId}", region: "us-east1" }, async (event) => {
     logger.info("Episode changed, regenerating RSS feed...");
     await generateRSS();
 });
+
+export { submitContactForm } from "./contact";

@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# Project Antigravity: Headless Podcast CMS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A "Headless Podcast CMS" that handles 2GB+ video uploads via Next.js + Firebase without Vercel timeouts.
 
-## Available Scripts
+## 🚀 Features
+- **Direct-to-Cloud Uploads**: Bypasses Vercel server limits using `uploadBytesResumable`.
+- **AI Analysis**: Gemini 1.5 Flash analyzes video content for summaries, chapters, and show notes.
+- **Automated Backups**: Backs up every episode to Google Drive.
+- **RSS Generation**: Automatically updates the RSS feed for podcast distribution.
+- **Social Pack**: One-click copy for YouTube and X metadata.
 
-In the project directory, you can run:
+## 🛠️ Setup & Deployment
 
-### `npm start`
+### Prerequisites
+1.  **Firebase Project**: Create a project on the Blaze plan.
+2.  **Google Cloud APIs**: Enable "Google Drive API" and "Vertex AI API".
+3.  **Service Account**: Create a Service Account in Google Cloud Console, download the JSON key, and set it up.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Environment Variables
+Create a `.env.local` file in the root:
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+For Cloud Functions, set variables via Firebase CLI:
+```bash
+firebase functions:config:set drive.folder_id="your_folder_id"
+```
 
 ### Deployment
+1.  **Deploy Cloud Functions**:
+    ```bash
+    firebase deploy --only functions
+    ```
+2.  **Deploy Storage Rules**:
+    ```bash
+    firebase deploy --only storage
+    ```
+3.  **Deploy Frontend**:
+    ```bash
+    npm run build
+    # Deploy to Vercel or Firebase Hosting
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📂 Project Structure
+- `/functions`: Cloud Functions (AI, RSS, Drive).
+- `/src/app/admin/upload`: Admin dashboard.
+- `/src/app/muit/[slug]`: Public episode page.
+- `/src/lib`: Firebase SDK and converters.
+- `/src/components`: UI components.

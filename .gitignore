@@ -1,4 +1,39 @@
-node_modules
-build
+# Dependencies
+node_modules/
+functions/node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment variables
+.env.local
+.env.*.local
+functions/.env
+
+# Firebase
+firebase-debug.log*
+.firebase/
+
+# Secrets
+*.json
+!package.json
+!tsconfig.json
+!firebase.json
+!cors.json
+!functions/package.json
+!functions/tsconfig.json
+!src/lib/converters.ts
+!src/lib/firebase.ts
+!src/components/Dropzone.tsx
+!src/components/SocialPack.tsx
+!src/app/admin/upload/page.tsx
+!src/app/muit/[slug]/page.tsx
+!src/app/layout.tsx
+!src/app/page.tsx
+!src/app/globals.css
+!next.config.js
+!README.md
+
+# System
 .DS_Store
-.env

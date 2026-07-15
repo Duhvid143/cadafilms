@@ -1,0 +1,28 @@
+<svg width="360" height="60" viewBox="0 0 360 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Geometric interlocking square/knot symbol -->
+  <g transform="translate(0, 4)" fill="none" stroke-width="3.5">
+    <!-- Outer rotated square -->
+    <rect x="14" y="14" width="24" height="24" rx="1" transform="rotate(45, 26, 26)" stroke="#6BA3D6" stroke-width="3.2"/>
+    <!-- Inner interlocking pattern -->
+    <path d="M26 10 L26 6" stroke="#6BA3D6" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M26 42 L26 46" stroke="#6BA3D6" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M10 26 L6 26" stroke="#6BA3D6" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M42 26 L46 26" stroke="#6BA3D6" stroke-width="3.2" stroke-linecap="round"/>
+    <!-- Inner square -->
+    <rect x="18" y="18" width="16" height="16" rx="1" transform="rotate(45, 26, 26)" stroke="#4A8BC2" stroke-width="2.8"/>
+    <!-- Cross overlay for interlocking effect -->
+    <line x1="26" y1="8" x2="26" y2="18" stroke="#5B97CC" stroke-width="3"/>
+    <line x1="26" y1="34" x2="26" y2="44" stroke="#5B97CC" stroke-width="3"/>
+    <line x1="8" y1="26" x2="18" y2="26" stroke="#5B97CC" stroke-width="3"/>
+    <line x1="34" y1="26" x2="44" y2="26" stroke="#5B97CC" stroke-width="3"/>
+    <!-- Corner interlocks -->
+    <path d="M15 15 L20 20" stroke="#4A8BC2" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M37 15 L32 20" stroke="#4A8BC2" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M15 37 L20 32" stroke="#4A8BC2" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M37 37 L32 32" stroke="#4A8BC2" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <!-- Company Name -->
+  <text x="58" y="30" font-family="'meno-display', Georgia, serif" font-weight="400" font-size="24" fill="#3B8ACA" letter-spacing="0.2">Austin Advisory Services</text>
+  <!-- Tagline -->
+  <text x="58" y="48" font-family="'meno-display', Georgia, serif" font-weight="400" font-size="12.5" fill="#6BA3D6" font-style="italic" letter-spacing="0.3">Providing Auditing &amp; Review Services</text>
+</svg>

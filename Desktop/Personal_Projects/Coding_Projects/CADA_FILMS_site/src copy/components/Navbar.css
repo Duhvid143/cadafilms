@@ -1,0 +1,35 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .logo-container {
+    padding: 1rem;
+    cursor: pointer;
+  }
+  
+  .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+  }
+  
+  .logo.rotate {
+    transform: rotate(90deg);
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #000;
+    padding: 1rem;
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+  }
+  

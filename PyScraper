@@ -1,0 +1,11 @@
+# import BeautifulSoup library in bs4 folder
+from bs4 import BeautifulSoup
+
+# open file and read it
+with open('Test.html', 'r') as html_text:
+    contents = html_text.read()
+    soup = BeautifulSoup(contents, 'lxml')
+    header_tag = soup.find('h1')
+
+    for header in header_tag:
+        print (header.text)

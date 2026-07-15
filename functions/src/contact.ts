@@ -4,7 +4,7 @@ import * as sgMail from "@sendgrid/mail";
 import * as corsLib from "cors";
 
 // Initialize CORS with options to allow all origins in this setup.
-// In true production, origin should be strictly allowed to cadafilms.com
+// In true production, origin should be strictly allowed to cada.ventures
 const cors = corsLib({ origin: true });
 
 export const submitContactForm = onRequest({ region: "us-east1" }, (req, res) => {
@@ -37,8 +37,8 @@ export const submitContactForm = onRequest({ region: "us-east1" }, (req, res) =>
 
             // Construct the email payload
             const msg = {
-                to: "info@cadafilms.com",
-                from: "info@cadafilms.com", // Must be verified in SendGrid
+                to: "info@cada.ventures",
+                from: "info@cada.ventures", // Must be verified in SendGrid
                 subject: `New Contact Request from ${name}`,
                 text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
                 html: `<p><strong>Name:</strong> ${name}</p>

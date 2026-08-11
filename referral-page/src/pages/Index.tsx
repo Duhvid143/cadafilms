@@ -51,7 +51,10 @@ export default function Index() {
         img.decode?.().catch(() => {});
       }
     };
-    const idle = window.requestIdleCallback?.(warm) ?? window.setTimeout(warm, 300);
+    // The timeout matters: on a slow device idle time may not arrive before
+    // someone has clicked through to slide 7, and this must not be starved.
+    const idle =
+      window.requestIdleCallback?.(warm, { timeout: 1200 }) ?? window.setTimeout(warm, 300);
     return () => {
       cancelled = true;
       if (window.cancelIdleCallback) window.cancelIdleCallback(idle as number);

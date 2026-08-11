@@ -444,7 +444,13 @@
   aspect-ratio: 16/10;
   object-fit: cover;
   margin-bottom: 20px;
+  /* No timing fix can be absolute: on a slow connection a tile can still be
+     mid-decode when the slide appears. This keeps the frame visible so a
+     pending tile reads as an image arriving, not as a hole in the proof
+     slide. The decoded image covers it completely. */
+  background: #E4E4E4;
 }
+.cada--dark .cada-tile img { background: #1C1C1C; }
 .cada-tag {
   display: inline-block;
   font-size: 18px;

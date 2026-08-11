@@ -15,7 +15,7 @@ import Slide10Ask from './Slide10Ask';
  * have to invert with it or they disappear against the paper background.
  */
 export const cadaSlides = [
-  { component: Slide01Cover, name: 'Cover', template: 'title', theme: 'dark' },
+  { component: Slide01Cover, name: 'Cover', template: 'title', theme: 'light' },
   { component: Slide02Welcome, name: 'Ed sent you', template: 'statement', theme: 'light' },
   { component: Slide03SmallOnPurpose, name: 'Small on purpose', template: 'statement', theme: 'light' },
   { component: Slide04OurRead, name: 'Our read first', template: 'statement', theme: 'dark' },

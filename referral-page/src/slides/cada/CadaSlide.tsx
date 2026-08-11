@@ -54,8 +54,6 @@ export function CadaSlide({ children, theme = 'light', section, index, total = 1
           {CADA_EMAIL}
         </a>
       </div>
-
-      <div className="cada-bar" style={{ width: `${(index / total) * 100}%` }} />
     </div>
   );
 }

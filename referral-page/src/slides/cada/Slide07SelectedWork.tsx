@@ -34,7 +34,7 @@ const TILES = [
   {
     src: '/welcome/assets/grove.webp',
     alt: 'Grove Cleaners concept landing page',
-    tag: 'Our concept. Not a client.',
+    tag: 'Concept Design',
     live: false,
     title: 'Grove Cleaners',
     body: 'A seventy-five-year-old Miami institution, reimagined. Included to show how we approach a legacy business, not as work we were hired for.',

@@ -44,7 +44,7 @@ export const TILES = [
 export default function Slide07SelectedWork() {
   return (
     <CadaSlide theme="light" section="06 · Selected work" index={7}>
-      <h2 className="cada-h2">Four projects.</h2>
+      <h2 className="cada-h2">Samples of Our Work</h2>
       <div className="cada-cols cada-cols--4">
         {TILES.map((t) => (
           <div className="cada-tile" key={t.title}>

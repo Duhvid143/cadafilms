@@ -56,18 +56,16 @@ export default function Slide07SelectedWork() {
               decoding="async" 
               alt={t.alt}
               onError={(e) => {
+                // One retry, against the per-referrer copy of the assets that
+                // sits beside index.html. The old chain also chased .png
+                // variants; those are gone, and grove.png in particular was
+                // the mis-exported Figma frame, so that step could serve a
+                // wrong image on the proof slide. A tile that still fails
+                // now keeps its placeholder frame (see .cada-tile img).
                 const target = e.currentTarget;
-                const step = parseInt(target.dataset.step || '0', 10);
-                if (step === 0) {
-                  target.dataset.step = '1';
-                  target.src = t.src.replace('/welcome/assets/', 'assets/');
-                } else if (step === 1) {
-                  target.dataset.step = '2';
-                  target.src = t.src.replace('.webp', '.png');
-                } else if (step === 2) {
-                  target.dataset.step = '3';
-                  target.src = t.src.replace('/welcome/assets/', 'assets/referral/').replace('.webp', '.png');
-                }
+                if (target.dataset.step) return;
+                target.dataset.step = '1';
+                target.src = t.src.replace('/welcome/assets/', 'assets/');
               }}
             />
             <span className={`cada-tag${t.live ? ' cada-tag--live' : ''}`}>{t.tag}</span>

@@ -3,26 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CADA Referral Deck — Editor</title>
-    <meta name="description" content="Editing surface for the CADA referral deck: ten slides explaining how CADA works, prepared for referred colleagues." />
+    <!--
+      PER REFERRER: the title and both og: strings below name the referrer and
+      their company. Swap them alongside the REFERRER object in
+      src/slides/cada/CadaSlide.tsx. This page's whole distribution model is
+      being forwarded between people, so these strings are what a referred
+      stranger sees in Messages, LinkedIn, Slack and email before they click.
+    -->
+    <title>CADA · A referral from Ed Milford</title>
+    <meta name="description" content="How CADA works, and what you would be getting. Prepared for a colleague of Austin Advisory Services." />
     <meta name="author" content="CADA" />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" href="/welcome/ed-milford/favicon.png" type="image/png" />
 
-    <meta property="og:title" content="CADA Referral Deck — Editor" />
-    <meta property="og:description" content="Editing surface for the CADA referral deck: ten slides explaining how CADA works, prepared for referred colleagues." />
+    <meta property="og:title" content="CADA · A referral from Ed Milford" />
+    <meta property="og:description" content="How CADA works, and what you would be getting." />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://cada.ventures/welcome/assets/austin-advisory.webp" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CADA · A referral from Ed Milford" />
+    <meta name="twitter:description" content="How CADA works, and what you would be getting." />
+    <meta name="twitter:image" content="https://cada.ventures/welcome/assets/austin-advisory.webp" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Inter+Tight:wght@600&display=swap" rel="stylesheet" />
 
-    <script type="module" crossorigin src="/welcome/ed-milford/assets/index-UvDprnLj.js"></script>
-    <link rel="stylesheet" crossorigin href="/welcome/ed-milford/assets/index-pyjmzQmq.css">
+    <!--
+      No <link rel="preload"> for the slide-7 tiles here on purpose. Vite
+      rewrites root-relative hrefs in this file against --base, which turns
+      /welcome/assets/x.webp into /welcome/<slug>/welcome/assets/x.webp and
+      404s. The tiles are warmed from src/pages/Index.tsx instead, where the
+      path is the same constant the <img> uses and cannot drift.
+    -->
+    <script type="module" crossorigin src="/welcome/ed-milford/assets/index-2ZQcqb6q.js"></script>
+    <link rel="stylesheet" crossorigin href="/welcome/ed-milford/assets/index-BAXZctu2.css">
   </head>
 
   <body>
     <div id="root"></div>
+    <noscript>
+      <p>A referral from Ed Milford, prepared for a colleague of Austin Advisory Services.</p>
+      <p>
+        CADA designs and builds websites and brand identities. We are a small team: the person
+        who learns your business is the one who builds it, and you see our read of it before
+        anything gets built.
+      </p>
+      <p>
+        This page needs JavaScript. To reach us directly, call
+        <a href="tel:+13053025662">(305) 302-5662</a> or email
+        <a href="mailto:info@cada.ventures">info@cada.ventures</a>.
+      </p>
+    </noscript>
   </body>
 </html>

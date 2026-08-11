@@ -10,6 +10,7 @@ import { PresenterNotesPanel } from '@/components/slides/PresenterNotesPanel';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cadaSlides as showcaseSlides } from '@/slides/cada';
+import { TILES as SLIDE7_TILES } from '@/slides/cada/Slide07SelectedWork';
 
 interface SlideData {
   id: string;
@@ -32,6 +33,31 @@ export default function Index() {
     })),
     []
   );
+
+  // Slide 7 is the proof slide, and only the active slide is mounted, so its
+  // four tiles are fetched and decoded the moment it appears. They arrive in
+  // time but paint a frame or two late, which is why tiles read as empty on
+  // arrival. Fetching AND decoding them up front makes the paint immediate.
+  // ~200KB total, off the critical path.
+  useEffect(() => {
+    let cancelled = false;
+    const warm = () => {
+      if (cancelled) return;
+      for (const { src } of SLIDE7_TILES) {
+        const img = new Image();
+        img.src = src;
+        // Errors are non-fatal here: the <img> in the slide keeps its own
+        // fallback chain. This is a warm-up, not the load path.
+        img.decode?.().catch(() => {});
+      }
+    };
+    const idle = window.requestIdleCallback?.(warm) ?? window.setTimeout(warm, 300);
+    return () => {
+      cancelled = true;
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle as number);
+      else window.clearTimeout(idle as number);
+    };
+  }, []);
 
   // Keyboard navigation
   useEffect(() => {
@@ -59,7 +85,37 @@ export default function Index() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [slides.length]);
 
+  // Touch swipe. A forwarded referral link is usually opened on a phone, so
+  // this is the primary navigation there, not a nicety.
+  useEffect(() => {
+    let startX = 0;
+    let startY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.changedTouches[0].clientX;
+      startY = e.changedTouches[0].clientY;
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      // Horizontal intent only, and far enough to not be a stray tap.
+      if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) return;
+      setActiveSlideIndex(prev =>
+        dx < 0 ? Math.min(slides.length - 1, prev + 1) : Math.max(0, prev - 1)
+      );
+    };
+
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [slides.length]);
+
   const ActiveSlideComponent = slides[activeSlideIndex]?.component || showcaseSlides[0].component;
+  const activeSlideTheme = showcaseSlides[activeSlideIndex]?.theme ?? 'dark';
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-[hsl(var(--canvas-bg))] flex flex-col">
@@ -69,6 +125,7 @@ export default function Index() {
           totalSlides={slides.length}
           onPrevSlide={() => setActiveSlideIndex(Math.max(0, activeSlideIndex - 1))}
           onNextSlide={() => setActiveSlideIndex(Math.min(slides.length - 1, activeSlideIndex + 1))}
+          slideTheme={activeSlideTheme}
         >
           <ActiveSlideComponent />
         </SlideCanvas>

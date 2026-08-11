@@ -330,7 +330,9 @@
   --cada-void: #000000;
   --cada-ink: #000000;
   --cada-accent: #FC672E;
-  --cada-mute: #8A8A8A;
+  /* #6B6B6B on --cada-paper is 4.8:1. The old #8A8A8A measured 3.1:1 and
+     failed WCAG AA on the light slides, which are most of the deck. */
+  --cada-mute: #6B6B6B;
   --cada-mute-inv: #7E7E7E;
   --cada-line: rgba(0, 0, 0, .16);
   --cada-line-inv: rgba(255, 255, 255, .18);
@@ -357,8 +359,10 @@
   display: flex;
   align-items: center;
   gap: 44px;
-  font-size: 17px;
-  letter-spacing: .26em;
+  /* Raised from 17px and tracking pulled back from .26em: the rail is fine
+     print, but it still has to be readable for an older audience. */
+  font-size: 20px;
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--cada-mute);
 }
@@ -366,6 +370,8 @@
 .cada--dark .cada-foot { color: var(--cada-mute-inv); }
 .cada-rail { top: 44px; }
 .cada-foot { bottom: 44px; font-size: 19px; letter-spacing: .04em; text-transform: none; }
+/* The underline is the only thing marking the footer address as tappable. */
+.cada-foot a { text-decoration: underline; text-underline-offset: 3px; opacity: .85; }
 .cada-rail__year { margin-left: auto; }
 
 .cada-mark { display: block; width: 74px; height: auto; aspect-ratio: 200/44; }
@@ -496,4 +502,58 @@
   background: #FC672E;
   z-index: 50;
   transition: width .42s cubic-bezier(.2, .7, .3, 1);
+}
+
+/* Deck navigation. Sits on the black pillarbox outside the scaled slide, so
+   it is always light-on-dark. Always visible: this is the only cue a
+   first-time visitor gets that the cover is not the whole page. */
+.cada-nav {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+}
+.cada-nav__count {
+  margin-right: 8px;
+  font-size: 13px;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, .6);
+}
+.cada-nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, .38);
+  background: none;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .18s, border-color .18s;
+}
+.cada-nav button:hover:not(:disabled) { background: rgba(255, 255, 255, .12); }
+.cada-nav button:disabled { opacity: .3; cursor: default; }
+.cada-nav button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* At a 16:9 viewport there is no pillarbox and the nav sits on the slide
+   itself, so it has to invert on the light slides to stay visible. */
+.cada-nav--on-light .cada-nav__count { color: #6B6B6B; }
+.cada-nav--on-light button { border-color: rgba(0, 0, 0, .28); color: #000; }
+.cada-nav--on-light button:hover:not(:disabled) { background: rgba(0, 0, 0, .07); }
+.cada-nav--on-light button:focus-visible { outline-color: #000; }
+
+/* Touch devices need the full 44px target. */
+@media (pointer: coarse) {
+  .cada-nav button { width: 44px; height: 44px; font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar { transition: none; }
+  .cada-nav button { transition: none; }
 }

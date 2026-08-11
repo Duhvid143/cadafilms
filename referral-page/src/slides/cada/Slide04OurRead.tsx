@@ -4,7 +4,6 @@ import { CadaSlide } from './CadaSlide';
 export default function Slide04OurRead() {
   return (
     <CadaSlide theme="dark" section="03 · How we work" index={4}>
-      <p className="cada-eyebrow">03 · How we work</p>
       <h2 className="cada-h2">You see our read before we build anything.</h2>
       <p className="cada-lede">
         We start by learning how the business actually runs. Then we write that back to you, along

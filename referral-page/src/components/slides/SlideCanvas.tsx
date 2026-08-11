@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FloatingMenu } from './FloatingMenu';
 import {
@@ -29,6 +29,8 @@ interface SlideCanvasProps {
   onStartPresenterView?: () => void;
   isDarkMode?: boolean;
   onToggleDarkMode?: () => void;
+  /** Theme of the slide currently on screen. The nav inverts to match it. */
+  slideTheme?: 'light' | 'dark';
 }
 
 const ZOOM_LEVELS = [50, 75, 100, 125, 150];
@@ -49,6 +51,7 @@ export function SlideCanvas({
   onStartPresenterView,
   isDarkMode = false,
   onToggleDarkMode,
+  slideTheme = 'dark',
 }: SlideCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerScale, setContainerScale] = useState(1);
@@ -57,14 +60,13 @@ export function SlideCanvas({
   // Shared visibility state for both controls
   const [showControls, setShowControls] = useState(false);
   const [isHoveringZoomPill, setIsHoveringZoomPill] = useState(false);
-  const [isHoveringNavPill, setIsHoveringNavPill] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isHoveringAnyPillRef = useRef(false);
 
   // Keep ref in sync with state
   useEffect(() => {
-    isHoveringAnyPillRef.current = isHoveringZoomPill || isHoveringNavPill;
-  }, [isHoveringZoomPill, isHoveringNavPill]);
+    isHoveringAnyPillRef.current = isHoveringZoomPill;
+  }, [isHoveringZoomPill]);
 
   // Clear any existing timeout
   const clearHideTimeout = useCallback(() => {
@@ -106,14 +108,14 @@ export function SlideCanvas({
 
   // Keep visible while hovering any pill, restart timeout when leaving
   useEffect(() => {
-    if (isHoveringZoomPill || isHoveringNavPill) {
+    if (isHoveringZoomPill) {
       clearHideTimeout();
       setShowControls(true);
     } else if (showControls) {
       // Only start timeout if controls are visible
       startHideTimeout();
     }
-  }, [isHoveringZoomPill, isHoveringNavPill, clearHideTimeout, startHideTimeout, showControls]);
+  }, [isHoveringZoomPill, clearHideTimeout, startHideTimeout, showControls]);
 
   // Show controls on slide change
   useEffect(() => {
@@ -161,6 +163,21 @@ export function SlideCanvas({
   const needsScroll = scaledWidth > containerSize.width || scaledHeight > containerSize.height;
 
   const showNavigation = currentSlide !== undefined && totalSlides !== undefined;
+
+  // Nav placement. The slide is pillarboxed on wide viewports and letterboxed
+  // on tall ones, and the nav inverts with the slide theme, so it cannot be
+  // allowed to drift onto the black surround unnoticed — it would be
+  // black-on-black on every light slide.
+  //
+  // When the letterbox is deep enough to hold the nav (phones, where the slide
+  // collapses to a short band) the nav goes on the surround and stays light.
+  // Otherwise it anchors to the slide's own bottom-right and follows the theme.
+  const letterbox = Math.max(0, (containerSize.height - scaledHeight) / 2);
+  const pillarbox = Math.max(0, (containerSize.width - scaledWidth) / 2);
+  const navOnSurround = letterbox >= 66;
+  const navInset = navOnSurround
+    ? { right: 22, bottom: 22 }
+    : { right: pillarbox + 22, bottom: letterbox + 22 };
 
   return (
     <SlideScaleContext.Provider value={finalScale}>
@@ -276,39 +293,38 @@ export function SlideCanvas({
         {/* Bottom navigation controls */}
         {showNavigation && (
           <>
-            {/* Center - Navigation pill */}
-            <div 
+            {/* Bottom right - bordered arrows. Deliberately always visible
+                rather than hover-revealed: on the cover slide these are the
+                only cue that there is more to see, and a touch device never
+                fires the mousemove that would reveal them. */}
+            <nav
               className={cn(
-                "absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2 py-1 bg-card/90 backdrop-blur-sm border border-border rounded-full shadow-md z-20 transition-opacity duration-300 ease-in-out",
-                showControls ? "opacity-100" : "opacity-0 pointer-events-none"
+                'cada-nav',
+                !navOnSurround && slideTheme === 'light' && 'cada-nav--on-light'
               )}
-              onMouseEnter={() => setIsHoveringNavPill(true)}
-              onMouseLeave={() => setIsHoveringNavPill(false)}
+              style={{ right: navInset.right, bottom: navInset.bottom }}
+              aria-label="Slide navigation"
             >
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 rounded-full"
-                onClick={onPrevSlide}
-                disabled={currentSlide <= 1}
-              >
-                <ChevronLeft className="h-3.5 w-3.5" />
-              </Button>
-              
-              <span className="text-xs font-medium text-muted-foreground min-w-[50px] text-center">
+              <span className="cada-nav__count" aria-hidden="true">
                 {currentSlide} / {totalSlides}
               </span>
-              
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 rounded-full"
+              <button
+                type="button"
+                onClick={onPrevSlide}
+                disabled={currentSlide <= 1}
+                aria-label="Previous slide"
+              >
+                &larr;
+              </button>
+              <button
+                type="button"
                 onClick={onNextSlide}
                 disabled={currentSlide >= totalSlides}
+                aria-label="Next slide"
               >
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Button>
-            </div>
+                &rarr;
+              </button>
+            </nav>
 
             {/* Right - Floating menu (absolute right) */}
             {onStartPresentation && onToggleDarkMode && (

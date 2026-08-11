@@ -97,12 +97,23 @@ To generate a new personalized URL for a new referrer (e.g. `Jane Doe` at `/welc
    ```ts
    export const REFERRER = { first: 'Jane', full: 'Jane Doe' };
    ```
-2. Run build:
+2. Update the page title and the `og:`/`twitter:` strings in `index.html`. These
+   name the referrer and their company, and they are what a referred stranger
+   sees in Messages, LinkedIn, Slack and email *before* they click — the page is
+   distributed by being forwarded, so this is not optional polish. There is a
+   comment in `index.html` marking the block.
+3. Run build:
    ```bash
    npm run build -- --base=/welcome/jane-doe/
    ```
-3. Copy output `dist/` files into `cadafilms/welcome/jane-doe/`.
-4. Commit and push to `origin/main`.
+4. Copy output `dist/` files into `cadafilms/welcome/jane-doe/`.
+5. Commit and push to `origin/main`.
+
+> **Do not add `<link rel="preload">` for the slide-7 tiles to `index.html`.**
+> Vite rewrites root-relative hrefs in that file against `--base`, so
+> `/welcome/assets/x.webp` ships as `/welcome/<slug>/welcome/assets/x.webp` and
+> 404s. The tiles are warmed from `src/pages/Index.tsx` instead, where the path
+> is the same constant the `<img>` uses.
 
 ---
 
@@ -112,4 +123,8 @@ To generate a new personalized URL for a new referrer (e.g. `Jane Doe` at `/welc
 - [ ] Are arrow keys working smoothly to step through slides 1 through 10?
 - [ ] Is there only ONE single orange progress bar smoothly animating along the bottom of the screen?
 - [ ] Are there any white or gray side bars? (Should be pure `#000000` black pillarboxing).
-- [ ] Are all proof images loading properly on Slide 07?
+- [ ] Are all four proof images on Slide 07 painted the instant the slide appears, on a hard refresh?
+- [ ] Is the page title client-facing and does it name the right referrer?
+- [ ] Are the arrow buttons visible on the cover slide, and do they stay visible on every slide?
+- [ ] Does each interior slide print its section label once (top rail only, no eyebrow)?
+- [ ] Is `info@cada.ventures` in the footer underlined?

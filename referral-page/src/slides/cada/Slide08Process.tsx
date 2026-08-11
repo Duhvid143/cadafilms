@@ -27,7 +27,6 @@ const STEPS = [
 export default function Slide08Process() {
   return (
     <CadaSlide theme="dark" section="07 · The process" index={8}>
-      <p className="cada-eyebrow">07 · The process</p>
       <h2 className="cada-h2">Four steps. You are only busy for the first one.</h2>
       <div className="cada-cols cada-cols--4">
         {STEPS.map((s) => (

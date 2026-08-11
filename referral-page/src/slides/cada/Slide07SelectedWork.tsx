@@ -6,7 +6,7 @@ import { CadaSlide } from './CadaSlide';
  * Combyne was designed but never built; Grove Cleaners is unsolicited
  * concept work, not a client. Do not remove, soften or tidy these.
  */
-const TILES = [
+export const TILES = [
   {
     src: '/welcome/assets/austin-advisory.webp',
     alt: 'Austin Advisory Services website hero',
@@ -44,7 +44,6 @@ const TILES = [
 export default function Slide07SelectedWork() {
   return (
     <CadaSlide theme="light" section="06 · Selected work" index={7}>
-      <p className="cada-eyebrow">06 · Selected work</p>
       <h2 className="cada-h2">Four projects.</h2>
       <div className="cada-cols cada-cols--4">
         {TILES.map((t) => (

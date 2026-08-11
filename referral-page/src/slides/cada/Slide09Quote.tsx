@@ -5,7 +5,6 @@ import { CadaSlide } from './CadaSlide';
 export default function Slide09Quote() {
   return (
     <CadaSlide theme="dark" section="08 · In his words" index={9}>
-      <p className="cada-eyebrow">08 · In his words</p>
       <blockquote className="cada-quote">
         &ldquo;Great work on the website!&rdquo;
       </blockquote>

@@ -165,7 +165,7 @@ export function SlideCanvas({
   return (
     <SlideScaleContext.Provider value={finalScale}>
       <div 
-        className="relative flex flex-col h-full w-full bg-[hsl(var(--canvas-bg))]"
+        className="relative flex flex-col h-full w-full bg-black"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -249,12 +249,12 @@ export function SlideCanvas({
         {/* Scrollable slide area */}
         <div 
           ref={containerRef}
-          className="flex-1 flex items-center justify-center p-8 overflow-hidden"
+          className="flex-1 flex items-center justify-center p-0 overflow-hidden bg-black"
         >
           {/* Slide */}
           <div
             className={cn(
-              'slide-canvas relative shadow-2xl rounded-lg overflow-hidden flex-shrink-0 isolate',
+              'slide-canvas relative overflow-hidden flex-shrink-0 isolate',
               showGrid && 'grid-overlay',
               className
             )}

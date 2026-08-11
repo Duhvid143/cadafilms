@@ -21,7 +21,7 @@ const SERVICES = [
 
 export default function Slide06WhatWeDo() {
   return (
-    <CadaSlide theme="light" section="05 · The work" index={6}>
+    <CadaSlide theme="light" section="04 · The work" index={5}>
       <h2 className="cada-h2">What we do.</h2>
       <div className="cada-cols cada-cols--3">
         {SERVICES.map((s) => (

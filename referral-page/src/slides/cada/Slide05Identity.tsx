@@ -3,7 +3,7 @@ import { CadaSlide } from './CadaSlide';
 
 export default function Slide05Identity() {
   return (
-    <CadaSlide theme="light" section="04 · How we work" index={5}>
+    <CadaSlide theme="light" section="03 · How we work" index={4}>
       <h2 className="cada-h2">Your identity is the starting point, not the thing we replace.</h2>
       <p className="cada-lede">
         Some clients want a full rebuild. Others have a logo they like and wording they have already

@@ -3,7 +3,7 @@ import { CadaSlide, CADA_TEL, CADA_TEL_DISPLAY, CADA_EMAIL } from './CadaSlide';
 
 export default function Slide10Ask() {
   return (
-    <CadaSlide theme="dark" section="09 · Next" index={10}>
+    <CadaSlide theme="dark" section="08 · Next" index={9}>
       <h1 className="cada-h1">Let&rsquo;s start the conversation.</h1>
       <p className="cada-lede">
         Thirty minutes, no pitch, no obligation. Tell us what you are working with and we will tell

@@ -2,9 +2,10 @@ import React from 'react';
 import { CadaSlide } from './CadaSlide';
 
 /**
- * The three status tags below are accuracy claims, not decoration.
- * Combyne was designed but never built; Grove Cleaners is unsolicited
- * concept work, not a client. Do not remove, soften or tidy these.
+ * The status tags below are accuracy claims, not decoration.
+ * Combyne was designed but never built. Ileana Garcia is unsolicited concept
+ * work — she is not a client, and the tag plus the "Concept for…" opening of
+ * the body copy are what carry that. Do not remove, soften or tidy either.
  */
 export const TILES = [
   {
@@ -32,18 +33,18 @@ export const TILES = [
     body: 'Fashion tech platform with over six million users. Full site redesign covering new branding, answer engine optimization, and features built to drive engagement and app downloads.',
   },
   {
-    src: '/welcome/assets/grove.webp',
-    alt: 'Grove Cleaners concept landing page',
+    src: '/welcome/assets/ileana-garcia.webp',
+    alt: 'Ileana Garcia campaign site concept, landing page hero',
     tag: 'Concept Design',
     live: false,
-    title: 'Grove Cleaners',
-    body: 'A seventy-five-year-old Miami institution, reimagined. Included to show how we approach a legacy business, not as work we were hired for.',
+    title: 'Ileana Garcia',
+    body: 'Concept for a Florida State Senate campaign. A sharper visual identity, and a clearer path for constituents to engage, volunteer and donate.',
   },
 ];
 
 export default function Slide07SelectedWork() {
   return (
-    <CadaSlide theme="light" section="06 · Selected work" index={7}>
+    <CadaSlide theme="light" section="05 · Selected work" index={6}>
       <h2 className="cada-h2">Samples of Our Work</h2>
       <div className="cada-cols cada-cols--4">
         {TILES.map((t) => (

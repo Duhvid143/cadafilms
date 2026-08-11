@@ -479,4 +479,21 @@
 .cada-alt { display: block; margin-top: 26px; font-size: 24px; color: var(--cada-mute-inv); }
 .cada-alt a { color: inherit; }
 
-.cada-bar { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--cada-accent); }
+.cada-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--cada-accent);
+  transition: width .42s ease;
+}
+
+.bar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: #FC672E;
+  z-index: 50;
+  transition: width .42s cubic-bezier(.2, .7, .3, 1);
+}

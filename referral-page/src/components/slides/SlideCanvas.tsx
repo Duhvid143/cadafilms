@@ -321,6 +321,12 @@ export function SlideCanvas({
                 />
               </div>
             )}
+
+            {/* Bottom progress bar with smooth width animation */}
+            <div 
+              className="bar" 
+              style={{ width: `${(currentSlide / totalSlides) * 100}%` }} 
+            />
           </>
         )}
       </div>

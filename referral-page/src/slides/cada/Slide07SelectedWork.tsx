@@ -49,7 +49,28 @@ export default function Slide07SelectedWork() {
       <div className="cada-cols cada-cols--4">
         {TILES.map((t) => (
           <div className="cada-tile" key={t.title}>
-            <img src={t.src} width={1280} height={800} loading="lazy" decoding="async" alt={t.alt} />
+            <img 
+              src={t.src} 
+              width={1280} 
+              height={800} 
+              loading="eager" 
+              decoding="async" 
+              alt={t.alt}
+              onError={(e) => {
+                const target = e.currentTarget;
+                const step = parseInt(target.dataset.step || '0', 10);
+                if (step === 0) {
+                  target.dataset.step = '1';
+                  target.src = t.src.replace('/welcome/assets/', 'assets/');
+                } else if (step === 1) {
+                  target.dataset.step = '2';
+                  target.src = t.src.replace('.webp', '.png');
+                } else if (step === 2) {
+                  target.dataset.step = '3';
+                  target.src = t.src.replace('/welcome/assets/', 'assets/referral/').replace('.webp', '.png');
+                }
+              }}
+            />
             <span className={`cada-tag${t.live ? ' cada-tag--live' : ''}`}>{t.tag}</span>
             <h3 className="cada-h3">{t.title}</h3>
             <p className="cada-small">{t.body}</p>

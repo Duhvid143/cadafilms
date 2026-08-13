@@ -5,10 +5,13 @@ import { CadaSlide } from './CadaSlide';
 export default function Slide09Quote() {
   return (
     <CadaSlide theme="dark" section="07 · In his words" index={8}>
-      <blockquote className="cada-quote">
-        &ldquo;Great work on the website!&rdquo;
+      <blockquote className="cada-quote cada-quote--long">
+        &ldquo;Working with the brilliant team of CADA Ventures to develop the Austin Advisory
+        Services website was an outstanding experience. Their expertise and dedication resulted in
+        a professional, effective website that delivers tremendous value and peace of mind to our
+        clients.&rdquo;
       </blockquote>
-      <cite className="cada-cite">Edmund A. Milford, CPA · Austin Advisory Services</cite>
+      <cite className="cada-cite">Edmund Milford · Austin Advisory Services</cite>
     </CadaSlide>
   );
 }

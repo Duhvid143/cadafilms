@@ -473,6 +473,15 @@
   letter-spacing: -.03em;
   max-width: 16em;
 }
+/* .cada-quote is sized for a short, punchy line. A full testimonial needs a
+   smaller face, a wider measure and more leading, or it overruns 1080px. */
+.cada-quote--long {
+  font-size: 72px;
+  line-height: 1.22;
+  letter-spacing: -.02em;
+  max-width: 21em;
+}
+
 .cada-cite { display: block; font-size: 26px; font-style: normal; color: var(--cada-mute-inv); margin-top: 44px; }
 .cada--dark .cada-cite { color: var(--cada-mute-inv); }
 

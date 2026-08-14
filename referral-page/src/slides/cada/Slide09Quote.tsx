@@ -11,7 +11,7 @@ export default function Slide09Quote() {
         a professional, effective website that delivers tremendous value and peace of mind to our
         clients.&rdquo;
       </blockquote>
-      <cite className="cada-cite">Edmund Milford · Austin Advisory Services</cite>
+      <cite className="cada-cite">Edmund Milford, CPA · Austin Advisory Services</cite>
     </CadaSlide>
   );
 }

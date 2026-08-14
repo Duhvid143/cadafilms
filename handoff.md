@@ -44,11 +44,12 @@ CADA_FILMS_site/
    - Touch swipe gestures enabled for mobile devices.
 3. **Seamless Black Pillarboxing:**
    - Configured `SlideCanvas.tsx` with pure `#000000` black background (`bg-black`), zero outer padding (`p-0`), and removed rounded corner clipping (`rounded-none`).
-4. **Asset & Image Fallback Handling:**
-   - Slide 07 proof images (Austin Advisory Services, Toys2000, Combyne, Grove Cleaners) are served in high-quality `.webp` with automatic `.png` fallback handling via dataset retry logic.
+4. **Asset & Image Handling:**
+   - Slide 07 proof tiles (Austin Advisory Services, Toys2000, Combyne, Ileana Garcia) are served as `.webp` from `/welcome/assets/`, shared by every referrer page.
+   - There are no `.png` fallbacks. The old retry chain could serve a mis-exported image on the proof slide, so it was cut to a single retry against the per-referrer copy. Tiles are warmed (fetched **and** decoded) at app start, and carry a background so one still decoding reads as a frame rather than a hole. See `welcome/assets/README.md`.
 5. **Copy & Content Updates:**
-   - **Slide 07 (Selected Work):** Updated Grove Cleaners status tag to `"CONCEPT DESIGN"`.
-   - **Slide 09 (In His Words):** Shortened quote text to `"Great work on the website!"` and removed the `"Quote used with permission."` line.
+   - **Slide 07 (Selected Work):** headline is "Samples of Our Work". The fourth tile is the Ileana Garcia campaign concept, tagged `"Concept Design"` — concept work, not a client.
+   - **Slide 09 (In His Words):** carries Ed's full testimonial, at `.cada-quote--long` since the display size was built for a five-word line.
 6. **Animated Progress Bar:**
    - Fixed a duplicate upper bar bug by removing `.cada-bar` from `CadaSlide.tsx`.
    - Enabled a single screen-level bottom orange progress bar (`.bar` in `SlideCanvas.tsx`) with smooth `transition: width 0.42s cubic-bezier(0.2, 0.7, 0.3, 1)`.

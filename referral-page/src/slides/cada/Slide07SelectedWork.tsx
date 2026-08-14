@@ -59,10 +59,10 @@ export default function Slide07SelectedWork() {
               onError={(e) => {
                 // One retry, against the per-referrer copy of the assets that
                 // sits beside index.html. The old chain also chased .png
-                // variants; those are gone, and grove.png in particular was
-                // the mis-exported Figma frame, so that step could serve a
-                // wrong image on the proof slide. A tile that still fails
-                // now keeps its placeholder frame (see .cada-tile img).
+                // variants; those are gone, and one of them was a mis-exported
+                // Figma frame, so that step could serve a wrong image on the
+                // proof slide. A tile that still fails now keeps its
+                // placeholder frame (see .cada-tile img).
                 const target = e.currentTarget;
                 if (target.dataset.step) return;
                 target.dataset.step = '1';

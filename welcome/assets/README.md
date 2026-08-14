@@ -21,17 +21,18 @@ ratio is what has to match, not pixel count.
 Four comparable heroes read as a portfolio; a mix reads as four unrelated
 images, and side-by-side comparisons turn to mush at 300px.
 
-**Crop tightly.** The since-retired Grove tile shipped as a screenshot of a
-Figma frame: 930x650, 481KB, with the frame label "New Landing Page" and white
-margins included. If you are exporting from a Figma case-study slide, crop to
-the artwork itself, not the frame.
+**Crop tightly.** A now-retired tile once shipped as a screenshot of a Figma
+frame rather than the artwork: 930x650, 481KB, with the frame label "New
+Landing Page" and white margins baked in. It was live for a while before
+anyone noticed, because at 300px wide a wrong tile still looks like a tile. If
+you export from a Figma case-study slide, crop to the artwork itself.
 
 **Ileana Garcia is concept work, not a client.** The `Concept Design` tag and
 the "Concept for a Florida State Senate campaign" opening of the tile copy are
 what carry that. She is a sitting elected official, so do not reword either in
 a way that implies she engaged CADA.
 
-No `.png` variants. An earlier `onError` chain fell back to them and the Grove
+No `.png` variants. An earlier `onError` chain fell back to them and one
 PNG was that same bad export, so a failed WebP could have put the wrong image
 on the proof slide. A tile that fails now keeps its placeholder frame instead.
 

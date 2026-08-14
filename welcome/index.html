@@ -14,7 +14,21 @@
     <meta name="description" content="How CADA works, and what you would be getting. Prepared for a colleague of Austin Advisory Services." />
     <meta name="author" content="CADA" />
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" href="/welcome/favicon.png" type="image/png" />
+    <!--
+      Same favicon set the root site declares, so the tab mark carries over
+      from cada.ventures to the referral pages. The previous /favicon.png was
+      the stock Vite template icon: 64x64 grey, not CADA's.
+
+      These stay root-relative and the files live in public/. Vite rewrites
+      root-relative hrefs in this file against --base, so they ship as
+      /welcome/<slug>/favicon.ico and resolve against the copy it places
+      beside index.html. Pointing them at the site root instead would look
+      tidier and would break for exactly the same reason.
+    -->
+    <link rel="icon" type="image/x-icon" href="/welcome/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/welcome/favicon-black.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/welcome/favicon-white.png" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" href="/welcome/logo192.png" />
 
     <meta property="og:title" content="CADA · A referral from Ed Milford" />
     <meta property="og:description" content="How CADA works, and what you would be getting." />
